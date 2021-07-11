@@ -3,9 +3,9 @@ package by.dvorkin.recording.model;
 public class Composition {
     private String trackName;
     private int trackDuration;
-    private String trackGenre;
+    private int trackGenre;
 
-    public Composition(String trackName, int trackDuration, String trackGenre) {
+    public Composition(String trackName, int trackDuration, int trackGenre) {
         this.trackName = trackName;
         this.trackDuration = trackDuration;
         this.trackGenre = trackGenre;
@@ -19,14 +19,14 @@ public class Composition {
         return trackDuration;
     }
 
-    public String getTrackGenre() {
+    public int getTrackGenre() {
         return trackGenre;
     }
 
     @Override
     public String toString() {
         return trackName + "\n\tDuration: " + trackDuration / 60 + " min " + trackDuration % 60
-                + " sec " + "\tGenre: " + trackGenre;
+                + " sec " + "\tGenre: " + Styles.values()[trackGenre].toString();
     }
 
 }
