@@ -25,7 +25,7 @@ public class Runner {
         invoice();
     }
 
-    public static void getTracklist(Disk tracklist, String msg) {
+    public static void printTracklist(Disk tracklist, String msg) {
         int num = 0;
         System.out.println("\nDisk [" + tracklist.getName() + "] " + msg);
         for (Composition t : tracklist) {
@@ -47,7 +47,7 @@ public class Runner {
                 disk.sortByDuration();
                 break;
             }
-            getTracklist(disk, msg);
+            printTracklist(disk, msg);
             invoice();
         } else {
             System.out.print("\n\tFirst you need to generate or open the disk! \n");
@@ -68,7 +68,7 @@ public class Runner {
                     System.out.print("\nEnter disk name: ");
                     reqDiskName = scanner2.next();
                 }
-                disk.setName(reqDiskName);
+                disk.setNameFromFilename(reqDiskName);
                 int reqNumberOfSongs = 0;
                 while (reqNumberOfSongs <= 0) {
                     System.out.print("Enter the number of songs: ");
@@ -80,15 +80,15 @@ public class Runner {
                     }
                 }
                 disk.generate(reqNumberOfSongs);
-                getTracklist(disk, "");
+                printTracklist(disk, "");
                 invoice();
                 break;
             case "2":
                 System.out.print("\nEnter file path to load (for example \"D:\\MyDisk.txt\"): ");
                 String reqOpenFile = "";
                 reqOpenFile = scanner2.next();
-                if (disk.load(reqOpenFile)) {
-                    getTracklist(disk, "");
+                if (disk.loadFile(reqOpenFile)) {
+                    printTracklist(disk, "");
                     invoice();
                 } else {
                     invoice();
@@ -101,8 +101,7 @@ public class Runner {
                         System.out.print("\nEnter file path to save (for example \"D:\\MyDisk.txt\"): ");
                         reqSaveFile = scanner2.next();
                     }
-
-                    if (disk.save(reqSaveFile)) {
+                    if (disk.saveFile(reqSaveFile)) {
                         System.out.println("\n\tDisk saved successfully!");
                         invoice();
                     } else {
@@ -152,5 +151,4 @@ public class Runner {
         showMenu();
         userInput();
     }
-
 }
