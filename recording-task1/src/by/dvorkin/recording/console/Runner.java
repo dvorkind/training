@@ -1,154 +1,72 @@
 package by.dvorkin.recording.console;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
-import by.dvorkin.recording.model.Composition;
 import by.dvorkin.recording.model.Disk;
 
 public class Runner {
-    private static Scanner scanner = new Scanner(System.in);
-    private static Scanner scanner2 = new Scanner(System.in);
 
-    public static void invoice() {
-        System.out.print("\nPlease, enter the number of the required action: ");
+    private static Disk currentDisk;
+    private static ArrayList<Disk> diskList = new ArrayList<Disk>();
+
+    public static Disk getCurrentDisk() {
+        return currentDisk;
     }
 
-    public static void showMenu() {
-        System.out.println("1. Generate disk");
-        System.out.println("2. Load existing disk");
-        System.out.println("3. Save current disk");
-        System.out.println("4. Sort songs by genre");
-        System.out.println("5. Sort songs by name");
-        System.out.println("6. Sort songs by duration");
-        System.out.println("7. Calculate total duration");
-        System.out.println("0. Exit");
-        invoice();
+    public static void setCurrentDisk(Disk currentDisk) {
+        Runner.currentDisk = currentDisk;
     }
 
-    public static void printTracklist(Disk tracklist, String msg) {
-        int num = 0;
-        System.out.println("\nDisk [" + tracklist.getName() + "] " + msg);
-        for (Composition t : tracklist) {
-            num++;
-            System.out.println(num + ". " + t.toString());
-        }
+    public static ArrayList<Disk> getDiskList() {
+        return diskList;
     }
 
-    public static void sort(Disk disk, String msg, int sortItem) {
-        if (!disk.isEmpty()) {
-            switch (sortItem) {
-            case 1:
-                disk.sortByGenre();
-                break;
-            case 2:
-                disk.sortByName();
-                break;
-            case 3:
-                disk.sortByDuration();
-                break;
-            }
-            printTracklist(disk, msg);
-            invoice();
-        } else {
-            System.out.print("\n\tFirst you need to generate or open the disk! \n");
-            invoice();
-        }
+    public static void addToDiskList(Disk disk) {
+        diskList.add(disk);
     }
 
     public static void userInput() {
-        boolean waitForInput = true;
-        Disk disk = new Disk();
-        while (waitForInput) {
-            String userInput = "";
-            userInput = scanner.next();
+        Scanner menuScanner = new Scanner(System.in);
+        while (true) {
+            String userInput = menuScanner.next();
             switch (userInput) {
             case "1":
-                String reqDiskName = "";
-                while (reqDiskName == "") {
-                    System.out.print("\nEnter disk name: ");
-                    reqDiskName = scanner2.next();
-                }
-                disk.setNameFromFilename(reqDiskName);
-                int reqNumberOfSongs = 0;
-                while (reqNumberOfSongs <= 0) {
-                    System.out.print("Enter the number of songs: ");
-                    if (scanner2.hasNextInt()) {
-                        reqNumberOfSongs = scanner2.nextInt();
-                    } else {
-                        System.out.println("\n\tOnly numbers can be entered!\n");
-                        scanner2.next();
-                    }
-                }
-                disk.generate(reqNumberOfSongs);
-                printTracklist(disk, "");
-                invoice();
+                Menu.generateSongsMenu();
                 break;
             case "2":
-                System.out.print("\nEnter file path to load (for example \"D:\\MyDisk.txt\"): ");
-                String reqOpenFile = "";
-                reqOpenFile = scanner2.next();
-                if (disk.loadFile(reqOpenFile)) {
-                    printTracklist(disk, "");
-                    invoice();
-                } else {
-                    invoice();
-                }
+                Menu.loadFileMenu();
                 break;
             case "3":
-                if (!disk.isEmpty()) {
-                    String reqSaveFile = "";
-                    while (reqSaveFile == "") {
-                        System.out.print("\nEnter file path to save (for example \"D:\\MyDisk.txt\"): ");
-                        reqSaveFile = scanner2.next();
-                    }
-                    if (disk.saveFile(reqSaveFile)) {
-                        System.out.println("\n\tDisk saved successfully!");
-                        invoice();
-                    } else {
-                        invoice();
-                    }
-                } else {
-                    System.out.print("\n\tFirst you need to generate or open the disk! \n");
-                    invoice();
-                }
+                Menu.saveFileMenu(currentDisk);
                 break;
             case "4":
-                sort(disk, "(sorted by genre)", 1);
+                Menu.sortDiskMenu(currentDisk);
+                MenuUtils.printTracklist(currentDisk);
                 break;
             case "5":
-                sort(disk, "(sorted by name)", 2);
-                break;
-            case "6":
-                sort(disk, "(sorted by duration)", 3);
-                break;
-            case "7":
-                if (!disk.isEmpty()) {
-                    System.out.println("\nTotal duration: " + disk.totalDuration());
-                    invoice();
-                } else {
-                    System.out.print("\n\tFirst you need to generate or open the disk! \n");
-                    invoice();
-                }
+                System.out.println("\nTOTAL OPEN (CREATED) DISKS: " + diskList.size());
+                MenuUtils.printAllExistingDisk();
                 break;
             case "0":
                 System.out.println("\n\tProgram completed!");
-                waitForInput = false;
-                break;
-            case "?":
-                showMenu();
                 break;
             default:
                 System.out.println("\n\tWrong command number!");
-                showMenu();
                 break;
             }
+            if ("0".equals(userInput)) {
+                break;
+            } else {
+                Menu.showMenu();
+            }
         }
-        scanner.close();
-        scanner2.close();
+        menuScanner.close();
+        Menu.submenuScanner.close();
     }
 
     public static void main(String[] args) {
-        showMenu();
+        Menu.showMenu();
         userInput();
     }
 }

@@ -1,11 +1,11 @@
 package by.dvorkin.recording.model;
 
-public class Composition {
+public class Track {
     private String trackName;
     private int trackDuration;
     private String trackGenre;
 
-    public Composition(String trackName, int trackDuration, String trackGenre) {
+    public Track(String trackName, int trackDuration, String trackGenre) {
         this.trackName = trackName;
         this.trackDuration = trackDuration;
         this.trackGenre = trackGenre;
