@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
@@ -59,7 +59,7 @@ public class DiskUtils {
         }
     }
 
-    public static String getTotalDuration(ArrayList<Track> tracklist) {
+    public static String getTotalDuration(List<Track> tracklist) {
         int total = 0;
         for (Track track : tracklist) {
             total += track.getTrackDuration();

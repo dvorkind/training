@@ -1,14 +1,14 @@
 package by.dvorkin.recording.console;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import by.dvorkin.recording.model.Disk;
 import by.dvorkin.recording.model.DiskUtils;
-import by.dvorkin.recording.model.Track;
 import by.dvorkin.recording.model.SortBy;
+import by.dvorkin.recording.model.Track;
 
 public class MenuUtils {
-    public static void printTracklist(ArrayList<Track> tracklist) {
+    public static void printTracklist(List<Track> tracklist) {
         int num = 0;
         for (Track track : tracklist) {
             num++;
@@ -17,7 +17,7 @@ public class MenuUtils {
         System.out.println("TOTAL DURATION: " + DiskUtils.getTotalDuration(tracklist));
     }
 
-    public static ArrayList<Track> sortSongsBy(Disk disk, SortBy sortby) {
+    public static List<Track> sortSongsBy(Disk disk, SortBy sortby) {
         if (!disk.isDiskEmpty()) {
             switch (sortby) {
             case GENRE:

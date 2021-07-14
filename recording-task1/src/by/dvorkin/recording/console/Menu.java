@@ -1,6 +1,7 @@
 package by.dvorkin.recording.console;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import by.dvorkin.recording.model.Disk;
@@ -19,11 +20,12 @@ public class Menu {
         System.out.println("5. Show existing disks");
         System.out.println("6. Show current disk");
         System.out.println("7. Select a disk from existing ones");
+        System.out.println("8. Find songs by duration");
         System.out.println("0. Exit");
         System.out.print("Please, select an option: ");
     }
 
-    public static ArrayList<Track> sortDiskMenu(Disk disk) {
+    public static List<Track> sortDiskMenu(Disk disk) {
         System.out.println("\n1. Sort songs by genre");
         System.out.println("2. Sort songs by name");
         System.out.println("3. Sort songs by duration");
@@ -84,25 +86,62 @@ public class Menu {
         String reqOpenFile;
         reqOpenFile = submenuScanner.next();
         DiskUtils.loadFile(Runner.getCurrentDisk(), reqOpenFile);
-        System.out.println("\nDISK NAME [" + Runner.getCurrentDisk().getName() + "] (sorted by name)");
-        MenuUtils.printTracklist(Runner.getCurrentDisk().getTracklist());
+        if (!Runner.getCurrentDisk().isDiskEmpty()) {
+            System.out.println("\nDISK NAME [" + Runner.getCurrentDisk().getName() + "] (sorted by name)");
+            MenuUtils.printTracklist(Runner.getCurrentDisk().getTracklist());
+        }
     }
 
     public static void selectDiskMenu() {
-        System.out.print("\nEnter the number of disk: ");
-        if (submenuScanner.hasNextInt()) {
-            int reqDiskNumber = submenuScanner.nextInt();
-            if (reqDiskNumber <= Runner.getDiskList().size()) {
-                Runner.setCurrentDisk(Runner.getDiskList().get(reqDiskNumber - 1));
-                System.out.println(
-                        "\nCUREENT OPEN DISK NAME [" + Runner.getCurrentDisk().getName() + "] (sorted by name)");
-                MenuUtils.printTracklist(Runner.getCurrentDisk().getTracklist());
+        while (true) {
+            System.out.print("\nEnter the number of disk: ");
+            if (submenuScanner.hasNextInt()) {
+                int reqDiskNumber = submenuScanner.nextInt();
+                if (reqDiskNumber <= Runner.getDiskList().size()) {
+                    Runner.setCurrentDisk(Runner.getDiskList().get(reqDiskNumber - 1));
+                    System.out.println(
+                            "\nCURRENT OPEN DISK NAME [" + Runner.getCurrentDisk().getName() + "] (sorted by name)");
+                    MenuUtils.printTracklist(Runner.getCurrentDisk().getTracklist());
+                    break;
+                } else {
+                    System.out.println("\n\tWrong disk number!");
+                }
             } else {
-                System.out.println("\n\tWrong disk number!");
+                System.out.println("\n\tOnly numbers can be entered!\n");
+                submenuScanner.next();
             }
-        } else {
-            System.out.println("\n\tOnly numbers can be entered!\n");
-            submenuScanner.next();
+        }
+    }
+
+    public static List<Track> findByDurationMenu() {
+        List<Track> foundTracklist = new ArrayList<>();
+        Track maxTrack = Runner.getCurrentDisk().getTracklist().stream()
+                .max((fc1, fc2) -> fc1.getTrackDuration() - fc2.getTrackDuration()).get();
+        Track minTrack = Runner.getCurrentDisk().getTracklist().stream()
+                .min((fc1, fc2) -> fc1.getTrackDuration() - fc2.getTrackDuration()).get();
+        int minDuration = minTrack.getTrackDuration();
+        int maxDuration = maxTrack.getTrackDuration();
+        while (true) {
+            System.out.print("\nEnter the length of the song in seconds (between " + minDuration + " and " + maxDuration
+                    + "): ");
+            if (submenuScanner.hasNextInt()) {
+                int reqTrackDuration = submenuScanner.nextInt();
+                if (minDuration <= reqTrackDuration && reqTrackDuration <= maxDuration) {
+                    for (int i = 0; i < Runner.getCurrentDisk().getTracklist().size(); i++) {
+                        Track track = Runner.getCurrentDisk().getTracklist().get(i);
+                        if (track.getTrackDuration() >= reqTrackDuration) {
+                            foundTracklist.add(track);
+                        }
+                    }
+                    System.out.println("\nLIST OF SONGS MATCHING THE CONDITION ");
+                    return foundTracklist;
+                } else {
+                    System.out.println("\n\tThe specified duration is not within the valid range!");
+                }
+            } else {
+                System.out.println("\n\tOnly numbers can be entered!\n");
+                submenuScanner.next();
+            }
         }
     }
 

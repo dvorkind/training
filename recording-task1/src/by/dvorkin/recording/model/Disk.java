@@ -2,10 +2,11 @@ package by.dvorkin.recording.model;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 public class Disk {
     private String name;
-    private ArrayList<Track> tracklist;
+    private List<Track> tracklist;
 
     @Override
     public String toString() {
@@ -17,7 +18,7 @@ public class Disk {
         this.tracklist = new ArrayList<>();
     }
 
-    public ArrayList<Track> getTracklist() {
+    public List<Track> getTracklist() {
         return tracklist;
     }
 
@@ -33,20 +34,20 @@ public class Disk {
         return tracklist.isEmpty();
     }
 
-    public ArrayList<Track> sortByGenre() {
-        ArrayList<Track> sortedDisk = tracklist;
+    public List<Track> sortByGenre() {
+        List<Track> sortedDisk = tracklist;
         sortedDisk.sort(Comparator.comparing(Track::getTrackGenre).thenComparing(Track::getTrackDuration));
         return sortedDisk;
     }
 
-    public ArrayList<Track> sortByName() {
-        ArrayList<Track> sortedDisk = tracklist;
+    public List<Track> sortByName() {
+        List<Track> sortedDisk = tracklist;
         sortedDisk.sort(Comparator.comparing(Track::getTrackName).thenComparing(Track::getTrackGenre));
         return sortedDisk;
     }
 
-    public ArrayList<Track> sortByDuration() {
-        ArrayList<Track> sortedDisk = tracklist;
+    public List<Track> sortByDuration() {
+        List<Track> sortedDisk = tracklist;
         sortedDisk.sort(Comparator.comparing(Track::getTrackDuration).thenComparing(Track::getTrackName));
         return sortedDisk;
     }
