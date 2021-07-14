@@ -1,5 +1,7 @@
 package by.dvorkin.recording.model;
 
+import java.util.concurrent.TimeUnit;
+
 public class Track {
     private String trackName;
     private int trackDuration;
@@ -25,8 +27,10 @@ public class Track {
 
     @Override
     public String toString() {
-        return trackName + "\n\tDuration: " + trackDuration / 60 + " min " + trackDuration % 60 + " sec " + "\tGenre: "
-                + trackGenre;
+        return trackName + "\n\tDuration: " + TimeUnit.SECONDS.toMinutes(trackDuration) + " min "
+                + (TimeUnit.SECONDS.toSeconds(trackDuration)
+                        - TimeUnit.MINUTES.toSeconds(TimeUnit.SECONDS.toMinutes(trackDuration)))
+                + " sec " + "\tGenre: " + trackGenre;
     }
 
 }

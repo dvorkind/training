@@ -1,25 +1,27 @@
 package by.dvorkin.recording.console;
 
+import java.util.ArrayList;
+
 import by.dvorkin.recording.model.Disk;
 import by.dvorkin.recording.model.DiskUtils;
 import by.dvorkin.recording.model.Track;
+import by.dvorkin.recording.model.SortBy;
 
 public class MenuUtils {
-    public static void printTracklist(Disk disk) {
+    public static void printTracklist(ArrayList<Track> tracklist) {
         int num = 0;
-        for (Track track : disk.getDisk()) {
+        for (Track track : tracklist) {
             num++;
             System.out.println(num + ". " + track.toString());
         }
-        System.out.println("TOTAL DURATION: " + DiskUtils.getTotalDuration(disk));
+        System.out.println("TOTAL DURATION: " + DiskUtils.getTotalDuration(tracklist));
     }
 
-    public static void sortSongsBy(Disk disk, SortBy sortby) {
-        if (!disk.diskIsEmpty()) {
+    public static ArrayList<Track> sortSongsBy(Disk disk, SortBy sortby) {
+        if (!disk.isDiskEmpty()) {
             switch (sortby) {
             case GENRE:
-                disk.sortByGenre();
-                break;
+                return disk.sortByGenre();
             case NAME:
                 disk.sortByName();
                 break;
@@ -28,21 +30,32 @@ public class MenuUtils {
                 break;
             }
         } else {
-            System.out.print("\n\tFirst you need to generate or open the disk! \n");
+            return null;
         }
+        return null;
     }
 
     public static void printAllExistingDisk() {
         int num = 0;
+        System.out.println("\nTOTAL OPEN (CREATED) DISKS: " + Runner.getDiskList().size());
         for (Disk disk : Runner.getDiskList()) {
             num++;
             System.out.println(num + ". " + disk.toString());
         }
     }
 
-    public static void createAndaddNewDiskToList() {
+    public static void createAndAddNewDiskToList() {
         Disk disk = new Disk();
         Runner.setCurrentDisk(disk);
         Runner.addToDiskList(disk);
+    }
+
+    public static Boolean isAnyDisk() {
+        if (Runner.getCurrentDisk() == null) {
+            System.out.print("\n\tFirst you need to generate or open any disk! \n");
+            return false;
+        } else {
+            return true;
+        }
     }
 }

@@ -5,19 +5,20 @@ import java.util.Comparator;
 
 public class Disk {
     private String name;
-    private ArrayList<Track> disk;
+    private ArrayList<Track> tracklist;
 
     @Override
     public String toString() {
-        return "Disk [name=" + name + "]";
+        return "DISK NAME [" + name + "], NUMBER OF SONGS [" + tracklist.size() + "], TOTAL DURATION ["
+                + DiskUtils.getTotalDuration(tracklist) + "]";
     }
 
     public Disk() {
-        this.disk = new ArrayList<Track>();
+        this.tracklist = new ArrayList<>();
     }
 
-    public ArrayList<Track> getDisk() {
-        return disk;
+    public ArrayList<Track> getTracklist() {
+        return tracklist;
     }
 
     public String getName() {
@@ -28,20 +29,25 @@ public class Disk {
         this.name = name;
     }
 
-    public Boolean diskIsEmpty() {
-        return disk.isEmpty();
+    public Boolean isDiskEmpty() {
+        return tracklist.isEmpty();
     }
 
-    public void sortByGenre() {
-        disk.sort(Comparator.comparing(Track::getTrackGenre).reversed().thenComparing(Track::getTrackDuration)
-                .reversed());
+    public ArrayList<Track> sortByGenre() {
+        ArrayList<Track> sortedDisk = tracklist;
+        sortedDisk.sort(Comparator.comparing(Track::getTrackGenre).thenComparing(Track::getTrackDuration));
+        return sortedDisk;
     }
 
-    public void sortByName() {
-        disk.sort(Comparator.comparing(Track::getTrackName).reversed().thenComparing(Track::getTrackGenre).reversed());
+    public ArrayList<Track> sortByName() {
+        ArrayList<Track> sortedDisk = tracklist;
+        sortedDisk.sort(Comparator.comparing(Track::getTrackName).thenComparing(Track::getTrackGenre));
+        return sortedDisk;
     }
 
-    public void sortByDuration() {
-        disk.sort(Comparator.comparing(Track::getTrackDuration).thenComparing(Track::getTrackName).reversed());
+    public ArrayList<Track> sortByDuration() {
+        ArrayList<Track> sortedDisk = tracklist;
+        sortedDisk.sort(Comparator.comparing(Track::getTrackDuration).thenComparing(Track::getTrackName));
+        return sortedDisk;
     }
 }

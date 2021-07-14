@@ -1,9 +1,12 @@
 package by.dvorkin.recording.console;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import by.dvorkin.recording.model.Disk;
 import by.dvorkin.recording.model.DiskUtils;
+import by.dvorkin.recording.model.SortBy;
+import by.dvorkin.recording.model.Track;
 
 public class Menu {
     static Scanner submenuScanner = new Scanner(System.in);
@@ -13,12 +16,14 @@ public class Menu {
         System.out.println("2. Load existing disk");
         System.out.println("3. Save current disk");
         System.out.println("4. Sort songs by something");
-        System.out.println("5. Show exitsing disks");
+        System.out.println("5. Show existing disks");
+        System.out.println("6. Show current disk");
+        System.out.println("7. Select a disk from existing ones");
         System.out.println("0. Exit");
         System.out.print("Please, select an option: ");
     }
 
-    public static void sortDiskMenu(Disk disk) {
+    public static ArrayList<Track> sortDiskMenu(Disk disk) {
         System.out.println("\n1. Sort songs by genre");
         System.out.println("2. Sort songs by name");
         System.out.println("3. Sort songs by duration");
@@ -30,8 +35,7 @@ public class Menu {
                     SortBy sortValue = SortBy.values()[reqSortNumber - 1];
                     System.out.println("\nDISK NAME [" + disk.getName() + "] " + "(sorted by "
                             + sortValue.toString().toLowerCase() + ")");
-                    MenuUtils.sortSongsBy(disk, sortValue);
-                    break;
+                    return MenuUtils.sortSongsBy(disk, sortValue);
                 } else {
                     System.out.println("\n\tWrong sort number!");
                 }
@@ -43,7 +47,7 @@ public class Menu {
     }
 
     public static void generateSongsMenu() {
-        MenuUtils.createAndaddNewDiskToList();
+        MenuUtils.createAndAddNewDiskToList();
         String reqDiskName = "";
         while (reqDiskName.equals("")) {
             System.out.print("\nEnter disk name: ");
@@ -62,29 +66,44 @@ public class Menu {
         }
         System.out.println("\nDISK NAME [" + reqDiskName + "] (sorted by name)");
         DiskUtils.generateRandomTracks(Runner.getCurrentDisk(), reqNumberOfSongs);
-        MenuUtils.printTracklist(Runner.getCurrentDisk());
+        MenuUtils.printTracklist(Runner.getCurrentDisk().getTracklist());
     }
 
     public static void saveFileMenu(Disk disk) {
-        if (!disk.diskIsEmpty()) {
-            String reqSaveFile = "";
-            while (reqSaveFile.equals("")) {
-                System.out.print("\nEnter file path to save (for example \"D:\\MyDisk.txt\"): ");
-                reqSaveFile = submenuScanner.next();
-            }
-            DiskUtils.saveFile(Runner.getCurrentDisk(), reqSaveFile);
-        } else {
-            System.out.print("\n\tFirst you need to generate or open the disk! \n");
+        String reqSaveFile = "";
+        while (reqSaveFile.equals("")) {
+            System.out.print("\nEnter file path to save (for example \"D:\\MyDisk.txt\"): ");
+            reqSaveFile = submenuScanner.next();
         }
+        DiskUtils.saveFile(disk, reqSaveFile);
     }
 
     public static void loadFileMenu() {
-        MenuUtils.createAndaddNewDiskToList();
+        MenuUtils.createAndAddNewDiskToList();
         System.out.print("\nEnter file path to load (for example \"D:\\MyDisk.txt\"): ");
-        String reqOpenFile = "";
+        String reqOpenFile;
         reqOpenFile = submenuScanner.next();
         DiskUtils.loadFile(Runner.getCurrentDisk(), reqOpenFile);
-        MenuUtils.printTracklist(Runner.getCurrentDisk());
+        System.out.println("\nDISK NAME [" + Runner.getCurrentDisk().getName() + "] (sorted by name)");
+        MenuUtils.printTracklist(Runner.getCurrentDisk().getTracklist());
+    }
+
+    public static void selectDiskMenu() {
+        System.out.print("\nEnter the number of disk: ");
+        if (submenuScanner.hasNextInt()) {
+            int reqDiskNumber = submenuScanner.nextInt();
+            if (reqDiskNumber <= Runner.getDiskList().size()) {
+                Runner.setCurrentDisk(Runner.getDiskList().get(reqDiskNumber - 1));
+                System.out.println(
+                        "\nCUREENT OPEN DISK NAME [" + Runner.getCurrentDisk().getName() + "] (sorted by name)");
+                MenuUtils.printTracklist(Runner.getCurrentDisk().getTracklist());
+            } else {
+                System.out.println("\n\tWrong disk number!");
+            }
+        } else {
+            System.out.println("\n\tOnly numbers can be entered!\n");
+            submenuScanner.next();
+        }
     }
 
 }

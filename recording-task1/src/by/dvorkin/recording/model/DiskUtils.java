@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class DiskUtils {
     // retrieves filename without extension
@@ -25,7 +27,7 @@ public class DiskUtils {
             while (fileScanner.hasNextLine()) {
                 String fileLine = fileScanner.nextLine();
                 String[] words = fileLine.split(",");
-                disk.getDisk().add(new Track(words[0], Integer.parseInt(words[1]), words[2]));
+                disk.getTracklist().add(new Track(words[0], Integer.parseInt(words[1]), words[2]));
             }
         } catch (FileNotFoundException e) {
             System.out.println("\n\tFile doesn't exist!");
@@ -40,11 +42,10 @@ public class DiskUtils {
 
     public static void saveFile(Disk disk, String fileName) {
         try (FileWriter writer = new FileWriter(fileName, false)) {
-            for (Track track : disk.getDisk()) {
+            for (Track track : disk.getTracklist()) {
                 writer.write(
                         track.getTrackName() + "," + track.getTrackDuration() + "," + track.getTrackGenre() + "\n");
             }
-            writer.close();
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
@@ -53,20 +54,25 @@ public class DiskUtils {
     public static void generateRandomTracks(Disk disk, int count) {
         int countGenres = Genres.values().length;
         for (int i = 1; i <= count; i++) {
-            disk.getDisk().add(new Track("Singer " + i + " - Some song", (int) (150 + Math.random() * 150),
+            disk.getTracklist().add(new Track("Singer " + i + " - Some song", (int) (150 + Math.random() * 150),
                     Genres.values()[(int) (Math.random() * countGenres)].toString()));
         }
     }
 
-    public static String getTotalDuration(Disk disk) {
+    public static String getTotalDuration(ArrayList<Track> tracklist) {
         int total = 0;
-        for (Track track : disk.getDisk()) {
+        for (Track track : tracklist) {
             total += track.getTrackDuration();
         }
-        if (total >= 3600) {
-            return (total / 3600) + " hours " + ((total / 60) % 60) + " min " + (total % 60) + " sec";
+        long hours = TimeUnit.SECONDS.toHours(total);
+        total -= TimeUnit.HOURS.toSeconds(hours);
+        long minutes = TimeUnit.SECONDS.toMinutes(total);
+        total -= TimeUnit.MINUTES.toSeconds(minutes);
+        long seconds = TimeUnit.SECONDS.toSeconds(total);
+        if (hours > 0) {
+            return hours + " hours " + minutes + " min " + seconds + " sec";
         } else {
-            return total / 60 + " min " + total % 60 + " sec ";
+            return minutes + " min " + seconds + " sec";
         }
     }
 }

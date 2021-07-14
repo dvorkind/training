@@ -8,7 +8,7 @@ import by.dvorkin.recording.model.Disk;
 public class Runner {
 
     private static Disk currentDisk;
-    private static ArrayList<Disk> diskList = new ArrayList<Disk>();
+    private static ArrayList<Disk> diskList = new ArrayList<>();
 
     public static Disk getCurrentDisk() {
         return currentDisk;
@@ -38,15 +38,29 @@ public class Runner {
                 Menu.loadFileMenu();
                 break;
             case "3":
-                Menu.saveFileMenu(currentDisk);
+                if (MenuUtils.isAnyDisk()) {
+                    Menu.saveFileMenu(currentDisk);
+                }
                 break;
             case "4":
-                Menu.sortDiskMenu(currentDisk);
-                MenuUtils.printTracklist(currentDisk);
+                if (MenuUtils.isAnyDisk()) {
+                    MenuUtils.printTracklist(Menu.sortDiskMenu(currentDisk));
+                }
                 break;
             case "5":
-                System.out.println("\nTOTAL OPEN (CREATED) DISKS: " + diskList.size());
                 MenuUtils.printAllExistingDisk();
+                break;
+            case "6":
+                if (MenuUtils.isAnyDisk()) {
+                    System.out.println("\n CURRENT OPEN DISK NAME [" + currentDisk.getName() + "] (sorted by name)");
+                    MenuUtils.printTracklist(currentDisk.getTracklist());
+                }
+                break;
+            case "7":
+                if (MenuUtils.isAnyDisk()) {
+                    MenuUtils.printAllExistingDisk();
+                    Menu.selectDiskMenu();
+                }
                 break;
             case "0":
                 System.out.println("\n\tProgram completed!");
