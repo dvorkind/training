@@ -1,7 +1,10 @@
-package by.dvorkin.recording.console;
+package by.dvorkin.recording.console.menu;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
+import by.dvorkin.recording.console.Runner;
 import by.dvorkin.recording.model.Disk;
 import by.dvorkin.recording.model.DiskUtils;
 import by.dvorkin.recording.model.SortBy;
@@ -18,21 +21,23 @@ public class MenuUtils {
     }
 
     public static List<Track> sortSongsBy(Disk disk, SortBy sortby) {
-        if (!disk.isDiskEmpty()) {
+        List<Track> sortedTracklist = new ArrayList<Track>(disk.getTracklist());
+        if (!disk.isTracklistEmpty() && disk.getTracklist() != null) {
             switch (sortby) {
             case GENRE:
-                return disk.sortByGenre();
+                sortedTracklist.sort(Comparator.comparing(Track::getTrackGenre).thenComparing(Track::getTrackDuration));
+                break;
             case NAME:
-                disk.sortByName();
+                sortedTracklist.sort(Comparator.comparing(Track::getTrackName).thenComparing(Track::getTrackGenre));
                 break;
             case DURATION:
-                disk.sortByDuration();
+                sortedTracklist.sort(Comparator.comparing(Track::getTrackDuration).thenComparing(Track::getTrackName));
                 break;
             }
         } else {
             return null;
         }
-        return null;
+        return sortedTracklist;
     }
 
     public static void printAllExistingDisk() {
@@ -44,7 +49,7 @@ public class MenuUtils {
         }
     }
 
-    public static void createAndAddNewDiskToList() {
+    public static void createNewDisk() {
         Disk disk = new Disk();
         Runner.setCurrentDisk(disk);
         Runner.addToDiskList(disk);
@@ -57,5 +62,17 @@ public class MenuUtils {
         } else {
             return true;
         }
+    }
+
+    public static void findTrackByRange(int from, int to) {
+        List<Track> foundTracklist = new ArrayList<>();
+        for (int i = 0; i < Runner.getCurrentDisk().getTracklist().size(); i++) {
+            Track track = Runner.getCurrentDisk().getTracklist().get(i);
+            if (track.getTrackDuration() >= from && track.getTrackDuration() <= to) {
+                foundTracklist.add(track);
+            }
+        }
+        System.out.println("\nLIST OF SONGS MATCHING THE CONDITION: ");
+        MenuUtils.printTracklist(foundTracklist);
     }
 }

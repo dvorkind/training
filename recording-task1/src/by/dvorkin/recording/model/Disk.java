@@ -1,7 +1,6 @@
 package by.dvorkin.recording.model;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class Disk {
@@ -30,25 +29,7 @@ public class Disk {
         this.name = name;
     }
 
-    public Boolean isDiskEmpty() {
+    public Boolean isTracklistEmpty() {
         return tracklist.isEmpty();
-    }
-
-    public List<Track> sortByGenre() {
-        List<Track> sortedDisk = tracklist;
-        sortedDisk.sort(Comparator.comparing(Track::getTrackGenre).thenComparing(Track::getTrackDuration));
-        return sortedDisk;
-    }
-
-    public List<Track> sortByName() {
-        List<Track> sortedDisk = tracklist;
-        sortedDisk.sort(Comparator.comparing(Track::getTrackName).thenComparing(Track::getTrackGenre));
-        return sortedDisk;
-    }
-
-    public List<Track> sortByDuration() {
-        List<Track> sortedDisk = tracklist;
-        sortedDisk.sort(Comparator.comparing(Track::getTrackDuration).thenComparing(Track::getTrackName));
-        return sortedDisk;
     }
 }
