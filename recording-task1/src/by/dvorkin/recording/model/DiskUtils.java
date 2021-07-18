@@ -9,7 +9,6 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class DiskUtils {
-    // retrieves filename without extension
     public static void setDiskNameFromFilename(Disk disk, String name) {
         int i = name.lastIndexOf('.');
         if (i != -1) {
@@ -18,7 +17,7 @@ public class DiskUtils {
         disk.setName(name);
     }
 
-    public static void loadFile(Disk disk, String fileName) {
+    public static Boolean loadFile(Disk disk, String fileName) {
         Scanner fileScanner = null;
         try {
             File file = new File(fileName);
@@ -29,10 +28,13 @@ public class DiskUtils {
                 String[] words = fileLine.split(",");
                 disk.getTracklist().add(new Track(words[0], Integer.parseInt(words[1]), words[2]));
             }
+            return true;
         } catch (FileNotFoundException e) {
             System.out.println("\n\tFile doesn't exist!");
+            return false;
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("\n\tIncorrect file format!");
+            return false;
         } finally {
             if (fileScanner != null) {
                 fileScanner.close();
@@ -73,6 +75,15 @@ public class DiskUtils {
             return hours + " hours " + minutes + " min " + seconds + " sec";
         } else {
             return minutes + " min " + seconds + " sec";
+        }
+    }
+    
+    public static void deleteCurrentDisk () {
+        DiskList.getDiskList().remove(DiskList.getCurrentDisk());
+        if (DiskList.getDiskList().size() > 0) {
+            DiskList.setCurrentDisk(DiskList.getDiskList().get(DiskList.getDiskList().size() - 1));
+        } else {
+            DiskList.setCurrentDisk(null);
         }
     }
 }

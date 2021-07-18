@@ -1,14 +1,15 @@
 package by.dvorkin.recording.console.menu;
 
-import by.dvorkin.recording.console.Runner;
+import by.dvorkin.recording.model.Disk;
 import by.dvorkin.recording.model.Track;
+import java.util.Comparator;
 
 public class FindByDurationMenu {
-    public static void printSubmenu() {
-        Track maxTrack = Runner.getCurrentDisk().getTracklist().stream()
-                .max((fc1, fc2) -> fc1.getTrackDuration() - fc2.getTrackDuration()).get();
-        Track minTrack = Runner.getCurrentDisk().getTracklist().stream()
-                .min((fc1, fc2) -> fc1.getTrackDuration() - fc2.getTrackDuration()).get();
+    public static void printSubmenu(Disk disk) {
+        Track maxTrack = disk.getTracklist().stream()
+                .max(Comparator.comparingInt(Track::getTrackDuration)).get();
+        Track minTrack = disk.getTracklist().stream()
+                .min(Comparator.comparingInt(Track::getTrackDuration)).get();
         int minDuration = minTrack.getTrackDuration();
         int maxDuration = maxTrack.getTrackDuration();
         int reqMinTrackDuration;

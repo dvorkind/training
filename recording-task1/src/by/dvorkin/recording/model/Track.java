@@ -3,9 +3,9 @@ package by.dvorkin.recording.model;
 import java.util.concurrent.TimeUnit;
 
 public class Track {
-    private String trackName;
-    private int trackDuration;
-    private String trackGenre;
+    private final String trackName;
+    private final int trackDuration;
+    private final String trackGenre;
 
     public Track(String trackName, int trackDuration, String trackGenre) {
         this.trackName = trackName;

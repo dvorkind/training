@@ -11,5 +11,6 @@ public class SaveFileMenu {
             reqSaveFile = MainMenu.menuScanner.next();
         }
         DiskUtils.saveFile(disk, reqSaveFile);
+        System.out.println("\n\tDisk saved successfully!");
     }
 }

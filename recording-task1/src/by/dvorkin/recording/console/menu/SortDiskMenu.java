@@ -26,10 +26,6 @@ public class SortDiskMenu {
                 MainMenu.menuScanner.next();
             }
         }
-        if (MenuUtils.sortSongsBy(disk, sortValue) == null) {
-            System.out.println("\n\tTracklist is empty!");
-        } else {
-            MenuUtils.printTracklist(MenuUtils.sortSongsBy(disk, sortValue));
-        }
+        MenuUtils.printTracklist(MenuUtils.sortSongsBy(disk, sortValue));
     }
 }

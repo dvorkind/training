@@ -1,19 +1,22 @@
 package by.dvorkin.recording.console.menu;
 
-import by.dvorkin.recording.console.Runner;
+import by.dvorkin.recording.model.Disk;
+import by.dvorkin.recording.model.DiskList;
 import by.dvorkin.recording.model.DiskUtils;
 
 public class GenerateSongsMenu {
     public static void printSubmenu() {
-        MenuUtils.createNewDisk();
+        Disk disk = new Disk();
+        DiskList.setCurrentDisk(disk);
+        DiskList.addToDiskList(disk);
         String reqDiskName = "";
         while (reqDiskName.equals("")) {
             System.out.print("\nEnter disk name: ");
             reqDiskName = MainMenu.menuScanner.next();
         }
-        DiskUtils.setDiskNameFromFilename(Runner.getCurrentDisk(), reqDiskName);
-        int reqNumberOfSongs = 0;
-        while (reqNumberOfSongs <= 0) {
+        DiskUtils.setDiskNameFromFilename(DiskList.getCurrentDisk(), reqDiskName);
+        int reqNumberOfSongs = -1;
+        while (reqNumberOfSongs < 0) {
             System.out.print("Enter the number of songs: ");
             if (MainMenu.menuScanner.hasNextInt()) {
                 reqNumberOfSongs = MainMenu.menuScanner.nextInt();
@@ -22,8 +25,12 @@ public class GenerateSongsMenu {
                 MainMenu.menuScanner.next();
             }
         }
-        System.out.println("\nDISK NAME [" + reqDiskName + "] (sorted by name)");
-        DiskUtils.generateRandomTracks(Runner.getCurrentDisk(), reqNumberOfSongs);
-        MenuUtils.printTracklist(Runner.getCurrentDisk().getTracklist());
+        if (reqNumberOfSongs == 0) {
+            System.out.println("\n\tDisc named [" + reqDiskName + "] has been created empty");
+        } else {
+            System.out.println("\nDISK NAME [" + reqDiskName + "] (sorted by name)");
+            DiskUtils.generateRandomTracks(DiskList.getCurrentDisk(), reqNumberOfSongs);
+            MenuUtils.printTracklist(DiskList.getCurrentDisk().getTracklist());
+        }
     }
 }

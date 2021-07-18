@@ -1,6 +1,6 @@
 package by.dvorkin.recording.console.menu;
 
-import by.dvorkin.recording.console.Runner;
+import by.dvorkin.recording.model.DiskList;
 
 public class SelectDiskMenu {
     public static void printSubmenu() {
@@ -8,11 +8,12 @@ public class SelectDiskMenu {
             System.out.print("\nEnter the number of disk: ");
             if (MainMenu.menuScanner.hasNextInt()) {
                 int reqDiskNumber = MainMenu.menuScanner.nextInt();
-                if (reqDiskNumber <= Runner.getDiskList().size()) {
-                    Runner.setCurrentDisk(Runner.getDiskList().get(reqDiskNumber - 1));
-                    System.out.println(
-                            "\nCURRENT OPEN DISK NAME [" + Runner.getCurrentDisk().getName() + "]");
-                    MenuUtils.printTracklist(Runner.getCurrentDisk().getTracklist());
+                if (reqDiskNumber <= DiskList.getDiskList().size()) {
+                    DiskList.setCurrentDisk(DiskList.getDiskList().get(reqDiskNumber - 1));
+                    if (MenuUtils.isTracklistNotEmpty()) {
+                        System.out.println("\nCURRENT OPEN DISK NAME [" + DiskList.getCurrentDisk().getName() + "]");
+                        MenuUtils.printTracklist(DiskList.getCurrentDisk().getTracklist());
+                    }
                     break;
                 } else {
                     System.out.println("\n\tWrong disk number!");

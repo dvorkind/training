@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Disk {
     private String name;
-    private List<Track> tracklist;
+    private final List<Track> tracklist;
 
     @Override
     public String toString() {
@@ -27,9 +27,5 @@ public class Disk {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Boolean isTracklistEmpty() {
-        return tracklist.isEmpty();
     }
 }

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import by.dvorkin.recording.console.Runner;
 import by.dvorkin.recording.model.Disk;
+import by.dvorkin.recording.model.DiskList;
 import by.dvorkin.recording.model.DiskUtils;
 import by.dvorkin.recording.model.SortBy;
 import by.dvorkin.recording.model.Track;
@@ -21,29 +21,25 @@ public class MenuUtils {
     }
 
     public static List<Track> sortSongsBy(Disk disk, SortBy sortby) {
-        List<Track> sortedTracklist = new ArrayList<Track>(disk.getTracklist());
-        if (!disk.isTracklistEmpty() && disk.getTracklist() != null) {
-            switch (sortby) {
-            case GENRE:
-                sortedTracklist.sort(Comparator.comparing(Track::getTrackGenre).thenComparing(Track::getTrackDuration));
-                break;
-            case NAME:
-                sortedTracklist.sort(Comparator.comparing(Track::getTrackName).thenComparing(Track::getTrackGenre));
-                break;
-            case DURATION:
-                sortedTracklist.sort(Comparator.comparing(Track::getTrackDuration).thenComparing(Track::getTrackName));
-                break;
-            }
-        } else {
-            return null;
+        List<Track> sortedTracklist = new ArrayList<>(disk.getTracklist());
+        switch (sortby) {
+        case GENRE:
+            sortedTracklist.sort(Comparator.comparing(Track::getTrackGenre).thenComparing(Track::getTrackDuration));
+            break;
+        case NAME:
+            sortedTracklist.sort(Comparator.comparing(Track::getTrackName).thenComparing(Track::getTrackGenre));
+            break;
+        case DURATION:
+            sortedTracklist.sort(Comparator.comparing(Track::getTrackDuration).thenComparing(Track::getTrackName));
+            break;
         }
         return sortedTracklist;
     }
 
     public static void printAllExistingDisk() {
         int num = 0;
-        System.out.println("\nTOTAL OPEN (CREATED) DISKS: " + Runner.getDiskList().size());
-        for (Disk disk : Runner.getDiskList()) {
+        System.out.println("\nTOTAL OPEN (CREATED) DISKS: " + DiskList.getDiskList().size());
+        for (Disk disk : DiskList.getDiskList()) {
             num++;
             System.out.println(num + ". " + disk.toString());
         }
@@ -51,13 +47,22 @@ public class MenuUtils {
 
     public static void createNewDisk() {
         Disk disk = new Disk();
-        Runner.setCurrentDisk(disk);
-        Runner.addToDiskList(disk);
+        DiskList.setCurrentDisk(disk);
+        DiskList.addToDiskList(disk);
     }
 
     public static Boolean isAnyDisk() {
-        if (Runner.getCurrentDisk() == null) {
+        if (DiskList.getCurrentDisk() == null) {
             System.out.print("\n\tFirst you need to generate or open any disk! \n");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public static Boolean isTracklistNotEmpty() {
+        if (DiskList.getCurrentDisk().getTracklist().isEmpty() || DiskList.getCurrentDisk().getTracklist() == null) {
+            System.out.println("\n\tThe current disk contains no songs!");
             return false;
         } else {
             return true;
@@ -66,8 +71,8 @@ public class MenuUtils {
 
     public static void findTrackByRange(int from, int to) {
         List<Track> foundTracklist = new ArrayList<>();
-        for (int i = 0; i < Runner.getCurrentDisk().getTracklist().size(); i++) {
-            Track track = Runner.getCurrentDisk().getTracklist().get(i);
+        for (int i = 0; i < DiskList.getCurrentDisk().getTracklist().size(); i++) {
+            Track track = DiskList.getCurrentDisk().getTracklist().get(i);
             if (track.getTrackDuration() >= from && track.getTrackDuration() <= to) {
                 foundTracklist.add(track);
             }
