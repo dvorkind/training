@@ -10,7 +10,8 @@ public class RemoveSongMenu {
                 int reqSongNumber = MainMenu.menuScanner.nextInt();
                 if (reqSongNumber <= disk.getTracklist().size()) {
 
-                    String trackName = disk.getTracklist().get(reqSongNumber - 1).getTrackName();
+                    String trackName = disk.getTracklist().get(reqSongNumber - 1).getSinger() + " - "
+                            + disk.getTracklist().get(reqSongNumber - 1).getTitle();
                     disk.getTracklist().remove(reqSongNumber - 1);
                     System.out.println("\n\tThe song [" + trackName + "] has been deleted!");
                     break;

@@ -26,7 +26,7 @@ public class DiskUtils {
             while (fileScanner.hasNextLine()) {
                 String fileLine = fileScanner.nextLine();
                 String[] words = fileLine.split(",");
-                disk.getTracklist().add(new Track(words[0], Integer.parseInt(words[1]), words[2]));
+                disk.getTracklist().add(new Track(words[0], words[1], Integer.parseInt(words[2]), words[3]));
             }
             return true;
         } catch (FileNotFoundException e) {
@@ -45,26 +45,44 @@ public class DiskUtils {
     public static void saveFile(Disk disk, String fileName) {
         try (FileWriter writer = new FileWriter(fileName, false)) {
             for (Track track : disk.getTracklist()) {
-                writer.write(
-                        track.getTrackName() + "," + track.getTrackDuration() + "," + track.getTrackGenre() + "\n");
+                writer.write(track.getSinger() + "," + track.getTitle() + "," + track.getDuration() + ","
+                        + track.getGenre() + "\n");
             }
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
     }
 
-    public static void generateRandomTracks(Disk disk, int count) {
+    public static void generateTracksByCount(Disk disk, int count) {
         int countGenres = Genres.values().length;
         for (int i = 1; i <= count; i++) {
-            disk.getTracklist().add(new Track("Singer " + i + " - Some song", (int) (150 + Math.random() * 150),
-                    Genres.values()[(int) (Math.random() * countGenres)].toString()));
+            disk.getTracklist()
+                    .add(new Track("Singer " + i, "Some song " + (int) (Math.random() * 10),
+                            (int) (Constants.MIN_SONG_DURATION + Math.random() * Constants.MIN_SONG_DURATION),
+                            Genres.values()[(int) (Math.random() * countGenres)].toString()));
+        }
+    }
+
+    public static void generateTracksByDiskDuration(Disk disk, int duration) {
+        int currentDuration = 0;
+        int countGenres = Genres.values().length;
+        int tempDuration;
+        while (currentDuration <= duration && (duration - currentDuration) > Constants.MIN_SONG_DURATION) {
+            tempDuration = (int) (Constants.MIN_SONG_DURATION + Math.random() * Constants.MIN_SONG_DURATION);
+            if ((currentDuration + tempDuration) <= duration) {
+                disk.getTracklist()
+                        .add(new Track("Singer " + (int) (Math.random() * 10),
+                                "Some song " + (int) (Math.random() * 10), tempDuration,
+                                Genres.values()[(int) (Math.random() * countGenres)].toString()));
+                currentDuration += tempDuration;
+            }
         }
     }
 
     public static String getTotalDuration(List<Track> tracklist) {
         int total = 0;
         for (Track track : tracklist) {
-            total += track.getTrackDuration();
+            total += track.getDuration();
         }
         long hours = TimeUnit.SECONDS.toHours(total);
         total -= TimeUnit.HOURS.toSeconds(hours);
@@ -77,8 +95,8 @@ public class DiskUtils {
             return minutes + " min " + seconds + " sec";
         }
     }
-    
-    public static void deleteCurrentDisk () {
+
+    public static void deleteCurrentDisk() {
         DiskList.getDiskList().remove(DiskList.getCurrentDisk());
         if (DiskList.getDiskList().size() > 0) {
             DiskList.setCurrentDisk(DiskList.getDiskList().get(DiskList.getDiskList().size() - 1));

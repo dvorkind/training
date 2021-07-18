@@ -6,17 +6,22 @@ import by.dvorkin.recording.model.Track;
 
 public class AddSongMenu {
     public static void printSubmenu(Disk disk) {
-        String reqSongName = "";
-        int reqSongDuration;
-        while (reqSongName.equals("")) {
-            System.out.print("\nEnter song name: ");
-            reqSongName = MainMenu.menuScanner.next();
+        String reqSinger = "";
+        String reqTitle = "";
+        int reqDuration;
+        while (reqSinger.equals("")) {
+            System.out.print("\nEnter singer name: ");
+            reqSinger = MainMenu.menuScanner.next();
+        }
+        while (reqTitle.equals("")) {
+            System.out.print("\nEnter song title: ");
+            reqTitle = MainMenu.menuScanner.next();
         }
         while (true) {
             System.out.print("\nEnter song duration in seconds: ");
             if (MainMenu.menuScanner.hasNextInt()) {
-                reqSongDuration = MainMenu.menuScanner.nextInt();
-                if (reqSongDuration <= 0) {
+                reqDuration = MainMenu.menuScanner.nextInt();
+                if (reqDuration <= 0) {
                     System.out.println("\n\tSong duration cannot be less than or equal to 0!");
                 } else {
                     break;
@@ -38,7 +43,7 @@ public class AddSongMenu {
                 int reqGenreNumber = MainMenu.menuScanner.nextInt();
                 if (reqGenreNumber > 0 && reqGenreNumber <= Genres.values().length) {
                     String reqGenre = Genres.values()[reqGenreNumber - 1].toString();
-                    disk.getTracklist().add(new Track(reqSongName, reqSongDuration, reqGenre));
+                    disk.getTracklist().add(new Track(reqSinger, reqTitle, reqDuration, reqGenre));
                     System.out.println("\n\tThe song has been added!");
                     break;
                 } else {

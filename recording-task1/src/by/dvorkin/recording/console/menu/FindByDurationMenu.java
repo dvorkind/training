@@ -6,12 +6,10 @@ import java.util.Comparator;
 
 public class FindByDurationMenu {
     public static void printSubmenu(Disk disk) {
-        Track maxTrack = disk.getTracklist().stream()
-                .max(Comparator.comparingInt(Track::getTrackDuration)).get();
-        Track minTrack = disk.getTracklist().stream()
-                .min(Comparator.comparingInt(Track::getTrackDuration)).get();
-        int minDuration = minTrack.getTrackDuration();
-        int maxDuration = maxTrack.getTrackDuration();
+        Track maxTrack = disk.getTracklist().stream().max(Comparator.comparingInt(Track::getDuration)).get();
+        Track minTrack = disk.getTracklist().stream().min(Comparator.comparingInt(Track::getDuration)).get();
+        int minDuration = minTrack.getDuration();
+        int maxDuration = maxTrack.getDuration();
         int reqMinTrackDuration;
         int reqMaxTrackDuration;
         while (true) {

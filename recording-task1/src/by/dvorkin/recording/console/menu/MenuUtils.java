@@ -24,13 +24,13 @@ public class MenuUtils {
         List<Track> sortedTracklist = new ArrayList<>(disk.getTracklist());
         switch (sortby) {
         case GENRE:
-            sortedTracklist.sort(Comparator.comparing(Track::getTrackGenre).thenComparing(Track::getTrackDuration));
+            sortedTracklist.sort(Comparator.comparing(Track::getGenre).thenComparing(Track::getDuration));
             break;
         case NAME:
-            sortedTracklist.sort(Comparator.comparing(Track::getTrackName).thenComparing(Track::getTrackGenre));
+            sortedTracklist.sort(Comparator.comparing(Track::getSinger).thenComparing(Track::getTitle));
             break;
         case DURATION:
-            sortedTracklist.sort(Comparator.comparing(Track::getTrackDuration).thenComparing(Track::getTrackName));
+            sortedTracklist.sort(Comparator.comparing(Track::getDuration).thenComparing(Track::getSinger));
             break;
         }
         return sortedTracklist;
@@ -73,7 +73,7 @@ public class MenuUtils {
         List<Track> foundTracklist = new ArrayList<>();
         for (int i = 0; i < DiskList.getCurrentDisk().getTracklist().size(); i++) {
             Track track = DiskList.getCurrentDisk().getTracklist().get(i);
-            if (track.getTrackDuration() >= from && track.getTrackDuration() <= to) {
+            if (track.getDuration() >= from && track.getDuration() <= to) {
                 foundTracklist.add(track);
             }
         }
