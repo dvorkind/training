@@ -28,4 +28,4 @@ bin/
 .project
 .settings/
 
-.txt
+*.txt
