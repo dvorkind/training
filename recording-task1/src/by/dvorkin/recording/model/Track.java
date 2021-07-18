@@ -33,10 +33,13 @@ public class Track {
 
     @Override
     public String toString() {
-        return singer + " - " + title + "\n\tDuration: " + TimeUnit.SECONDS.toMinutes(duration) + " min "
-                + (TimeUnit.SECONDS.toSeconds(duration)
+        StringBuilder sb = new StringBuilder();
+        sb.append(singer).append(" - ").append(title).append("\n\tDuration: ")
+                .append(TimeUnit.SECONDS.toMinutes(duration)).append(" min ")
+                .append(TimeUnit.SECONDS.toSeconds(duration)
                         - TimeUnit.MINUTES.toSeconds(TimeUnit.SECONDS.toMinutes(duration)))
-                + " sec " + "\tGenre: " + genre;
+                .append(" sec ").append("\tGenre: ").append(genre);
+        return sb.toString();
     }
 
 }

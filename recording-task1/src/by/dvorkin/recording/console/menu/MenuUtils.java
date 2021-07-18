@@ -15,7 +15,11 @@ public class MenuUtils {
         int num = 0;
         for (Track track : tracklist) {
             num++;
-            System.out.println(num + ". " + track.toString());
+            StringBuilder sb = new StringBuilder();
+            sb.append(num);
+            sb.append(". ");
+            sb.append(track.toString());
+            System.out.println(sb.toString());
         }
         System.out.println("TOTAL DURATION: " + DiskUtils.getTotalDuration(tracklist));
     }
