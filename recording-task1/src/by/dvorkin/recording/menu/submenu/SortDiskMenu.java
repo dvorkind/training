@@ -1,7 +1,9 @@
-package by.dvorkin.recording.console.menu;
+package by.dvorkin.recording.menu.submenu;
 
-import by.dvorkin.recording.model.Disk;
-import by.dvorkin.recording.model.SortBy;
+import by.dvorkin.recording.entities.Disk;
+import by.dvorkin.recording.enums.SortBy;
+import by.dvorkin.recording.menu.MainMenu;
+import by.dvorkin.recording.utils.TrackListUtils;
 
 public class SortDiskMenu {
     public static void printSubmenu(Disk disk) {
@@ -26,6 +28,6 @@ public class SortDiskMenu {
                 MainMenu.menuScanner.next();
             }
         }
-        MenuUtils.printTracklist(MenuUtils.sortSongsBy(disk, sortValue));
+        TrackListUtils.printTracklist(TrackListUtils.sortSongsBy(disk.getTracklist(), sortValue));
     }
 }

@@ -1,6 +1,6 @@
-package by.dvorkin.recording.console;
+package by.dvorkin.recording.main;
 
-import by.dvorkin.recording.console.menu.MainMenu;
+import by.dvorkin.recording.menu.MainMenu;
 
 public class Runner {
     public static void main(String[] args) {

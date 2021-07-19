@@ -1,4 +1,4 @@
-package by.dvorkin.recording.model;
+package by.dvorkin.recording.entities;
 
 import java.util.concurrent.TimeUnit;
 

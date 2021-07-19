@@ -1,18 +1,20 @@
-package by.dvorkin.recording.console.menu;
+package by.dvorkin.recording.menu.submenu;
 
-import by.dvorkin.recording.model.Disk;
+import java.util.List;
+
+import by.dvorkin.recording.entities.Track;
+import by.dvorkin.recording.menu.MainMenu;
 
 public class RemoveSongMenu {
-    public static void printSubmenu(Disk disk) {
+    public static void printSubmenu(List<Track> tracklist) {
         while (true) {
             System.out.print("\nEnter the number of the song to be deleted: ");
             if (MainMenu.menuScanner.hasNextInt()) {
                 int reqSongNumber = MainMenu.menuScanner.nextInt();
-                if (reqSongNumber <= disk.getTracklist().size()) {
-
-                    String trackName = disk.getTracklist().get(reqSongNumber - 1).getSinger() + " - "
-                            + disk.getTracklist().get(reqSongNumber - 1).getTitle();
-                    disk.getTracklist().remove(reqSongNumber - 1);
+                if (reqSongNumber <= tracklist.size()) {
+                    String trackName = tracklist.get(reqSongNumber - 1).getSinger() + " - "
+                            + tracklist.get(reqSongNumber - 1).getTitle();
+                    tracklist.remove(reqSongNumber - 1);
                     System.out.println("\n\tThe song [" + trackName + "] has been deleted!");
                     break;
                 } else {

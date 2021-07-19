@@ -1,21 +1,31 @@
-package by.dvorkin.recording.console.menu;
+package by.dvorkin.recording.menu.submenu;
 
-import by.dvorkin.recording.model.Disk;
-import by.dvorkin.recording.model.Genres;
-import by.dvorkin.recording.model.Track;
+import java.util.List;
+
+import by.dvorkin.recording.entities.Track;
+import by.dvorkin.recording.enums.Genres;
+import by.dvorkin.recording.menu.MainMenu;
 
 public class AddSongMenu {
-    public static void printSubmenu(Disk disk) {
-        String reqSinger = "";
-        String reqTitle = "";
+    public static void printSubmenu(List<Track> tracklist) {
+        MainMenu.menuScanner.nextLine(); // skip \n after scanner.nextInt()
+        String reqSinger;
+        String reqTitle;
+        String reqGenre;
         int reqDuration;
-        while (reqSinger.equals("")) {
+        while (true) {
             System.out.print("\nEnter singer name: ");
-            reqSinger = MainMenu.menuScanner.next();
+            reqSinger = MainMenu.menuScanner.nextLine();
+            if (!"".equals(reqSinger)) {
+                break;
+            }
         }
-        while (reqTitle.equals("")) {
+        while (true) {
             System.out.print("\nEnter song title: ");
-            reqTitle = MainMenu.menuScanner.next();
+            reqTitle = MainMenu.menuScanner.nextLine();
+            if (!"".equals(reqTitle)) {
+                break;
+            }
         }
         while (true) {
             System.out.print("\nEnter song duration in seconds: ");
@@ -33,18 +43,14 @@ public class AddSongMenu {
         }
         while (true) {
             System.out.println("\nAvailable genres: ");
-            int num = 0;
-            for (Genres genre : Genres.values()) {
-                num++;
-                System.out.println(num + ". " + genre.toString());
+            for (int i = 1; i <= Genres.values().length; i++) {
+                System.out.println(i + ". " + Genres.values()[i - 1]);
             }
             System.out.print("Select genre number: ");
             if (MainMenu.menuScanner.hasNextInt()) {
                 int reqGenreNumber = MainMenu.menuScanner.nextInt();
                 if (reqGenreNumber > 0 && reqGenreNumber <= Genres.values().length) {
-                    String reqGenre = Genres.values()[reqGenreNumber - 1].toString();
-                    disk.getTracklist().add(new Track(reqSinger, reqTitle, reqDuration, reqGenre));
-                    System.out.println("\n\tThe song has been added!");
+                    reqGenre = Genres.values()[reqGenreNumber - 1].toString();
                     break;
                 } else {
                     System.out.println("\n\tWrong genre number!");
@@ -54,5 +60,7 @@ public class AddSongMenu {
                 MainMenu.menuScanner.next();
             }
         }
+        tracklist.add(new Track(reqSinger, reqTitle, reqDuration, reqGenre));
+        System.out.println("\n\tThe song has been added!");
     }
 }

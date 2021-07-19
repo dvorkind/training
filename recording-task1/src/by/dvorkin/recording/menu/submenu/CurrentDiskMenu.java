@@ -1,8 +1,11 @@
-package by.dvorkin.recording.console.menu;
+package by.dvorkin.recording.menu.submenu;
 
-import by.dvorkin.recording.model.Disk;
-import by.dvorkin.recording.model.DiskList;
-import by.dvorkin.recording.model.DiskUtils;
+import by.dvorkin.recording.entities.Disk;
+import by.dvorkin.recording.entities.DiskList;
+import by.dvorkin.recording.menu.MainMenu;
+import by.dvorkin.recording.utils.DiskUtils;
+import by.dvorkin.recording.utils.MenuUtils;
+import by.dvorkin.recording.utils.TrackListUtils;
 
 public class CurrentDiskMenu {
     public static void printSubmenu() {
@@ -24,39 +27,39 @@ public class CurrentDiskMenu {
             String userInput = MainMenu.menuScanner.next();
             switch (userInput) {
             case "1":
-                if (MenuUtils.isAnyDisk() && MenuUtils.isTracklistNotEmpty()) {
+                if (MenuUtils.isAnyDiskOpened() && MenuUtils.isTracklistNotEmpty()) {
                     System.out.println("\nCURRENT OPEN DISK NAME [" + disk.getName() + "]");
-                    MenuUtils.printTracklist(disk.getTracklist());
+                    TrackListUtils.printTracklist(disk.getTracklist());
                 }
                 break;
             case "2":
-                if (MenuUtils.isAnyDisk() && MenuUtils.isTracklistNotEmpty()) {
+                if (MenuUtils.isAnyDiskOpened() && MenuUtils.isTracklistNotEmpty()) {
                     SortDiskMenu.printSubmenu(disk);
                 }
                 break;
             case "3":
-                if (MenuUtils.isAnyDisk() && MenuUtils.isTracklistNotEmpty()) {
-                    FindByDurationMenu.printSubmenu(disk);
+                if (MenuUtils.isAnyDiskOpened() && MenuUtils.isTracklistNotEmpty()) {
+                    FindByDurationMenu.printSubmenu(disk.getTracklist().getTracks());
                 }
                 break;
             case "4":
-                AddSongMenu.printSubmenu(disk);
+                AddSongMenu.printSubmenu(disk.getTracklist().getTracks());
                 break;
             case "5":
-                if (MenuUtils.isAnyDisk() && MenuUtils.isTracklistNotEmpty()) {
-                    RemoveSongMenu.printSubmenu(disk);
+                if (MenuUtils.isAnyDiskOpened() && MenuUtils.isTracklistNotEmpty()) {
+                    RemoveSongMenu.printSubmenu(disk.getTracklist().getTracks());
                 }
                 break;
             case "6":
-                disk.getTracklist().clear();
+                disk.getTracklist().getTracks().clear();
                 System.out.println("\n\tThe disc tracklist has been cleared!");
                 break;
             case "7":
-                if (DiskList.getDiskList().size() < 2) {
+                if (DiskList.getInstance().getDiskList().size() < 2) {
                     System.out.println("\n\tCurrently only the current disc is available!");
                     System.out.println("\tPlease go back to the main menu and open or create other discs.");
                 } else {
-                    MergeDiskMenu.printSubmenu(disk);
+                    MergeDiskMenu.printSubmenu(disk.getTracklist());
                 }
                 break;
             case "8":
@@ -66,13 +69,15 @@ public class CurrentDiskMenu {
                 userInput = "0";
                 break;
             case "9":
-                SaveFileMenu.printSubmenu(disk);
+                SaveFileMenu.printSubmenu(disk.getTracklist().getTracks());
+                break;
+            case "0":
                 break;
             default:
                 System.out.println("\n\tWrong command number!");
                 break;
             }
-            if (userInput.equals("0")) {
+            if ("0".equals(userInput)) {
                 break;
             } else {
                 CurrentDiskMenu.printSubmenu();
