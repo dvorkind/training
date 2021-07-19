@@ -29,3 +29,5 @@ bin/
 .settings/
 
 *.txt
+.idea/
+/out/
