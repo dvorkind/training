@@ -11,7 +11,7 @@ public class Helper {
         }
     }
 
-    public static String setDiskNameFromFilename(String name) {
+    public static String extractDiskNameFromFilename(String name) {
         int i = name.lastIndexOf('.');
         if (i != -1) {
             name = name.substring(0, i);

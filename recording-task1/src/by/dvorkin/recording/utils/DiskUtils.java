@@ -14,7 +14,7 @@ public class DiskUtils {
         Scanner fileScanner = null;
         try {
             File file = new File(fileName);
-            disk.setName(Helper.setDiskNameFromFilename(file.getName()));
+            disk.setName(Helper.extractDiskNameFromFilename(file.getName()));
             fileScanner = new Scanner(file);
             while (fileScanner.hasNextLine()) {
                 String fileLine = fileScanner.nextLine();

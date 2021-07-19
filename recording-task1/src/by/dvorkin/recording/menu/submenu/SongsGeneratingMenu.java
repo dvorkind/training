@@ -6,7 +6,6 @@ import by.dvorkin.recording.constants.Constants;
 import by.dvorkin.recording.entities.Disk;
 import by.dvorkin.recording.entities.DiskList;
 import by.dvorkin.recording.menu.MainMenu;
-import by.dvorkin.recording.utils.Helper;
 import by.dvorkin.recording.utils.TrackListUtils;
 
 public class SongsGeneratingMenu {
@@ -23,7 +22,7 @@ public class SongsGeneratingMenu {
                 break;
             }
         }
-        DiskList.getInstance().getCurrentDisk().setName(Helper.setDiskNameFromFilename(reqDiskName));
+        DiskList.getInstance().getCurrentDisk().setName(reqDiskName);
         while (true) {
             System.out.println("\n1. Create empty disk");
             System.out.println("2. Generate the specified number of songs");
