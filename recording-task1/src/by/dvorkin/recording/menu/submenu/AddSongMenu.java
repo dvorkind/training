@@ -9,29 +9,45 @@ import by.dvorkin.recording.menu.MainMenu;
 public class AddSongMenu {
     public static void printSubmenu(List<Track> tracklist) {
         MainMenu.menuScanner.nextLine(); // skip \n after scanner.nextInt()
-        String reqSinger;
-        String reqTitle;
-        String reqGenre;
-        int reqDuration;
+        String reqSinger = AddSongMenu.reqSingerName();
+        String reqTitle = AddSongMenu.reqTitleName();
+        int reqDuration = AddSongMenu.reqSongDuration();
+        String reqGenre = AddSongMenu.reqGenreName();
+        tracklist.add(new Track(reqSinger, reqTitle, reqDuration, reqGenre));
+        System.out.println("\n\tThe song has been added!");
+    }
+
+    public static String reqSingerName() {
+        String singerName;
         while (true) {
             System.out.print("\nEnter singer name: ");
-            reqSinger = MainMenu.menuScanner.nextLine();
-            if (!"".equals(reqSinger)) {
+            singerName = MainMenu.menuScanner.nextLine();
+            if (!"".equals(singerName)) {
                 break;
             }
         }
+        return singerName;
+    }
+
+    public static String reqTitleName() {
+        String title;
         while (true) {
             System.out.print("\nEnter song title: ");
-            reqTitle = MainMenu.menuScanner.nextLine();
-            if (!"".equals(reqTitle)) {
+            title = MainMenu.menuScanner.nextLine();
+            if (!"".equals(title)) {
                 break;
             }
         }
+        return title;
+    }
+
+    public static int reqSongDuration() {
+        int duration;
         while (true) {
             System.out.print("\nEnter song duration in seconds: ");
             if (MainMenu.menuScanner.hasNextInt()) {
-                reqDuration = MainMenu.menuScanner.nextInt();
-                if (reqDuration <= 0) {
+                duration = MainMenu.menuScanner.nextInt();
+                if (duration <= 0) {
                     System.out.println("\n\tSong duration cannot be less than or equal to 0!");
                 } else {
                     break;
@@ -41,6 +57,11 @@ public class AddSongMenu {
                 MainMenu.menuScanner.next();
             }
         }
+        return duration;
+    }
+
+    public static String reqGenreName() {
+        String genre;
         while (true) {
             System.out.println("\nAvailable genres: ");
             for (int i = 1; i <= Genres.values().length; i++) {
@@ -50,7 +71,7 @@ public class AddSongMenu {
             if (MainMenu.menuScanner.hasNextInt()) {
                 int reqGenreNumber = MainMenu.menuScanner.nextInt();
                 if (reqGenreNumber > 0 && reqGenreNumber <= Genres.values().length) {
-                    reqGenre = Genres.values()[reqGenreNumber - 1].toString();
+                    genre = Genres.values()[reqGenreNumber - 1].toString();
                     break;
                 } else {
                     System.out.println("\n\tWrong genre number!");
@@ -60,7 +81,6 @@ public class AddSongMenu {
                 MainMenu.menuScanner.next();
             }
         }
-        tracklist.add(new Track(reqSinger, reqTitle, reqDuration, reqGenre));
-        System.out.println("\n\tThe song has been added!");
+        return genre;
     }
 }

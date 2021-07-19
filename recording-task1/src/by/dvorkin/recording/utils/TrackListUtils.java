@@ -35,7 +35,6 @@ public class TrackListUtils {
     public static void printTracklist(TrackList tracklist) {
         StringBuilder sb = new StringBuilder();
         sb.append(tracklist.toString());
-        sb.append('\n');
         sb.append("TOTAL DURATION: " + getTotalDuration(tracklist.getTracks()));
         System.out.println(sb);
     }
