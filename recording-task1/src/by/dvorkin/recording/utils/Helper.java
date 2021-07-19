@@ -4,11 +4,7 @@ import java.util.regex.Pattern;
 
 public class Helper {
     public static Boolean isNumber(String str) {
-        if (Pattern.matches("\\d+", str)) {
-            return true;
-        } else {
-            return false;
-        }
+        return Pattern.matches("\\d+", str);
     }
 
     public static String extractDiskNameFromFilename(String name) {

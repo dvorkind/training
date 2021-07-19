@@ -16,8 +16,7 @@ import by.dvorkin.recording.enums.SortBy;
 public class TrackListUtils {
 
     public static TrackList sortSongsBy(TrackList tracklist, SortBy sortby) {
-        TrackList sortedTracklist = new TrackList();
-        sortedTracklist = tracklist;
+        TrackList sortedTracklist = tracklist;
         switch (sortby) {
         case GENRE:
             sortedTracklist.getTracks().sort(Comparator.comparing(Track::getGenre).thenComparing(Track::getDuration));
@@ -34,8 +33,9 @@ public class TrackListUtils {
 
     public static void printTracklist(TrackList tracklist) {
         StringBuilder sb = new StringBuilder();
-        sb.append(tracklist.toString());
-        sb.append("TOTAL DURATION: " + getTotalDuration(tracklist.getTracks()));
+        sb.append(tracklist.toString())
+                .append("TOTAL DURATION: ")
+                .append(getTotalDuration(tracklist.getTracks()));
         System.out.println(sb);
     }
 
