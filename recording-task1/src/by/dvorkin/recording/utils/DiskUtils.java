@@ -2,6 +2,7 @@ package by.dvorkin.recording.utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 import by.dvorkin.recording.entities.Disk;
@@ -10,29 +11,17 @@ import by.dvorkin.recording.entities.Track;
 
 public class DiskUtils {
 
-    public static Boolean loadFile(Disk disk, String fileName) {
+    public static void loadFile(Disk disk, String fileName) throws FileNotFoundException, IOException {
         Scanner fileScanner = null;
-        try {
-            File file = new File(fileName);
-            disk.setName(Helper.extractDiskNameFromFilename(file.getName()));
-            fileScanner = new Scanner(file);
-            while (fileScanner.hasNextLine()) {
-                String fileLine = fileScanner.nextLine();
-                String[] words = fileLine.split(",");
-                disk.getTracklist().getTracks()
-                        .add(new Track(words[0], words[1], Integer.parseInt(words[2]), words[3]));
-            }
-            return true;
-        } catch (FileNotFoundException e) {
-            System.out.println("\n\tFile doesn't exist!");
-            return false;
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("\n\tIncorrect file format!");
-            return false;
-        } finally {
-            if (fileScanner != null) {
-                fileScanner.close();
-            }
+        File file = new File(fileName);
+        fileScanner = new Scanner(file);
+        while (fileScanner.hasNextLine()) {
+            String fileLine = fileScanner.nextLine();
+            String[] words = fileLine.split(",");
+            disk.getTracklist().getTracks().add(new Track(words[0], words[1], Integer.parseInt(words[2]), words[3]));
+        }
+        if (fileScanner != null) {
+            fileScanner.close();
         }
     }
 

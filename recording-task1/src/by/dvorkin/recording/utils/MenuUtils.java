@@ -20,7 +20,6 @@ public class MenuUtils {
 
     public static Boolean isAnyDiskOpened() {
         if (DiskList.getInstance().getCurrentDisk() == null) {
-            System.out.print("\n\tFirst you need to generate or open any disk! \n");
             return false;
         } else {
             return true;
@@ -30,7 +29,6 @@ public class MenuUtils {
     public static Boolean isTracklistNotEmpty() {
         if (DiskList.getInstance().getCurrentDisk().getTracklist().getTracks().isEmpty()
                 || DiskList.getInstance().getCurrentDisk().getTracklist().getTracks() == null) {
-            System.out.println("\n\tThe current disk contains no songs!");
             return false;
         } else {
             return true;
