@@ -27,9 +27,11 @@ public class CurrentDiskMenu {
             String userInput = MainMenu.menuScanner.next();
             switch (userInput) {
             case "1":
-                if (MenuUtils.isAnyDiskOpened() && MenuUtils.isTracklistNotEmpty()) {
+                if (MenuUtils.isTracklistNotEmpty()) {
                     System.out.println("\nCURRENT OPEN DISK NAME [" + disk.getName() + "]");
                     TrackListUtils.printTracklist(disk.getTracklist());
+                } else {
+                    System.out.print("\n\tFirst you need to generate or open any disk! \n");
                 }
                 break;
             case "2":

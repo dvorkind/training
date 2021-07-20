@@ -1,5 +1,7 @@
 package by.dvorkin.recording.menu;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 import by.dvorkin.recording.entities.DiskList;
@@ -24,7 +26,7 @@ public class MainMenu {
         System.out.print("Please, select an option: ");
     }
 
-    public static void userInput() {
+    public static void userInput() throws FileNotFoundException, IOException {
         while (true) {
             String userInput = menuScanner.next();
             switch (userInput) {
@@ -41,6 +43,8 @@ public class MainMenu {
                 if (MenuUtils.isAnyDiskOpened()) {
                     MenuUtils.printAllExistingDisk();
                     SelectDiskMenu.printSubmenu();
+                } else {
+                    System.out.print("\n\tFirst you need to generate or open any disk! \n");
                 }
                 break;
             case "5":

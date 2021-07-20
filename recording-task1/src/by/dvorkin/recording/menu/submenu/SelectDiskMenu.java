@@ -17,6 +17,8 @@ public class SelectDiskMenu {
                         System.out.println(
                                 "\nCURRENT OPEN DISK NAME [" + DiskList.getInstance().getCurrentDisk().getName() + "]");
                         TrackListUtils.printTracklist(DiskList.getInstance().getCurrentDisk().getTracklist());
+                    } else {
+                        System.out.println("\n\tThe current disk contains no songs!");
                     }
                     break;
                 } else {
