@@ -14,14 +14,18 @@ public class DiskUtils {
     public static void loadFile(Disk disk, String fileName) throws FileNotFoundException, IOException {
         Scanner fileScanner = null;
         File file = new File(fileName);
-        fileScanner = new Scanner(file);
-        while (fileScanner.hasNextLine()) {
-            String fileLine = fileScanner.nextLine();
-            String[] words = fileLine.split(",");
-            disk.getTracklist().getTracks().add(new Track(words[0], words[1], Integer.parseInt(words[2]), words[3]));
-        }
-        if (fileScanner != null) {
-            fileScanner.close();
+        try {
+            fileScanner = new Scanner(file);
+            while (fileScanner.hasNextLine()) {
+                String fileLine = fileScanner.nextLine();
+                String[] words = fileLine.split(",");
+                disk.getTracklist().getTracks()
+                        .add(new Track(words[0], words[1], Integer.parseInt(words[2]), words[3]));
+            }
+        } finally {
+            if (fileScanner != null) {
+                fileScanner.close();
+            }
         }
     }
 

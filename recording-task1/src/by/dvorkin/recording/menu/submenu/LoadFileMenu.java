@@ -12,7 +12,7 @@ import by.dvorkin.recording.utils.TrackListUtils;
 
 public class LoadFileMenu {
 
-    public static void printSubmenu() throws FileNotFoundException, IOException {
+    public static void printSubmenu() {
         MenuUtils.createNewDisk();
         System.out.print("\nEnter file path to load (for example \"D:\\MyDisk.txt\"): ");
         String reqOpenFile = MainMenu.menuScanner.next();

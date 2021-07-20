@@ -1,7 +1,5 @@
 package by.dvorkin.recording.menu;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Scanner;
 
 import by.dvorkin.recording.entities.DiskList;
@@ -26,7 +24,7 @@ public class MainMenu {
         System.out.print("Please, select an option: ");
     }
 
-    public static void userInput() throws FileNotFoundException, IOException {
+    public static void userInput() {
         while (true) {
             String userInput = menuScanner.next();
             switch (userInput) {
