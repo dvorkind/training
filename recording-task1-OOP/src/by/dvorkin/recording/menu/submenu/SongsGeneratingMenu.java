@@ -1,17 +1,24 @@
 package by.dvorkin.recording.menu.submenu;
 
 import by.dvorkin.recording.constants.Constants;
+import by.dvorkin.recording.entities.Disk;
+import by.dvorkin.recording.interfaces.DiskList;
 import by.dvorkin.recording.menu.AbstractMenu;
-import by.dvorkin.recording.utils.MenuUtils;
 import by.dvorkin.recording.utils.TrackListUtils;
 
 import java.util.Arrays;
 
 public class SongsGeneratingMenu extends AbstractMenu {
+    public SongsGeneratingMenu(DiskList diskList) {
+        super(diskList);
+    }
+
     @Override
     public void printMenu() {
         getMenuScanner().nextLine(); // skip \n after scanner.nextInt()
-        setCurrentDisk(MenuUtils.createNewDisk());
+        Disk disk = new Disk();
+        addToDiskList(disk);
+        setCurrentDisk(disk);
         String reqDiskName;
         String[] menuOption = {"1", "2", "3"}; // Array of available options in this menu
         do {

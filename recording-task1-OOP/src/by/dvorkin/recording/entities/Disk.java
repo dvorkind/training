@@ -4,7 +4,7 @@ import by.dvorkin.recording.utils.TrackListUtils;
 
 public class Disk {
     private String name;
-    private TrackList tracklist;
+    private final TrackList tracklist;
 
     @Override
     public String toString() {

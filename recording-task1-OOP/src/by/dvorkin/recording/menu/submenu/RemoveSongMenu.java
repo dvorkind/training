@@ -1,8 +1,13 @@
 package by.dvorkin.recording.menu.submenu;
 
+import by.dvorkin.recording.interfaces.DiskList;
 import by.dvorkin.recording.menu.AbstractMenu;
 
 public class RemoveSongMenu extends AbstractMenu {
+    public RemoveSongMenu(DiskList diskList) {
+        super(diskList);
+    }
+
     @Override
     public void printMenu() {
         while (true) {

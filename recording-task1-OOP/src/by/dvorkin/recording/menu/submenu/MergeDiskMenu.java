@@ -1,13 +1,17 @@
 package by.dvorkin.recording.menu.submenu;
 
+import by.dvorkin.recording.interfaces.DiskList;
 import by.dvorkin.recording.menu.AbstractMenu;
-import by.dvorkin.recording.utils.MenuUtils;
 
 public class MergeDiskMenu extends AbstractMenu {
+    public MergeDiskMenu(DiskList diskList) {
+        super(diskList);
+    }
+
     @Override
     public void printMenu() {
         int reqDiskDonor;
-        MenuUtils.printAllExistingDisk();
+        printAllExistingDisk();
         while (true) {
             System.out.print("\nSelect the disc number where the songs will come from: ");
             if (getMenuScanner().hasNextInt()) {

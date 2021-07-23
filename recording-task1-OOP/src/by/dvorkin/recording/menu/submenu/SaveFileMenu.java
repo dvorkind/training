@@ -1,9 +1,14 @@
 package by.dvorkin.recording.menu.submenu;
 
+import by.dvorkin.recording.interfaces.DiskList;
 import by.dvorkin.recording.menu.AbstractMenu;
 import by.dvorkin.recording.utils.TrackListUtils;
 
 public class SaveFileMenu extends AbstractMenu {
+    public SaveFileMenu(DiskList diskList) {
+        super(diskList);
+    }
+
     @Override
     public void printMenu() {
         String reqSaveFile;

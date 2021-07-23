@@ -1,18 +1,19 @@
 package by.dvorkin.recording.main;
 
 import by.dvorkin.recording.creator.MenuCreator;
+import by.dvorkin.recording.entities.DiskListImpl;
 
 import java.util.Scanner;
 
 public class Runner {
-    private static Scanner menuScanner = new Scanner(System.in);
+    private static final Scanner menuScanner = new Scanner(System.in);
 
     public static Scanner getMenuScanner() {
         return menuScanner;
     }
 
     public static void main(String[] args) {
-        new MenuCreator();
+        new MenuCreator(DiskListImpl.getInstance());
         menuScanner.close();
     }
 }

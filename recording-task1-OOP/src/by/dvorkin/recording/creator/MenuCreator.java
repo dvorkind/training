@@ -1,30 +1,31 @@
 package by.dvorkin.recording.creator;
 
+import by.dvorkin.recording.interfaces.DiskList;
 import by.dvorkin.recording.menu.MainMenu;
 import by.dvorkin.recording.menu.submenu.*;
 
 public class MenuCreator {
-    public MenuCreator() {
-        MainMenu mainMenu = new MainMenu();
-        mainMenu.setSongsGeneratingMenu(new SongsGeneratingMenu());
-        mainMenu.setLoadFileMenu(new LoadFileMenu());
-        mainMenu.setSelectDiskMenu(new SelectDiskMenu());
-        mainMenu.setCurrentDiskMenu(new CurrentDiskMenu());
+    public MenuCreator(DiskList instance) {
+        MainMenu mainMenu = new MainMenu(instance);
+        mainMenu.setSongsGeneratingMenu(new SongsGeneratingMenu(instance));
+        mainMenu.setLoadFileMenu(new LoadFileMenu(instance));
+        mainMenu.setSelectDiskMenu(new SelectDiskMenu(instance));
+        mainMenu.setCurrentDiskMenu(new CurrentDiskMenu(instance));
 
         mainMenu.getCurrentDiskMenu()
-                .setSortDiskMenu(new SortDiskMenu());
+                .setSortDiskMenu(new SortDiskMenu(instance));
         mainMenu.getCurrentDiskMenu()
-                .setSortDiskMenu(new SortDiskMenu());
+                .setSortDiskMenu(new SortDiskMenu(instance));
         mainMenu.getCurrentDiskMenu()
-                .setFindByDurationMenu(new FindByDurationMenu());
+                .setFindByDurationMenu(new FindByDurationMenu(instance));
         mainMenu.getCurrentDiskMenu()
-                .setAddSongMenu(new AddSongMenu());
+                .setAddSongMenu(new AddSongMenu(instance));
         mainMenu.getCurrentDiskMenu()
-                .setRemoveSongMenu(new RemoveSongMenu());
+                .setRemoveSongMenu(new RemoveSongMenu(instance));
         mainMenu.getCurrentDiskMenu()
-                .setMergeDiskMenu(new MergeDiskMenu());
+                .setMergeDiskMenu(new MergeDiskMenu(instance));
         mainMenu.getCurrentDiskMenu()
-                .setSaveFileMenu(new SaveFileMenu());
+                .setSaveFileMenu(new SaveFileMenu(instance));
 
         mainMenu.printMenu();
         mainMenu.userInput();

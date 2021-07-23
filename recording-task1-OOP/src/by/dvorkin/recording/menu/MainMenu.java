@@ -1,16 +1,20 @@
 package by.dvorkin.recording.menu;
 
+import by.dvorkin.recording.interfaces.DiskList;
 import by.dvorkin.recording.menu.submenu.CurrentDiskMenu;
 import by.dvorkin.recording.menu.submenu.LoadFileMenu;
 import by.dvorkin.recording.menu.submenu.SelectDiskMenu;
 import by.dvorkin.recording.menu.submenu.SongsGeneratingMenu;
-import by.dvorkin.recording.utils.MenuUtils;
 
 public class MainMenu extends AbstractMenu {
     private SongsGeneratingMenu songsGeneratingMenu;
     private LoadFileMenu loadFileMenu;
     private SelectDiskMenu selectDiskMenu;
     private CurrentDiskMenu currentDiskMenu;
+
+    public MainMenu(DiskList diskList) {
+        super(diskList);
+    }
 
     public void setSongsGeneratingMenu(SongsGeneratingMenu songsGeneratingMenu) {
         this.songsGeneratingMenu = songsGeneratingMenu;
@@ -56,18 +60,18 @@ public class MainMenu extends AbstractMenu {
                     loadFileMenu.printMenu();
                     break;
                 case "3":
-                    MenuUtils.printAllExistingDisk();
+                    printAllExistingDisk();
                     break;
                 case "4":
-                    if (MenuUtils.isAnyDiskOpened()) {
-                        MenuUtils.printAllExistingDisk();
+                    if (getCurrentDisk() != null) {
+                        printAllExistingDisk();
                         selectDiskMenu.printMenu();
                     } else {
                         System.out.print("\n\tFirst you need to generate or open any disk! \n");
                     }
                     break;
                 case "5":
-                    if (MenuUtils.isAnyDiskOpened()) {
+                    if (getCurrentDisk() != null) {
                         currentDiskMenu.printMenu();
                         currentDiskMenu.userInput();
                     }

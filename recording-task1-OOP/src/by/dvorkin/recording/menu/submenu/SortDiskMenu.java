@@ -1,10 +1,15 @@
 package by.dvorkin.recording.menu.submenu;
 
 import by.dvorkin.recording.enums.SortBy;
+import by.dvorkin.recording.interfaces.DiskList;
 import by.dvorkin.recording.menu.AbstractMenu;
 import by.dvorkin.recording.utils.TrackListUtils;
 
 public class SortDiskMenu extends AbstractMenu {
+    public SortDiskMenu(DiskList diskList) {
+        super(diskList);
+    }
+
     @Override
     public void printMenu() {
         System.out.println("\n1. Sort songs by genre");

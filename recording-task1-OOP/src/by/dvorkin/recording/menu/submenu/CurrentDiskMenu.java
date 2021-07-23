@@ -1,8 +1,7 @@
 package by.dvorkin.recording.menu.submenu;
 
+import by.dvorkin.recording.interfaces.DiskList;
 import by.dvorkin.recording.menu.AbstractMenu;
-import by.dvorkin.recording.utils.DiskUtils;
-import by.dvorkin.recording.utils.MenuUtils;
 import by.dvorkin.recording.utils.TrackListUtils;
 
 public class CurrentDiskMenu extends AbstractMenu {
@@ -12,6 +11,10 @@ public class CurrentDiskMenu extends AbstractMenu {
     private RemoveSongMenu removeSongMenu;
     private MergeDiskMenu mergeDiskMenu;
     private SaveFileMenu saveFileMenu;
+
+    public CurrentDiskMenu(DiskList diskList) {
+        super(diskList);
+    }
 
     public void setSortDiskMenu(SortDiskMenu sortDiskMenu) {
         this.sortDiskMenu = sortDiskMenu;
@@ -57,7 +60,7 @@ public class CurrentDiskMenu extends AbstractMenu {
             String userInput = getMenuScanner().next();
             switch (userInput) {
                 case "1":
-                    if (MenuUtils.isTracklistNotEmpty()) {
+                    if (isTracklistNotEmpty()) {
                         System.out.println("\nCURRENT OPEN DISK NAME [" + getCurrentDisk().getName() + "]");
                         TrackListUtils.printTracklist(getCurrentDisk().getTracklist());
                     } else {
@@ -65,14 +68,14 @@ public class CurrentDiskMenu extends AbstractMenu {
                     }
                     break;
                 case "2":
-                    if (MenuUtils.isTracklistNotEmpty()) {
+                    if (isTracklistNotEmpty()) {
                         sortDiskMenu.printMenu();
                     } else {
                         System.out.println("\n\tThe current disk contains no songs!");
                     }
                     break;
                 case "3":
-                    if (MenuUtils.isTracklistNotEmpty()) {
+                    if (isTracklistNotEmpty()) {
                         findByDurationMenu.printMenu();
                     } else {
                         System.out.println("\n\tThe current disk contains no songs!");
@@ -82,7 +85,7 @@ public class CurrentDiskMenu extends AbstractMenu {
                     addSongMenu.printMenu();
                     break;
                 case "5":
-                    if (MenuUtils.isTracklistNotEmpty()) {
+                    if (isTracklistNotEmpty()) {
                         removeSongMenu.printMenu();
                     } else {
                         System.out.println("\n\tThe current disk contains no songs!");
@@ -105,7 +108,7 @@ public class CurrentDiskMenu extends AbstractMenu {
                     break;
                 case "8":
                     String diskName = getCurrentDisk().getName();
-                    DiskUtils.deleteCurrentDisk();
+                    deleteCurrentDisk();
                     System.out.println("\n\tThe disk [" + diskName + "] has been deleted!");
                     userInput = "0";
                     break;

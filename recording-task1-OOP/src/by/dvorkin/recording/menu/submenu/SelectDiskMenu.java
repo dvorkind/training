@@ -1,10 +1,14 @@
 package by.dvorkin.recording.menu.submenu;
 
+import by.dvorkin.recording.interfaces.DiskList;
 import by.dvorkin.recording.menu.AbstractMenu;
-import by.dvorkin.recording.utils.MenuUtils;
 import by.dvorkin.recording.utils.TrackListUtils;
 
 public class SelectDiskMenu extends AbstractMenu {
+    public SelectDiskMenu(DiskList diskList) {
+        super(diskList);
+    }
+
     @Override
     public void printMenu() {
         while (true) {
@@ -13,7 +17,7 @@ public class SelectDiskMenu extends AbstractMenu {
                 int reqDiskNumber = getMenuScanner().nextInt();
                 if (reqDiskNumber <= getDiskList().size()) {
                     setCurrentDisk(getDiskList().get(reqDiskNumber - 1));
-                    if (MenuUtils.isTracklistNotEmpty()) {
+                    if (isTracklistNotEmpty()) {
                         System.out.println(
                                 "\nCURRENT OPEN DISK NAME [" + getCurrentDisk().getName() + "]");
                         TrackListUtils.printTracklist(getCurrentDisk().getTracklist());
