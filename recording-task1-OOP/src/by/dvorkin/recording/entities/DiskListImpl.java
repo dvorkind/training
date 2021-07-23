@@ -8,10 +8,10 @@ import java.util.List;
 public class DiskListImpl implements DiskList {
     private static DiskListImpl instance;
     private Disk currentDisk;
-    private final List<Disk> diskList;
+    private List<Disk> diskLibrary;
 
     private DiskListImpl() {
-        this.diskList = new ArrayList<>();
+        this.diskLibrary = new ArrayList<>();
     }
 
     public static DiskListImpl getInstance() {
@@ -32,13 +32,13 @@ public class DiskListImpl implements DiskList {
     }
 
     @Override
-    public List<Disk> getDiskList() {
-        return this.diskList;
+    public List<Disk> getDiskLibrary() {
+        return this.diskLibrary;
     }
 
     @Override
-    public void addToDiskList(Disk disk) {
-        diskList.add(disk);
+    public void addToDiskLibrary(Disk disk) {
+        diskLibrary.add(disk);
     }
 
     @Override
@@ -54,9 +54,9 @@ public class DiskListImpl implements DiskList {
 
     @Override
     public void deleteCurrentDisk() {
-        diskList.remove(currentDisk);
-        if (diskList.size() > 0) {
-            currentDisk = diskList.get(diskList.size() - 1);
+        diskLibrary.remove(currentDisk);
+        if (diskLibrary.size() > 0) {
+            currentDisk = diskLibrary.get(diskLibrary.size() - 1);
         } else {
             currentDisk = null;
         }

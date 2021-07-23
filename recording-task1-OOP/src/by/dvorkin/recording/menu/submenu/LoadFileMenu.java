@@ -17,7 +17,7 @@ public class LoadFileMenu extends AbstractMenu {
     @Override
     public void printMenu() {
         Disk disk = new Disk();
-        addToDiskList(disk);
+        addToDiskLibrary(disk);
         setCurrentDisk(disk);
         System.out.print("\nEnter file path to load (for example \"D:\\MyDisk.txt\"): ");
         String reqOpenFile = getMenuScanner().next();

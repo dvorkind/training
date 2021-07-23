@@ -98,7 +98,7 @@ public class CurrentDiskMenu extends AbstractMenu {
                     System.out.println("\n\tThe disc tracklist has been cleared!");
                     break;
                 case "7":
-                    if (getDiskList()
+                    if (getDiskLibrary()
                             .size() < 2) {
                         System.out.println("\n\tCurrently only the current disc is available!");
                         System.out.println("\tPlease go back to the main menu and open or create other discs.");

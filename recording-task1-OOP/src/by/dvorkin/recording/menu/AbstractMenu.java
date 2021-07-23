@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public abstract class AbstractMenu {
-    private final DiskList diskList;
+    private DiskList diskList;
 
     public AbstractMenu(DiskList diskList) {
         this.diskList = diskList;
@@ -26,20 +26,20 @@ public abstract class AbstractMenu {
         diskList.setCurrentDisk(currentDisk);
     }
 
-    public List<Disk> getDiskList() {
-        return diskList.getDiskList();
+    public List<Disk> getDiskLibrary() {
+        return diskList.getDiskLibrary();
     }
 
-    public void addToDiskList(Disk disk) {
-        diskList.addToDiskList(disk);
+    public void addToDiskLibrary(Disk disk) {
+        diskList.addToDiskLibrary(disk);
     }
 
     public void printAllExistingDisk() {
-        System.out.println("\nTOTAL OPEN (CREATED) DISKS: " + getDiskList()
+        System.out.println("\nTOTAL OPEN (CREATED) DISKS: " + getDiskLibrary()
                 .size());
-        for (int i = 1; i <= getDiskList()
+        for (int i = 1; i <= getDiskLibrary()
                 .size(); i++) {
-            System.out.println(i + ". " + getDiskList()
+            System.out.println(i + ". " + getDiskLibrary()
                     .get(i - 1)
                     .toString());
         }

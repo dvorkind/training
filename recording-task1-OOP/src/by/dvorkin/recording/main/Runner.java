@@ -6,7 +6,7 @@ import by.dvorkin.recording.entities.DiskListImpl;
 import java.util.Scanner;
 
 public class Runner {
-    private static final Scanner menuScanner = new Scanner(System.in);
+    private static Scanner menuScanner = new Scanner(System.in);
 
     public static Scanner getMenuScanner() {
         return menuScanner;

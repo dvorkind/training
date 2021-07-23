@@ -17,7 +17,7 @@ public class SongsGeneratingMenu extends AbstractMenu {
     public void printMenu() {
         getMenuScanner().nextLine(); // skip \n after scanner.nextInt()
         Disk disk = new Disk();
-        addToDiskList(disk);
+        addToDiskLibrary(disk);
         setCurrentDisk(disk);
         String reqDiskName;
         String[] menuOption = {"1", "2", "3"}; // Array of available options in this menu

@@ -16,17 +16,17 @@ public class MergeDiskMenu extends AbstractMenu {
             System.out.print("\nSelect the disc number where the songs will come from: ");
             if (getMenuScanner().hasNextInt()) {
                 reqDiskDonor = getMenuScanner().nextInt();
-                if (reqDiskDonor <= 0 || reqDiskDonor > getDiskList().size()) {
+                if (reqDiskDonor <= 0 || reqDiskDonor > getDiskLibrary().size()) {
                     System.out.println("\n\tWrong disk number!");
                 } else {
                     getCurrentDisk().getTracklist()
                             .getTracks()
                             .addAll(
-                                    getDiskList().get(reqDiskDonor - 1)
+                                    getDiskLibrary().get(reqDiskDonor - 1)
                                             .getTracklist()
                                             .getTracks());
                     System.out.println("\n\tThe tracklist from disc ["
-                            + getDiskList().get(reqDiskDonor - 1)
+                            + getDiskLibrary().get(reqDiskDonor - 1)
                             .getName()
                             + "] has been added to the current disc!");
                     break;

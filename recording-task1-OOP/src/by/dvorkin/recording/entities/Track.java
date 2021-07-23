@@ -3,10 +3,10 @@ package by.dvorkin.recording.entities;
 import java.util.concurrent.TimeUnit;
 
 public class Track {
-    private final String singer;
-    private final String title;
-    private final int duration;
-    private final String genre;
+    private String singer;
+    private String title;
+    private int duration;
+    private String genre;
 
     public Track(String singer, String title, int duration, String genre) {
         this.singer = singer;

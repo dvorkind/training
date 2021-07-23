@@ -9,9 +9,9 @@ public interface DiskList {
 
     void setCurrentDisk(Disk currentDisk);
 
-    List<Disk> getDiskList();
+    List<Disk> getDiskLibrary();
 
-    void addToDiskList(Disk disk);
+    void addToDiskLibrary(Disk disk);
 
     Boolean isTracklistNotEmpty();
 

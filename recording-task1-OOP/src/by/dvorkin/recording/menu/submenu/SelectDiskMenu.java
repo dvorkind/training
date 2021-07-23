@@ -15,8 +15,8 @@ public class SelectDiskMenu extends AbstractMenu {
             System.out.print("\nEnter the number of disk: ");
             if (getMenuScanner().hasNextInt()) {
                 int reqDiskNumber = getMenuScanner().nextInt();
-                if (reqDiskNumber <= getDiskList().size()) {
-                    setCurrentDisk(getDiskList().get(reqDiskNumber - 1));
+                if (reqDiskNumber <= getDiskLibrary().size()) {
+                    setCurrentDisk(getDiskLibrary().get(reqDiskNumber - 1));
                     if (isTracklistNotEmpty()) {
                         System.out.println(
                                 "\nCURRENT OPEN DISK NAME [" + getCurrentDisk().getName() + "]");
