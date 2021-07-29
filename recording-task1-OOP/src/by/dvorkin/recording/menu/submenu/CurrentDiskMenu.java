@@ -4,6 +4,8 @@ import by.dvorkin.recording.interfaces.DiskList;
 import by.dvorkin.recording.menu.AbstractMenu;
 import by.dvorkin.recording.utils.TrackListUtils;
 
+import java.util.Scanner;
+
 public class CurrentDiskMenu extends AbstractMenu {
     private SortDiskMenu sortDiskMenu;
     private FindByDurationMenu findByDurationMenu;
@@ -12,8 +14,8 @@ public class CurrentDiskMenu extends AbstractMenu {
     private MergeDiskMenu mergeDiskMenu;
     private SaveFileMenu saveFileMenu;
 
-    public CurrentDiskMenu(DiskList diskList) {
-        super(diskList);
+    public CurrentDiskMenu(DiskList diskList, Scanner scanner) {
+        super(diskList, scanner);
     }
 
     public void setSortDiskMenu(SortDiskMenu sortDiskMenu) {
@@ -57,7 +59,7 @@ public class CurrentDiskMenu extends AbstractMenu {
 
     public void userInput() {
         while (true) {
-            String userInput = getMenuScanner().next();
+            String userInput = scanner.next();
             switch (userInput) {
                 case "1":
                     if (isTracklistNotEmpty()) {

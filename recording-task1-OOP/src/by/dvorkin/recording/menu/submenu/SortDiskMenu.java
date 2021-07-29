@@ -5,9 +5,11 @@ import by.dvorkin.recording.interfaces.DiskList;
 import by.dvorkin.recording.menu.AbstractMenu;
 import by.dvorkin.recording.utils.TrackListUtils;
 
+import java.util.Scanner;
+
 public class SortDiskMenu extends AbstractMenu {
-    public SortDiskMenu(DiskList diskList) {
-        super(diskList);
+    public SortDiskMenu(DiskList diskList, Scanner scanner) {
+        super(diskList, scanner);
     }
 
     @Override
@@ -18,8 +20,8 @@ public class SortDiskMenu extends AbstractMenu {
         SortBy sortValue;
         while (true) {
             System.out.print("\nPlease select an option: ");
-            if (getMenuScanner().hasNextInt()) {
-                int reqSortNumber = getMenuScanner().nextInt();
+            if (scanner.hasNextInt()) {
+                int reqSortNumber = scanner.nextInt();
                 if (1 <= reqSortNumber && reqSortNumber <= 3) {
                     sortValue = SortBy.values()[reqSortNumber - 1];
                     System.out.println("\nDISK NAME [" + getCurrentDisk().getName() + "] " + "(sorted by "
@@ -31,7 +33,7 @@ public class SortDiskMenu extends AbstractMenu {
                 }
             } else {
                 System.out.println("\n\tOnly numbers can be entered!\n");
-                getMenuScanner().next();
+                scanner.next();
             }
         }
         TrackListUtils.printTracklist(TrackListUtils.sortSongsBy(getCurrentDisk().getTracklist(), sortValue));

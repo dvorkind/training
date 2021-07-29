@@ -4,9 +4,11 @@ import by.dvorkin.recording.interfaces.DiskList;
 import by.dvorkin.recording.menu.AbstractMenu;
 import by.dvorkin.recording.utils.TrackListUtils;
 
+import java.util.Scanner;
+
 public class SaveFileMenu extends AbstractMenu {
-    public SaveFileMenu(DiskList diskList) {
-        super(diskList);
+    public SaveFileMenu(DiskList diskList, Scanner scanner) {
+        super(diskList, scanner);
     }
 
     @Override
@@ -14,7 +16,7 @@ public class SaveFileMenu extends AbstractMenu {
         String reqSaveFile;
         do {
             System.out.print("\nEnter file path to save (for example \"D:\\MyDisk.txt\"): ");
-            reqSaveFile = getMenuScanner().next();
+            reqSaveFile = scanner.next();
         } while ("".equals(reqSaveFile));
         TrackListUtils.saveFile(getCurrentDisk().getTracklist()
                 .getTracks(), reqSaveFile);

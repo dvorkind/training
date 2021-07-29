@@ -5,14 +5,16 @@ import by.dvorkin.recording.enums.Genres;
 import by.dvorkin.recording.interfaces.DiskList;
 import by.dvorkin.recording.menu.AbstractMenu;
 
+import java.util.Scanner;
+
 public class AddSongMenu extends AbstractMenu {
-    public AddSongMenu(DiskList diskList) {
-        super(diskList);
+    public AddSongMenu(DiskList diskList, Scanner scanner) {
+        super(diskList, scanner);
     }
 
     @Override
     public void printMenu() {
-        getMenuScanner().nextLine(); // skip \n after scanner.nextInt()
+        scanner.nextLine(); // skip \n after scanner.nextInt()
         String reqSinger = reqSingerName();
         String reqTitle = reqTitleName();
         int reqDuration = reqSongDuration();
@@ -27,7 +29,7 @@ public class AddSongMenu extends AbstractMenu {
         String singerName;
         do {
             System.out.print("\nEnter singer name: ");
-            singerName = getMenuScanner().nextLine();
+            singerName = scanner.nextLine();
         } while ("".equals(singerName));
         return singerName;
     }
@@ -36,7 +38,7 @@ public class AddSongMenu extends AbstractMenu {
         String title;
         do {
             System.out.print("\nEnter song title: ");
-            title = getMenuScanner().nextLine();
+            title = scanner.nextLine();
         } while ("".equals(title));
         return title;
     }
@@ -45,8 +47,8 @@ public class AddSongMenu extends AbstractMenu {
         int duration;
         while (true) {
             System.out.print("\nEnter song duration in seconds: ");
-            if (getMenuScanner().hasNextInt()) {
-                duration = getMenuScanner().nextInt();
+            if (scanner.hasNextInt()) {
+                duration = scanner.nextInt();
                 if (duration <= 0) {
                     System.out.println("\n\tSong duration cannot be less than or equal to 0!");
                 } else {
@@ -54,7 +56,7 @@ public class AddSongMenu extends AbstractMenu {
                 }
             } else {
                 System.out.println("\n\tOnly numbers can be entered!\n");
-                getMenuScanner().next();
+                scanner.next();
             }
         }
         return duration;
@@ -68,8 +70,8 @@ public class AddSongMenu extends AbstractMenu {
                 System.out.println(i + ". " + Genres.values()[i - 1]);
             }
             System.out.print("Select genre number: ");
-            if (getMenuScanner().hasNextInt()) {
-                int reqGenreNumber = getMenuScanner().nextInt();
+            if (scanner.hasNextInt()) {
+                int reqGenreNumber = scanner.nextInt();
                 if (reqGenreNumber > 0 && reqGenreNumber <= Genres.values().length) {
                     genre = Genres.values()[reqGenreNumber - 1].toString();
                     break;
@@ -78,7 +80,7 @@ public class AddSongMenu extends AbstractMenu {
                 }
             } else {
                 System.out.println("\n\tOnly numbers can be entered!\n");
-                getMenuScanner().next();
+                scanner.next();
             }
         }
         return genre;

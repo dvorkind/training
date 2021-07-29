@@ -3,17 +3,19 @@ package by.dvorkin.recording.menu.submenu;
 import by.dvorkin.recording.interfaces.DiskList;
 import by.dvorkin.recording.menu.AbstractMenu;
 
+import java.util.Scanner;
+
 public class RemoveSongMenu extends AbstractMenu {
-    public RemoveSongMenu(DiskList diskList) {
-        super(diskList);
+    public RemoveSongMenu(DiskList diskList, Scanner scanner) {
+        super(diskList, scanner);
     }
 
     @Override
     public void printMenu() {
         while (true) {
             System.out.print("\nEnter the number of the song to be deleted: ");
-            if (getMenuScanner().hasNextInt()) {
-                int reqSongNumber = getMenuScanner().nextInt();
+            if (scanner.hasNextInt()) {
+                int reqSongNumber = scanner.nextInt();
                 if (reqSongNumber <= getCurrentDisk().getTracklist()
                         .getTracks()
                         .size()) {
@@ -35,7 +37,7 @@ public class RemoveSongMenu extends AbstractMenu {
                 }
             } else {
                 System.out.println("\n\tOnly numbers can be entered!\n");
-                getMenuScanner().next();
+                scanner.next();
             }
         }
     }

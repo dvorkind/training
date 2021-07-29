@@ -8,10 +8,11 @@ import by.dvorkin.recording.utils.Helper;
 import by.dvorkin.recording.utils.TrackListUtils;
 
 import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class LoadFileMenu extends AbstractMenu {
-    public LoadFileMenu(DiskList diskList) {
-        super(diskList);
+    public LoadFileMenu(DiskList diskList, Scanner scanner) {
+        super(diskList, scanner);
     }
 
     @Override
@@ -20,7 +21,7 @@ public class LoadFileMenu extends AbstractMenu {
         addToDiskLibrary(disk);
         setCurrentDisk(disk);
         System.out.print("\nEnter file path to load (for example \"D:\\MyDisk.txt\"): ");
-        String reqOpenFile = getMenuScanner().next();
+        String reqOpenFile = scanner.next();
         try {
             getCurrentDisk()
                     .setName(Helper.extractDiskNameFromFilename(reqOpenFile));

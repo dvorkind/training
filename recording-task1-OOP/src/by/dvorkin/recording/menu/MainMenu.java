@@ -6,14 +6,16 @@ import by.dvorkin.recording.menu.submenu.LoadFileMenu;
 import by.dvorkin.recording.menu.submenu.SelectDiskMenu;
 import by.dvorkin.recording.menu.submenu.SongsGeneratingMenu;
 
+import java.util.Scanner;
+
 public class MainMenu extends AbstractMenu {
     private SongsGeneratingMenu songsGeneratingMenu;
     private LoadFileMenu loadFileMenu;
     private SelectDiskMenu selectDiskMenu;
     private CurrentDiskMenu currentDiskMenu;
 
-    public MainMenu(DiskList diskList) {
-        super(diskList);
+    public MainMenu(DiskList diskList, Scanner scanner) {
+        super(diskList, scanner);
     }
 
     public void setSongsGeneratingMenu(SongsGeneratingMenu songsGeneratingMenu) {
@@ -51,7 +53,7 @@ public class MainMenu extends AbstractMenu {
 
     public void userInput() {
         while (true) {
-            String userInput = getMenuScanner().next();
+            String userInput = scanner.next();
             switch (userInput) {
                 case "1":
                     songsGeneratingMenu.printMenu();

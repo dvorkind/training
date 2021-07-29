@@ -7,15 +7,16 @@ import by.dvorkin.recording.menu.AbstractMenu;
 import by.dvorkin.recording.utils.TrackListUtils;
 
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class SongsGeneratingMenu extends AbstractMenu {
-    public SongsGeneratingMenu(DiskList diskList) {
-        super(diskList);
+    public SongsGeneratingMenu(DiskList diskList, Scanner scanner) {
+        super(diskList, scanner);
     }
 
     @Override
     public void printMenu() {
-        getMenuScanner().nextLine(); // skip \n after scanner.nextInt()
+        scanner.nextLine(); // skip \n after scanner.nextInt()
         Disk disk = new Disk();
         addToDiskLibrary(disk);
         setCurrentDisk(disk);
@@ -23,7 +24,7 @@ public class SongsGeneratingMenu extends AbstractMenu {
         String[] menuOption = {"1", "2", "3"}; // Array of available options in this menu
         do {
             System.out.print("\nEnter disk name: ");
-            reqDiskName = getMenuScanner().nextLine();
+            reqDiskName = scanner.nextLine();
         } while ("".equals(reqDiskName));
         getCurrentDisk().setName(reqDiskName);
         while (true) {
@@ -31,7 +32,7 @@ public class SongsGeneratingMenu extends AbstractMenu {
             System.out.println("2. Generate the specified number of songs");
             System.out.println("3. Generate songs for a given disc duration");
             System.out.print("Please, select an option: ");
-            String userInput = getMenuScanner().next();
+            String userInput = scanner.next();
             switch (userInput) {
                 case "1":
                     System.out.println("\n\tDisc named [" + reqDiskName + "] has been created empty");
@@ -70,11 +71,11 @@ public class SongsGeneratingMenu extends AbstractMenu {
         int songsCount = 0;
         while (songsCount <= 0) {
             System.out.print("Enter the number of songs: ");
-            if (getMenuScanner().hasNextInt()) {
-                songsCount = getMenuScanner().nextInt();
+            if (scanner.hasNextInt()) {
+                songsCount = scanner.nextInt();
             } else {
                 System.out.println("\n\tOnly numbers can be entered!\n");
-                getMenuScanner().next();
+                scanner.next();
             }
         }
         return songsCount;
@@ -84,8 +85,8 @@ public class SongsGeneratingMenu extends AbstractMenu {
         int duration;
         while (true) {
             System.out.print("\nEnter disk duration in seconds: ");
-            if (getMenuScanner().hasNextInt()) {
-                duration = getMenuScanner().nextInt();
+            if (scanner.hasNextInt()) {
+                duration = scanner.nextInt();
                 if (duration <= Constants.MIN_SONG_DURATION) {
                     System.out.println(
                             "\n\tDisk duration cannot be less than " + Constants.MIN_SONG_DURATION + " seconds!");
@@ -94,7 +95,7 @@ public class SongsGeneratingMenu extends AbstractMenu {
                 }
             } else {
                 System.out.println("\n\tOnly numbers can be entered!\n");
-                getMenuScanner().next();
+                scanner.next();
             }
         }
         return duration;

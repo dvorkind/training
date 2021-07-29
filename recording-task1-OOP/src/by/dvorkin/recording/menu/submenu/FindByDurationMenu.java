@@ -7,15 +7,17 @@ import by.dvorkin.recording.utils.Helper;
 import by.dvorkin.recording.utils.TrackListUtils;
 
 import java.util.Comparator;
+import java.util.Scanner;
 
 public class FindByDurationMenu extends AbstractMenu {
-    public FindByDurationMenu(DiskList diskList) {
-        super(diskList);
+    public FindByDurationMenu(DiskList diskList, Scanner scanner) {
+        super(diskList, scanner);
     }
 
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     @Override
     public void printMenu() {
-        getMenuScanner().nextLine(); // skip \n after scanner.nextInt()
+        scanner.nextLine(); // skip \n after scanner.nextInt()
         Track maxTrack = getCurrentDisk().getTracklist()
                 .getTracks()
                 .stream()
@@ -33,7 +35,7 @@ public class FindByDurationMenu extends AbstractMenu {
         while (true) {
             System.out.print("\nEnter MIN and MAX length in seconds (between " + minDuration + " and " + maxDuration
                     + ") separated by a space: ");
-            String str = getMenuScanner().nextLine();
+            String str = scanner.nextLine();
             String[] reqRange = str.split(" ");
             if (reqRange.length == 2 && Helper.isNumber(reqRange[0]) && Helper.isNumber(reqRange[1])) {
                 reqMinTrackDuration = Integer.parseInt(reqRange[0]);

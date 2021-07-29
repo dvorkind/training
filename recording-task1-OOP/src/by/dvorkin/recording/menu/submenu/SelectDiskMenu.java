@@ -4,17 +4,19 @@ import by.dvorkin.recording.interfaces.DiskList;
 import by.dvorkin.recording.menu.AbstractMenu;
 import by.dvorkin.recording.utils.TrackListUtils;
 
+import java.util.Scanner;
+
 public class SelectDiskMenu extends AbstractMenu {
-    public SelectDiskMenu(DiskList diskList) {
-        super(diskList);
+    public SelectDiskMenu(DiskList diskList, Scanner scanner) {
+        super(diskList, scanner);
     }
 
     @Override
     public void printMenu() {
         while (true) {
             System.out.print("\nEnter the number of disk: ");
-            if (getMenuScanner().hasNextInt()) {
-                int reqDiskNumber = getMenuScanner().nextInt();
+            if (scanner.hasNextInt()) {
+                int reqDiskNumber = scanner.nextInt();
                 if (reqDiskNumber <= getDiskLibrary().size()) {
                     setCurrentDisk(getDiskLibrary().get(reqDiskNumber - 1));
                     if (isTracklistNotEmpty()) {
@@ -30,7 +32,7 @@ public class SelectDiskMenu extends AbstractMenu {
                 }
             } else {
                 System.out.println("\n\tOnly numbers can be entered!\n");
-                getMenuScanner().next();
+                scanner.next();
             }
         }
     }
