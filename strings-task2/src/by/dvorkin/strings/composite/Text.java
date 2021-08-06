@@ -1,4 +1,4 @@
-package by.dvorkin.strings.entities;
+package by.dvorkin.strings.composite;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,32 +14,32 @@ public class Text implements TextComponent {
         this.number = number;
     }
 
+    @Override
     public void add(TextComponent textComponent) {
         textComponents.add(textComponent);
     }
 
+    @Override
     public int getSizeComponents() {
         return textComponents.size();
     }
 
+    @Override
     public TextComponent getChild(int i) {
         return textComponents.get(i);
     }
 
+    @Override
     public String getType() {
         return type;
     }
 
+    @Override
     public int getNumber() {
         return number;
     }
 
-    public void print() {
-        for (TextComponent textComponent : textComponents) {
-            textComponent.print();
-        }
-    }
-
+    @Override
     public Iterator<TextComponent> createIterator() {
         return new TextIterator(textComponents.iterator());
     }

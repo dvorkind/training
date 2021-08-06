@@ -1,4 +1,4 @@
-package by.dvorkin.strings.entities;
+package by.dvorkin.strings.composite;
 
 import java.util.Iterator;
 import java.util.Stack;
@@ -10,6 +10,7 @@ public class TextIterator implements Iterator<TextComponent> {
         stack.push(iterator);
     }
 
+    @Override
     public TextComponent next() {
         if (hasNext()) {
             Iterator<TextComponent> iterator = stack.peek();
@@ -21,6 +22,7 @@ public class TextIterator implements Iterator<TextComponent> {
         }
     }
 
+    @Override
     public boolean hasNext() {
         if (stack.empty()) {
             return false;

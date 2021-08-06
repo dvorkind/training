@@ -28,7 +28,6 @@ bin/
 .project
 .settings/
 
-*.txt
 .idea/
 /out/
 *.iml

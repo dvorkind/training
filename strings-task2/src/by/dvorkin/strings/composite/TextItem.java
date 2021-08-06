@@ -1,4 +1,4 @@
-package by.dvorkin.strings.entities;
+package by.dvorkin.strings.composite;
 
 import java.util.Iterator;
 
@@ -11,18 +11,17 @@ public class TextItem implements TextComponent {
         this.type = type;
     }
 
+    @Override
     public String getWord() {
         return word;
     }
 
+    @Override
     public String getType() {
         return type;
     }
 
-    public void print() {
-        System.out.print(getWord());
-    }
-
+    @Override
     public Iterator<TextComponent> createIterator() {
         return new NullIterator();
     }

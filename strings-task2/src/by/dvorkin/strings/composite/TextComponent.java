@@ -1,12 +1,8 @@
-package by.dvorkin.strings.entities;
+package by.dvorkin.strings.composite;
 
 import java.util.Iterator;
 
-interface TextComponent {
-    default void print() {
-        throw new UnsupportedOperationException();
-    }
-
+public interface TextComponent {
     default void add(TextComponent textComponent) {
         throw new UnsupportedOperationException();
     }
