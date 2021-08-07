@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.dvorkin.by/components"
+           xmlns="http://www.dvorkin.by/components" elementFormDefault="qualified">
+
+    <xs:simpleType name="nameType">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="5"/>
+            <xs:maxLength value="40"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="originType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-zA-Z ]{3,20}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="priceType">
+        <xs:restriction base="xs:decimal">
+            <xs:pattern value="[0-9]+\.[0-9]{1,2}"/>
+            <xs:minInclusive value="1.00"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="peripheralType">
+        <xs:restriction base="xs:boolean"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="powerUsageType">
+        <xs:restriction base="xs:decimal">
+            <xs:pattern value="[0-9]+\.[0-9]{1,2}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="hasCoolerType">
+        <xs:restriction base="xs:boolean"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="groupType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="MONITOR"/>
+            <xs:enumeration value="KEYBOARD"/>
+            <xs:enumeration value="MOUSE"/>
+            <xs:enumeration value="MOTHERBOARD"/>
+            <xs:enumeration value="PROCESSOR"/>
+            <xs:enumeration value="MEMORY"/>
+            <xs:enumeration value="VIDEOCARD"/>
+            <xs:enumeration value="STORAGE"/>
+            <xs:enumeration value="POWERSUPPLY"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="portType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="HDMI"/>
+            <xs:enumeration value="VGA"/>
+            <xs:enumeration value="USB"/>
+            <xs:enumeration value="SOCKET"/>
+            <xs:enumeration value="PCI_E"/>
+            <xs:enumeration value="SATA"/>
+            <xs:enumeration value="IDE"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="criticalType">
+        <xs:restriction base="xs:boolean"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="componentID">
+        <xs:restriction base="xs:ID">
+            <xs:pattern value="C[1-9][0-9]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="parametersType">
+        <xs:sequence>
+            <xs:element name="peripheral" type="peripheralType"/>
+            <xs:element name="powerUsage" type="powerUsageType" minOccurs="0"/>
+            <xs:element name="hasCooler" type="hasCoolerType"/>
+            <xs:element name="group" type="groupType"/>
+            <xs:element name="port" type="portType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="componentType">
+        <xs:sequence>
+            <xs:element name="name" type="nameType"/>
+            <xs:element name="origin" type="originType"/>
+            <xs:element name="price" type="priceType"/>
+            <xs:element name="parameters" type="parametersType"/>
+            <xs:element name="critical" type="criticalType"/>
+        </xs:sequence>
+        <xs:attribute name="id" type="componentID" use="required"/>
+    </xs:complexType>
+
+    <xs:element name="components">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="component" type="componentType" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
