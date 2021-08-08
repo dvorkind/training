@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.dvorkin.by/components" xsi:schemaLocation="http://www.dvorkin.by/components components.xsd">
+  <component id="C4">
+    <name>Gigabyte B450M S2H (rev. 1.0)</name>
+    <origin>China</origin>
+    <price>157.28</price>
+    <parameters>
+      <peripheral>false</peripheral>
+      <hasCooler>false</hasCooler>
+      <group>MOTHERBOARD</group>
+      <port>SOCKET</port>
+    </parameters>
+    <critical>true</critical>
+  </component>
+  <component id="C13">
+    <name>ASRock B460M Pro4</name>
+    <origin>Taiwan</origin>
+    <price>237.64</price>
+    <parameters>
+      <peripheral>false</peripheral>
+      <hasCooler>false</hasCooler>
+      <group>MOTHERBOARD</group>
+      <port>SOCKET</port>
+    </parameters>
+    <critical>true</critical>
+  </component>
+  <component id="C22">
+    <name>ASUS TUF Gaming B550-Plus</name>
+    <origin>Taiwan</origin>
+    <price>384.54</price>
+    <parameters>
+      <peripheral>false</peripheral>
+      <hasCooler>false</hasCooler>
+      <group>MOTHERBOARD</group>
+    </parameters>
+    <critical>true</critical>
+  </component>
+</components>

@@ -110,7 +110,7 @@ public class Component {
                 .append(GroupType.valueOf(groupType).getGroupName()).append('\n');
         //@formatter:on
         if (portType != null) {
-            stringBuilder.append("Connects by port: ").append('\t').append(portType.replace('_', '-')).append('\n');
+            stringBuilder.append("Connects by port: ").append('\t').append(PortType.valueOf(portType).getPortName()).append('\n');
         }
         stringBuilder.append("Is critical: ").append("\t\t").append(critical).append('\n');
         return stringBuilder.toString();

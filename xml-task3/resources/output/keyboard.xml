@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.dvorkin.by/components" xsi:schemaLocation="http://www.dvorkin.by/components components.xsd">
+  <component id="C2">
+    <name>Logitech Corded Keyboard K280e</name>
+    <origin>Swiss</origin>
+    <price>35.37</price>
+    <parameters>
+      <peripheral>true</peripheral>
+      <hasCooler>false</hasCooler>
+      <group>KEYBOARD</group>
+      <port>USB</port>
+    </parameters>
+    <critical>false</critical>
+  </component>
+  <component id="C25">
+    <name>HyperX Alloy Origins (HyperX Red)</name>
+    <origin>USA</origin>
+    <price>294.26</price>
+    <parameters>
+      <peripheral>true</peripheral>
+      <hasCooler>false</hasCooler>
+      <group>KEYBOARD</group>
+      <port>USB</port>
+    </parameters>
+    <critical>false</critical>
+  </component>
+  <component id="C14">
+    <name>SteelSeries Apex 7 Linear Red</name>
+    <origin>Denmark</origin>
+    <price>479.8</price>
+    <parameters>
+      <peripheral>true</peripheral>
+      <hasCooler>false</hasCooler>
+      <group>KEYBOARD</group>
+      <port>USB</port>
+    </parameters>
+    <critical>false</critical>
+  </component>
+</components>

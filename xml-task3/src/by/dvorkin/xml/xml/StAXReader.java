@@ -26,7 +26,7 @@ public class StAXReader {
                         switch (tagName) {
                             case "component":
                                 component = new Component();
-                                component.setId(reader.getAttributeValue(null, "id"));
+                                component.setId(reader.getAttributeValue(0));
                                 break;
                             case "name":
                                 component.setName(reader.getElementText());
@@ -74,8 +74,7 @@ public class StAXReader {
             if (reader != null) {
                 try {
                     reader.close();
-                } catch (XMLStreamException e) {
-                    e.printStackTrace();
+                } catch (XMLStreamException ignored) {
                 }
             }
         }

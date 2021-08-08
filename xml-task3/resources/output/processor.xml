@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.dvorkin.by/components" xsi:schemaLocation="http://www.dvorkin.by/components components.xsd">
+  <component id="C28">
+    <name>Intel Core i5-10400F</name>
+    <origin>USA</origin>
+    <price>371.77</price>
+    <parameters>
+      <peripheral>false</peripheral>
+      <powerUsage>65.0</powerUsage>
+      <hasCooler>true</hasCooler>
+      <group>PROCESSOR</group>
+      <port>SOCKET</port>
+    </parameters>
+    <critical>true</critical>
+  </component>
+  <component id="C5">
+    <name>AMD Ryzen 5 3600</name>
+    <origin>USA</origin>
+    <price>452.08</price>
+    <parameters>
+      <peripheral>false</peripheral>
+      <powerUsage>65.0</powerUsage>
+      <hasCooler>true</hasCooler>
+      <group>PROCESSOR</group>
+      <port>SOCKET</port>
+    </parameters>
+    <critical>true</critical>
+  </component>
+  <component id="C12">
+    <name>Intel Xeon Gold 6256</name>
+    <origin>USA</origin>
+    <price>12151.8</price>
+    <parameters>
+      <peripheral>false</peripheral>
+      <powerUsage>205.0</powerUsage>
+      <hasCooler>true</hasCooler>
+      <group>PROCESSOR</group>
+      <port>SOCKET</port>
+    </parameters>
+    <critical>true</critical>
+  </component>
+</components>

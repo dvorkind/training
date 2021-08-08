@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.dvorkin.by/components" xsi:schemaLocation="http://www.dvorkin.by/components components.xsd">
+  <component id="C17">
+    <name>AeroCool ECO-500W</name>
+    <origin>Taiwan</origin>
+    <price>53.72</price>
+    <parameters>
+      <peripheral>false</peripheral>
+      <powerUsage>500.0</powerUsage>
+      <hasCooler>true</hasCooler>
+      <group>POWERSUPPLY</group>
+    </parameters>
+    <critical>true</critical>
+  </component>
+  <component id="C11">
+    <name>Zalman GigaMax ZM550-GVII</name>
+    <origin>Korea</origin>
+    <price>115.77</price>
+    <parameters>
+      <peripheral>false</peripheral>
+      <powerUsage>550.0</powerUsage>
+      <hasCooler>true</hasCooler>
+      <group>POWERSUPPLY</group>
+    </parameters>
+    <critical>true</critical>
+  </component>
+  <component id="C9">
+    <name>Chieftec A-80 CTG-750C 750W</name>
+    <origin>Germany</origin>
+    <price>151.63</price>
+    <parameters>
+      <peripheral>false</peripheral>
+      <powerUsage>750.0</powerUsage>
+      <hasCooler>true</hasCooler>
+      <group>POWERSUPPLY</group>
+    </parameters>
+    <critical>true</critical>
+  </component>
+</components>

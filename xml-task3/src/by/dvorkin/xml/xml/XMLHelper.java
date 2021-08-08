@@ -9,11 +9,6 @@ import java.util.stream.Collectors;
 public class XMLHelper {
     private final String SOURCEXML = "xml-task3/resources/input/components.xml";
     private List<Component> components;
-    private String error;
-
-    public String getError() {
-        return error;
-    }
 
     public String getSourceXML() {
         return SOURCEXML;
@@ -23,14 +18,10 @@ public class XMLHelper {
         return components.size();
     }
 
-    public boolean validate(String fileName) {
+    public void validate(String fileName) {
         String SOURCEXSD = "xml-task3/resources/input/components.xsd";
         XMLValidator validator = new XMLValidator(fileName, SOURCEXSD);
-        if (!validator.validate()) {
-            error = validator.getErrorMsg();
-            return false;
-        }
-        return true;
+        validator.validate();
     }
 
     public void xmlToObjects() {
@@ -38,15 +29,14 @@ public class XMLHelper {
         components = xmlReader.parse(SOURCEXML);
     }
 
-    public boolean addPercentToPrice(int percent) {
+    public void addPercentToPrice(int percent) {
         if (percent < -100) {
-            error = "Percent cannot be less than -100!";
-            return false;
+            System.out.println("Percent cannot be less than -100!");
+            System.exit(-1);
         }
         for (Component component : components) {
             component.setPrice((double) Math.round((component.getPrice() + (component.getPrice() / 100 * percent)) * 100) / 100);
         }
-        return true;
     }
 
     public void sortComponentsByPrice(Boolean up) {
@@ -58,16 +48,13 @@ public class XMLHelper {
         });
     }
 
-    public boolean createAllSeparatedXML() {
+    public void createAllSeparatedXML() {
         for (GroupType groupType : GroupType.values()) {
-            if (!createSeparateXml(components, groupType)) {
-                return false;
-            }
+            createSeparateXml(components, groupType);
         }
-        return true;
     }
 
-    public boolean createSeparateXml(List<Component> components, GroupType groupType) {
+    public void createSeparateXml(List<Component> components, GroupType groupType) {
         String groupName = groupType.toString().toLowerCase();
         String fileName = "xml-task3/resources/output/" + groupName + ".xml";
 
@@ -75,7 +62,7 @@ public class XMLHelper {
                 .collect(Collectors.toList());
         StAXWriter xmlWriter = new StAXWriter();
         xmlWriter.write(collect, fileName);
-        return validate(fileName);
+        validate(fileName);
     }
 
     public StringBuilder showComponents() {

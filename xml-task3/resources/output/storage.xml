@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.dvorkin.by/components" xsi:schemaLocation="http://www.dvorkin.by/components components.xsd">
+  <component id="C16">
+    <name>Seagate Barracuda 2TB ST2000DM008</name>
+    <origin>USA</origin>
+    <price>139.26</price>
+    <parameters>
+      <peripheral>false</peripheral>
+      <powerUsage>4.3</powerUsage>
+      <hasCooler>false</hasCooler>
+      <group>STORAGE</group>
+      <port>SATA</port>
+    </parameters>
+    <critical>true</critical>
+  </component>
+  <component id="C8">
+    <name>SSD Samsung 870 Evo 500GB</name>
+    <origin>Korea</origin>
+    <price>174.17</price>
+    <parameters>
+      <peripheral>false</peripheral>
+      <powerUsage>2.2</powerUsage>
+      <hasCooler>false</hasCooler>
+      <group>STORAGE</group>
+      <port>SATA</port>
+    </parameters>
+    <critical>true</critical>
+  </component>
+  <component id="C18">
+    <name>Intel Optane DC P4800X 750GB</name>
+    <origin>USA</origin>
+    <price>6748.85</price>
+    <parameters>
+      <peripheral>false</peripheral>
+      <powerUsage>18.0</powerUsage>
+      <hasCooler>false</hasCooler>
+      <group>STORAGE</group>
+      <port>PCI_E</port>
+    </parameters>
+    <critical>true</critical>
+  </component>
+</components>

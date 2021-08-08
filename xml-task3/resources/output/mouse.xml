@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.dvorkin.by/components" xsi:schemaLocation="http://www.dvorkin.by/components components.xsd">
+  <component id="C27">
+    <name>Canyon CND-SGM03RGB</name>
+    <origin>Cyprus</origin>
+    <price>19.71</price>
+    <parameters>
+      <peripheral>true</peripheral>
+      <hasCooler>false</hasCooler>
+      <group>MOUSE</group>
+      <port>USB</port>
+    </parameters>
+    <critical>false</critical>
+  </component>
+  <component id="C3">
+    <name>Razer DeathAdder Essential</name>
+    <origin>USA</origin>
+    <price>70.2</price>
+    <parameters>
+      <peripheral>true</peripheral>
+      <hasCooler>false</hasCooler>
+      <group>MOUSE</group>
+      <port>USB</port>
+    </parameters>
+    <critical>false</critical>
+  </component>
+  <component id="C23">
+    <name>Logitech G Pro Wireless</name>
+    <origin>Swiss</origin>
+    <price>271.26</price>
+    <parameters>
+      <peripheral>true</peripheral>
+      <hasCooler>false</hasCooler>
+      <group>MOUSE</group>
+      <port>USB</port>
+    </parameters>
+    <critical>false</critical>
+  </component>
+</components>

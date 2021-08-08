@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.dvorkin.by/components" xsi:schemaLocation="http://www.dvorkin.by/components components.xsd">
+  <component id="C1">
+    <name>Samsung C24RG50FQI</name>
+    <origin>Korea</origin>
+    <price>471.97</price>
+    <parameters>
+      <peripheral>true</peripheral>
+      <powerUsage>32.0</powerUsage>
+      <hasCooler>false</hasCooler>
+      <group>MONITOR</group>
+      <port>HDMI</port>
+    </parameters>
+    <critical>false</critical>
+  </component>
+  <component id="C21">
+    <name>LG 27UL500-W</name>
+    <origin>Korea</origin>
+    <price>708.68</price>
+    <parameters>
+      <peripheral>true</peripheral>
+      <powerUsage>40.0</powerUsage>
+      <hasCooler>false</hasCooler>
+      <group>MONITOR</group>
+      <port>HDMI</port>
+    </parameters>
+    <critical>false</critical>
+  </component>
+  <component id="C10">
+    <name>Xiaomi Mi Surface Display 34"</name>
+    <origin>China</origin>
+    <price>1114.2</price>
+    <parameters>
+      <peripheral>true</peripheral>
+      <powerUsage>54.0</powerUsage>
+      <hasCooler>false</hasCooler>
+      <group>MONITOR</group>
+      <port>HDMI</port>
+    </parameters>
+    <critical>false</critical>
+  </component>
+</components>

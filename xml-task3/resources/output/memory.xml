@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.dvorkin.by/components" xsi:schemaLocation="http://www.dvorkin.by/components components.xsd">
+  <component id="C26">
+    <name>Patriot Signature 2GB DDR2 PC2-6400</name>
+    <origin>USA</origin>
+    <price>35.88</price>
+    <parameters>
+      <peripheral>false</peripheral>
+      <powerUsage>1.8</powerUsage>
+      <hasCooler>false</hasCooler>
+      <group>MEMORY</group>
+    </parameters>
+    <critical>true</critical>
+  </component>
+  <component id="C20">
+    <name>Kingston ValueRAM 4GB DDR3 PC3-12800</name>
+    <origin>USA</origin>
+    <price>82.62</price>
+    <parameters>
+      <peripheral>false</peripheral>
+      <powerUsage>1.5</powerUsage>
+      <hasCooler>false</hasCooler>
+      <group>MEMORY</group>
+    </parameters>
+    <critical>true</critical>
+  </component>
+  <component id="C24">
+    <name>Samsung 8GB DDR4 SODIMM PC4-21300</name>
+    <origin>Korea</origin>
+    <price>127.29</price>
+    <parameters>
+      <peripheral>false</peripheral>
+      <powerUsage>1.2</powerUsage>
+      <hasCooler>false</hasCooler>
+      <group>MEMORY</group>
+    </parameters>
+    <critical>true</critical>
+  </component>
+  <component id="C6">
+    <name>HyperX Fury 2x8GB DDR4 PC4-25600</name>
+    <origin>USA</origin>
+    <price>234.82</price>
+    <parameters>
+      <peripheral>false</peripheral>
+      <powerUsage>1.35</powerUsage>
+      <hasCooler>false</hasCooler>
+      <group>MEMORY</group>
+    </parameters>
+    <critical>true</critical>
+  </component>
+</components>

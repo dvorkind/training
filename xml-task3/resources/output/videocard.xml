@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.dvorkin.by/components" xsi:schemaLocation="http://www.dvorkin.by/components components.xsd">
+  <component id="C15">
+    <name>Gigabyte GeForce GTX 1660 OC 6GB GDDR5</name>
+    <origin>Taiwan</origin>
+    <price>1125.0</price>
+    <parameters>
+      <peripheral>false</peripheral>
+      <powerUsage>450.0</powerUsage>
+      <hasCooler>true</hasCooler>
+      <group>VIDEOCARD</group>
+      <port>PCI_E</port>
+    </parameters>
+    <critical>true</critical>
+  </component>
+  <component id="C7">
+    <name>Palit GeForce RTX 3060 Dual 12GB GDDR6</name>
+    <origin>Germany</origin>
+    <price>1827.0</price>
+    <parameters>
+      <peripheral>false</peripheral>
+      <powerUsage>180.2</powerUsage>
+      <hasCooler>true</hasCooler>
+      <group>VIDEOCARD</group>
+      <port>PCI_E</port>
+    </parameters>
+    <critical>true</critical>
+  </component>
+  <component id="C19">
+    <name>Sapphire Radeon RX 6700 XT 12GB GDDR6</name>
+    <origin>Hong Kong</origin>
+    <price>2546.64</price>
+    <parameters>
+      <peripheral>false</peripheral>
+      <powerUsage>650.0</powerUsage>
+      <hasCooler>true</hasCooler>
+      <group>VIDEOCARD</group>
+      <port>PCI_E</port>
+    </parameters>
+    <critical>true</critical>
+  </component>
+</components>
