@@ -139,7 +139,7 @@
         </parameters>
         <critical>true</critical>
     </component>
-    <component id="C13">
+    <component id="C12">
         <name>Intel Xeon Gold 6256</name>
         <origin>USA</origin>
         <price>13502.00</price>
@@ -152,7 +152,7 @@
         </parameters>
         <critical>true</critical>
     </component>
-    <component id="C14">
+    <component id="C13">
         <name>ASRock B460M Pro4</name>
         <origin>Taiwan</origin>
         <price>264.04</price>
@@ -164,7 +164,7 @@
         </parameters>
         <critical>true</critical>
     </component>
-    <component id="C15">
+    <component id="C14">
         <name>SteelSeries Apex 7 Linear Red</name>
         <origin>Denmark</origin>
         <price>533.11</price>
@@ -176,7 +176,7 @@
         </parameters>
         <critical>false</critical>
     </component>
-    <component id="C16">
+    <component id="C15">
         <name>Gigabyte GeForce GTX 1660 OC 6GB GDDR5</name>
         <origin>Taiwan</origin>
         <price>1250.00</price>
@@ -189,7 +189,7 @@
         </parameters>
         <critical>true</critical>
     </component>
-    <component id="C17">
+    <component id="C16">
         <name>Seagate Barracuda 2TB ST2000DM008</name>
         <origin>USA</origin>
         <price>154.73</price>
@@ -202,7 +202,7 @@
         </parameters>
         <critical>true</critical>
     </component>
-    <component id="C18">
+    <component id="C17">
         <name>AeroCool ECO-500W</name>
         <origin>Taiwan</origin>
         <price>59.69</price>
@@ -214,7 +214,7 @@
         </parameters>
         <critical>true</critical>
     </component>
-    <component id="C19">
+    <component id="C18">
         <name>Intel Optane DC P4800X 750GB</name>
         <origin>USA</origin>
         <price>7498.72</price>
@@ -227,7 +227,7 @@
         </parameters>
         <critical>true</critical>
     </component>
-    <component id="C20">
+    <component id="C19">
         <name>Sapphire Radeon RX 6700 XT 12GB GDDR6</name>
         <origin>Hong Kong</origin>
         <price>2829.60</price>
@@ -240,7 +240,7 @@
         </parameters>
         <critical>true</critical>
     </component>
-    <component id="C21">
+    <component id="C20">
         <name>Kingston ValueRAM 4GB DDR3 PC3-12800</name>
         <origin>USA</origin>
         <price>91.80</price>
@@ -252,7 +252,7 @@
         </parameters>
         <critical>true</critical>
     </component>
-    <component id="C22">
+    <component id="C21">
         <name>LG 27UL500-W</name>
         <origin>Korea</origin>
         <price>787.42</price>
@@ -265,7 +265,7 @@
         </parameters>
         <critical>false</critical>
     </component>
-    <component id="C23">
+    <component id="C22">
         <name>ASUS TUF Gaming B550-Plus</name>
         <origin>Taiwan</origin>
         <price>427.27</price>
@@ -276,7 +276,7 @@
         </parameters>
         <critical>true</critical>
     </component>
-    <component id="C24">
+    <component id="C23">
         <name>Logitech G Pro Wireless</name>
         <origin>Swiss</origin>
         <price>301.40</price>
@@ -287,6 +287,18 @@
             <port>USB</port>
         </parameters>
         <critical>false</critical>
+    </component>
+    <component id="C24">
+        <name>Samsung 8GB DDR4 SODIMM PC4-21300</name>
+        <origin>Korea</origin>
+        <price>141.43</price>
+        <parameters>
+            <peripheral>false</peripheral>
+            <powerUsage>1.2</powerUsage>
+            <hasCooler>false</hasCooler>
+            <group>MEMORY</group>
+        </parameters>
+        <critical>true</critical>
     </component>
     <component id="C25">
         <name>HyperX Alloy Origins (HyperX Red)</name>

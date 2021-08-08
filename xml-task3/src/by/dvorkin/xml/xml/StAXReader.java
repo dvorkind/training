@@ -1,4 +1,4 @@
-package by.dvorkin.xml.xmlHandler;
+package by.dvorkin.xml.xml;
 
 import by.dvorkin.xml.entity.Component;
 
@@ -11,13 +11,13 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class XmlReader {
+public class StAXReader {
     public List<Component> parse(String fileName) {
         XMLStreamReader reader = null;
         try {
             List<Component> components = new ArrayList<>();
             Component component = new Component();
-            reader = XMLInputFactory.newFactory().createXMLStreamReader(new FileInputStream(fileName));
+            reader = XMLInputFactory.newInstance().createXMLStreamReader(new FileInputStream(fileName));
             while (reader.hasNext()) {
                 int type = reader.next();
                 switch (type) {

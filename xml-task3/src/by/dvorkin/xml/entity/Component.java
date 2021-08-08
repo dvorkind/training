@@ -4,13 +4,13 @@ public class Component {
     private String id;
     private String name;
     private String origin;
-    private double price;
-    private boolean peripheral;
-    private double powerUsage;
-    private boolean hasCooler;
+    private Double price;
+    private Boolean peripheral;
+    private Double powerUsage;
+    private Boolean hasCooler;
     private String groupType;
     private String portType;
-    private boolean critical;
+    private Boolean critical;
 
     public String getId() {
         return id;
@@ -36,35 +36,35 @@ public class Component {
         this.origin = origin;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public boolean isPeripheral() {
+    public Boolean isPeripheral() {
         return peripheral;
     }
 
-    public void setPeripheral(boolean peripheral) {
+    public void setPeripheral(Boolean peripheral) {
         this.peripheral = peripheral;
     }
 
-    public double getPowerUsage() {
+    public Double getPowerUsage() {
         return powerUsage;
     }
 
-    public void setPowerUsage(double powerUsage) {
+    public void setPowerUsage(Double powerUsage) {
         this.powerUsage = powerUsage;
     }
 
-    public boolean isHasCooler() {
+    public Boolean isHasCooler() {
         return hasCooler;
     }
 
-    public void setHasCooler(boolean hasCooler) {
+    public void setHasCooler(Boolean hasCooler) {
         this.hasCooler = hasCooler;
     }
 
@@ -84,26 +84,31 @@ public class Component {
         this.portType = portType;
     }
 
-    public boolean isCritical() {
+    public Boolean isCritical() {
         return critical;
     }
 
-    public void setCritical(boolean critical) {
+    public void setCritical(Boolean critical) {
         this.critical = critical;
     }
 
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
+        //@formatter:off
         stringBuilder.append('\t').append(id).append(". ").append(name).append('\n')
                 .append("Country of origin: ").append('\t').append(origin).append('\n')
                 .append("Price: ").append("\t\t\t\t").append(price).append('\n')
                 .append("Peripheral device: ").append('\t').append(peripheral).append('\n');
-        if (powerUsage != 0) {
+        //@formatter:on
+        if (powerUsage != null) {
             stringBuilder.append("Power usage: ").append("\t\t").append(powerUsage).append('\n');
         }
+        //@formatter:off
         stringBuilder.append("Has cooler: ").append("\t\t").append(hasCooler).append('\n')
-                .append("Belongs to group: ").append('\t').append(GroupType.valueOf(groupType).getGroupName()).append('\n');
+                .append("Belongs to group: ").append('\t')
+                .append(GroupType.valueOf(groupType).getGroupName()).append('\n');
+        //@formatter:on
         if (portType != null) {
             stringBuilder.append("Connects by port: ").append('\t').append(portType.replace('_', '-')).append('\n');
         }

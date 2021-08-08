@@ -18,7 +18,7 @@
     <xs:simpleType name="priceType">
         <xs:restriction base="xs:decimal">
             <xs:pattern value="[0-9]+\.[0-9]{1,2}"/>
-            <xs:minInclusive value="1.00"/>
+            <xs:minInclusive value="0.00"/>
         </xs:restriction>
     </xs:simpleType>
 
