@@ -55,6 +55,8 @@ public class StAXReader {
                             case "critical":
                                 component.setCritical(Boolean.parseBoolean(reader.getElementText()));
                                 break;
+                            default:
+                                break;
                         }
                         break;
                     }
@@ -65,6 +67,8 @@ public class StAXReader {
                         }
                         break;
                     }
+                    default:
+                        break;
                 }
             }
             return components;

@@ -32,10 +32,10 @@ public class XMLHelper {
     public void addPercentToPrice(int percent) {
         if (percent < -100) {
             System.out.println("Percent cannot be less than -100!");
-            System.exit(-1);
-        }
-        for (Component component : components) {
-            component.setPrice((double) Math.round((component.getPrice() + (component.getPrice() / 100 * percent)) * 100) / 100);
+        } else {
+            for (Component component : components) {
+                component.setPrice((double) Math.round((component.getPrice() + (component.getPrice() / 100 * percent)) * 100) / 100);
+            }
         }
     }
 

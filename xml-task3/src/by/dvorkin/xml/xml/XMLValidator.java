@@ -28,10 +28,10 @@ public class XMLValidator extends DefaultHandler {
             validator.validate(new StreamSource(pathXml));
         } catch (SAXParseException e) {
             System.out.println(e.getMessage());
-            System.exit(-1);
+            System.exit(-1);                    // There is no sense in continuing in case of invalid XML,
         } catch (SAXException | IOException e) {
             e.printStackTrace();
-            System.exit(-1);
+            System.exit(-1);                    // hence close the program without throwing an exception
         }
     }
 }

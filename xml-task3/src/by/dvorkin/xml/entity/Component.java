@@ -95,22 +95,17 @@ public class Component {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        //@formatter:off
-        stringBuilder.append('\t').append(id).append(". ").append(name).append('\n')
-                .append("Country of origin: ").append('\t').append(origin).append('\n')
-                .append("Price: ").append("\t\t\t\t").append(price).append('\n')
-                .append("Peripheral device: ").append('\t').append(peripheral).append('\n');
-        //@formatter:on
+        stringBuilder.append('\t').append(id).append(". ").append(name).append('\n').append("Country of origin: ")
+                .append('\t').append(origin).append('\n').append("Price: ").append("\t\t\t\t").append(price)
+                .append('\n').append("Peripheral device: ").append('\t').append(peripheral).append('\n');
         if (powerUsage != null) {
             stringBuilder.append("Power usage: ").append("\t\t").append(powerUsage).append('\n');
         }
-        //@formatter:off
-        stringBuilder.append("Has cooler: ").append("\t\t").append(hasCooler).append('\n')
-                .append("Belongs to group: ").append('\t')
-                .append(GroupType.valueOf(groupType).getGroupName()).append('\n');
-        //@formatter:on
+        stringBuilder.append("Has cooler: ").append("\t\t").append(hasCooler).append('\n').append("Belongs to group: ")
+                .append('\t').append(GroupType.valueOf(groupType).getGroupName()).append('\n');
         if (portType != null) {
-            stringBuilder.append("Connects by port: ").append('\t').append(PortType.valueOf(portType).getPortName()).append('\n');
+            stringBuilder.append("Connects by port: ").append('\t').append(PortType.valueOf(portType).getPortName())
+                    .append('\n');
         }
         stringBuilder.append("Is critical: ").append("\t\t").append(critical).append('\n');
         return stringBuilder.toString();
