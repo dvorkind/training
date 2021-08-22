@@ -1,0 +1,168 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin: 0;
+}
+
+header, footer {
+    display: flex;
+    justify-content: space-between;
+    background-color: #282c2f;
+    color: white;
+}
+
+header, main, footer {
+    padding: 30px 100px;
+}
+
+.select-form {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.header-link {
+    display: inline-block;
+    color: #608bd2;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.header-link:visited {
+    color: #608bd2;
+}
+
+.wrapper {
+    background-color: #eaf0f2;
+    flex: 1 0 auto;
+}
+
+main form h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.submit-form {
+    width: 270px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 30px;
+}
+
+.reg-form {
+    width: 400px;
+}
+
+.reg-form .form-message {
+    height: 34px;
+    font-size: 13px;
+    margin: 0 0 5px 0;
+    color: red;
+}
+
+.form-inputs {
+    margin: 15px 0 0 0;
+}
+
+.input-group {
+    position: relative;
+    margin-top: 15px;
+}
+
+.reg-form .input-group {
+    margin-top: 5px;
+}
+
+.input-group label {
+    display: block;
+    margin: 0;
+    color: gray;
+}
+
+.input-group input {
+    display: block;
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+    font-size: 18px;
+    border: 1px gray solid;
+    border-radius: 3px;
+}
+
+.validation-indicator {
+    position: absolute;
+    color: lawngreen;
+    right: 8px;
+    bottom: 8px;
+}
+
+.form-message {
+    height: 17px;
+    font-size: 13px;
+    margin: 10px 0;
+    color: red;
+}
+
+.btn {
+    padding: 5px 8px;
+    background-color: #608bd2;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+select.btn option {
+    background: #282c2f;
+}
+
+.btn[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+}
+
+.form-link {
+    display: block;
+    margin-top: 5px;
+    text-align: center;
+    color: gray;
+}
+
+.form-link:visited {
+    color: gray;
+}
+
+.menu {
+    background: #FFF8DC;
+    background-size: 100% 100%;
+    float: left;
+    height: 200px;
+    padding: 10px;
+    width: 150px;
+}
+
+footer {
+    flex: 0 0 auto;
+}
+
+.footer-link {
+    display: inline-block;
+    color: #608bd2;
+    font-size: 16px;
+    text-decoration: none;
+}
