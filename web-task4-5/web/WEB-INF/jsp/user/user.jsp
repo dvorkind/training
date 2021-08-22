@@ -19,7 +19,7 @@
                 </div>
                 <div class="main">
                     <h3>
-                        <fmt:message key="user.hello"/>, ${user.firstname} (${account.login})!
+                        <fmt:message key="user.hello"/>, ${user.firstname} (${account.login}) (${account.password})!
                     </h3>
                     <br>
                     <table>

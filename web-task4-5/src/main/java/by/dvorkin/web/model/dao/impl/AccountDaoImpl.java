@@ -58,6 +58,7 @@ public class AccountDaoImpl implements AccountDao {
                 account = new Account();
                 account.setId(resultSet.getLong("id"));
                 account.setLogin(login);
+                account.setPassword(passwordToSHA(password));
                 account.setRole(Role.values()[resultSet.getInt("role")]);
             }
             return account;
@@ -97,7 +98,44 @@ public class AccountDaoImpl implements AccountDao {
         }
     }
 
-    private String passwordToSHA(String sourcePassword) {
+    @Override
+    public void update(Account account) throws DaoException {
+        String sql = "UPDATE `account` SET `login` = ?, `password` = ?, `role` = ? WHERE `id` = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, account.getLogin());
+            statement.setString(2, account.getPassword());
+            statement.setInt(3, account.getRole()
+                    .ordinal());
+            statement.setLong(4, account.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public Account read(Long id) throws DaoException {
+        String sql = "SELECT `login`, `password`, `role` FROM `account` WHERE `id` = ?";
+        ResultSet resultSet;
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, id);
+            resultSet = statement.executeQuery();
+            Account account = null;
+            if (resultSet.next()) {
+                account = new Account();
+                account.setId(id);
+                account.setLogin(resultSet.getString("login"));
+                account.setPassword(resultSet.getString("password"));
+                account.setRole(Role.values()[resultSet.getInt("role")]);
+            }
+            return account;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public String passwordToSHA(String sourcePassword) {
         MessageDigest messageDigest;
         byte[] bytesEncoded = null;
         try {

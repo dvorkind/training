@@ -23,7 +23,7 @@ header, footer {
 }
 
 header, main, footer {
-    padding: 30px 100px;
+    padding: 30px 60px;
 }
 
 .select-form {
@@ -148,12 +148,30 @@ select.btn option {
 }
 
 .menu {
-    background: #FFF8DC;
+    background: #e9eff1;
     background-size: 100% 100%;
     float: left;
     height: 200px;
-    padding: 10px;
-    width: 150px;
+    padding: 5px;
+    width: 200px;
+}
+
+.menu a {
+    display: block;
+    padding: 3px;
+    color: #608bd2;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.menu a:hover {
+    background-color: #282c2f;
+}
+
+.menu li {
+    list-style-type: none;
 }
 
 footer {

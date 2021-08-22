@@ -1,6 +1,6 @@
 package by.dvorkin.web.controller;
 
-public class PathExtractor {
+public class Helper {
     public static String extractPath (String url, String context){
         int postfixIndex = url.lastIndexOf(".html");
         if (postfixIndex != -1) {
@@ -10,4 +10,6 @@ public class PathExtractor {
         }
         return url;
     }
+
+
 }

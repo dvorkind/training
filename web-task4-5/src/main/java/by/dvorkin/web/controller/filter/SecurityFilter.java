@@ -1,6 +1,6 @@
 package by.dvorkin.web.controller.filter;
 
-import by.dvorkin.web.controller.PathExtractor;
+import by.dvorkin.web.controller.Helper;
 import by.dvorkin.web.model.entity.Account;
 import by.dvorkin.web.model.entity.Role;
 import jakarta.servlet.Filter;
@@ -30,6 +30,7 @@ public class SecurityFilter implements Filter {
         subscriber.add(Role.SUBSCRIBER);
 
         permissions.put("/logout", all);
+        permissions.put("/change_password", all);
 
         permissions.put("/admin/admin", admin);
         permissions.put("/admin/new_users", admin);
@@ -44,7 +45,7 @@ public class SecurityFilter implements Filter {
         HttpServletRequest httpReq = (HttpServletRequest) req;
         HttpServletResponse httpResp = (HttpServletResponse) resp;
         String context = httpReq.getContextPath();
-        String url = PathExtractor.extractPath(httpReq.getRequestURI(), context);
+        String url = Helper.extractPath(httpReq.getRequestURI(), context);
         Set<Role> roles = permissions.get(url);
         if (roles != null) {
             HttpSession session = httpReq.getSession(false);

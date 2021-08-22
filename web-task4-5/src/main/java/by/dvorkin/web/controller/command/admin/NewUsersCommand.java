@@ -35,6 +35,6 @@ public class NewUsersCommand implements Command {
                 }
             }
         }
-        return new Forward("/forbidden.html");
+        return null;
     }
 }

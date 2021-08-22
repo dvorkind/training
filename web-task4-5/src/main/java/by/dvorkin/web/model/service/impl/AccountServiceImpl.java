@@ -8,6 +8,7 @@ import by.dvorkin.web.model.entity.User;
 import by.dvorkin.web.model.service.AccountService;
 import by.dvorkin.web.model.service.Transaction;
 import by.dvorkin.web.model.service.exceptions.AccountLoginNotUniqueException;
+import by.dvorkin.web.model.service.exceptions.AccountPasswordIncorrectException;
 import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.exceptions.UserPhoneNotUniqueException;
 
@@ -60,6 +61,33 @@ public class AccountServiceImpl implements AccountService {
             transaction.rollback();
         } catch (ServiceException e) {
             e.printStackTrace();
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw e;
+        }
+    }
+
+    @Override
+    public void changePassword(String oldPassword, String newPassword, Account account) throws ServiceException {
+        try {
+            transaction.start();
+            if (account.getPassword()
+                    .equals(accountDao.passwordToSHA(oldPassword))) {
+                account.setPassword(accountDao.passwordToSHA(newPassword));
+                accountDao.update(account);
+            } else {
+                throw new AccountPasswordIncorrectException(account.getId());
+            }
+            transaction.commit();
+        } catch (DaoException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw new ServiceException(e);
+        } catch (ServiceException e) {
             try {
                 transaction.rollback();
             } catch (ServiceException ignored) {

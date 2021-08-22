@@ -1,6 +1,6 @@
 package by.dvorkin.web.controller.command;
 
-import by.dvorkin.web.controller.PathExtractor;
+import by.dvorkin.web.controller.Helper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ public class CommandManager extends HttpServlet {
 
     private void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String context = req.getContextPath();
-        String url = PathExtractor.extractPath(req.getRequestURI(), context);
+        String url = Helper.extractPath(req.getRequestURI(), context);
         Command command = CommandFactory.getCommand(url);
         Forward forward = null;
         if (command != null) {
@@ -33,7 +33,8 @@ public class CommandManager extends HttpServlet {
             if (forward != null && forward.getUrl() != null) {
                 url = forward.getUrl();
             }
-            req.getRequestDispatcher("/WEB-INF/jsp" + url + ".jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/jsp" + url + ".jsp")
+                    .forward(req, resp);
         }
     }
 }

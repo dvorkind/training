@@ -3,6 +3,7 @@ package by.dvorkin.web.controller.command;
 import by.dvorkin.web.controller.command.admin.SummaryCommand;
 import by.dvorkin.web.controller.command.admin.NewUsersCommand;
 import by.dvorkin.web.controller.command.admin.UsersCommand;
+import by.dvorkin.web.controller.command.general.ChangePasswordCommand;
 import by.dvorkin.web.controller.command.general.LanguageCommand;
 import by.dvorkin.web.controller.command.general.LoginCommand;
 import by.dvorkin.web.controller.command.general.LogoutCommand;
@@ -28,6 +29,7 @@ public class CommandFactory {
         commands.put("/admin/new_users",  NewUsersCommand.class);
         commands.put("/admin/users",  UsersCommand.class);
         commands.put("/user/user",  UserCommand.class);
+        commands.put("/change_password",  ChangePasswordCommand.class);
     }
 
     public static Command getCommand(String url) throws ServletException {

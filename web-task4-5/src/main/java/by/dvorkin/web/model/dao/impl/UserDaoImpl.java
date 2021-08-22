@@ -43,6 +43,16 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public void update(User user) throws DaoException {
+
+    }
+
+    @Override
+    public User read(Long id) throws DaoException {
+        return null;
+    }
+
+    @Override
     public Map<String, User> readAll() throws DaoException {
         String sql = "SELECT * FROM `user` INNER JOIN account ON account_id = account.id WHERE `role` <> 0";
         return getUserMap(sql);

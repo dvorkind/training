@@ -6,4 +6,6 @@ public interface AccountDao extends Dao<Account> {
     Account readByLogin(String login) throws DaoException;
 
     Account readByLoginAndPassword(String login, String password) throws DaoException;
+
+    String passwordToSHA(String sourcePassword);
 }
