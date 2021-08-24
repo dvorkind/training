@@ -92,6 +92,7 @@ public class AccountDaoImpl implements AccountDao {
             statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
             resultSet.next();
+            account.setPassword(passwordToSHA(account.getPassword()));
             return resultSet.getLong(1);
         } catch (SQLException e) {
             throw new DaoException(e);

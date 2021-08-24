@@ -74,15 +74,17 @@
         <listener-class>by.dvorkin.web.controller.ApplicationInitializerListener</listener-class>
     </listener>
 
-    <jsp-config>
-        <jsp-property-group>
-            <url-pattern>*.jsp</url-pattern>
-            <trim-directive-whitespaces>true</trim-directive-whitespaces>
-        </jsp-property-group>
-    </jsp-config>
-
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
+
+    <error-page>
+        <error-code>403</error-code>
+        <location>/WEB-INF/jsp/errors/error_403.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/jsp/errors/error_404.jsp</location>
+    </error-page>
 
 </web-app>

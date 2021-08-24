@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration status="WARN">
+    <Appenders>
+        <File name="Errors" filename="D:/system.log" append="true">
+            <PatternLayout>
+                <Pattern>%d{dd.MM.yyyy HH:mm:ss.SSS} %-5level [%t] %c{1.}.%M():%L%n%m%n%exception</Pattern>
+            </PatternLayout>
+        </File>
+        <File name="User" filename="D:/users.log" append="true">
+            <PatternLayout>
+                <Pattern>%d{dd.MM.yyyy HH:mm:ss} %-5level %m%n</Pattern>
+            </PatternLayout>
+        </File>
+        <File name="Application" filename="D:/system.log" append="true">
+            <PatternLayout>
+                <Pattern>%d{dd.MM.yyyy HH:mm:ss} %m%n</Pattern>
+            </PatternLayout>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Logger name="Application" level="INFO" additivity="false">
+            <AppenderRef ref="Application"/>
+        </Logger>
+        <Logger name="User" level="INFO" additivity="false">
+            <AppenderRef ref="User"/>
+        </Logger>
+        <Root level="ERROR">
+            <AppenderRef ref="Errors"/>
+        </Root>
+    </Loggers>
+</Configuration>

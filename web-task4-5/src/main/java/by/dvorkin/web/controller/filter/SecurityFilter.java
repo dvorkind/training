@@ -60,6 +60,6 @@ public class SecurityFilter implements Filter {
             chain.doFilter(req, resp);
             return;
         }
-        httpResp.sendRedirect(context + "/forbidden.html");
+        httpResp.sendError(403);
     }
 }

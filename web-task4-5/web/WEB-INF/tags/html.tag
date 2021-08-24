@@ -39,7 +39,7 @@
                 </a>
             </c:otherwise>
         </c:choose>
-        <div>
+        <div class="flex">
             <form action="${context}/language.html" method="POST" class="select-form">
                 <input type="hidden" name="pagePath" value="${pageContext.request.requestURI}">
                 <input type="hidden" name="queryString" value="${pageContext.request.queryString}">
@@ -55,6 +55,11 @@
                         <fmt:message key="header.logout"/>
                     </a>
                 </c:when>
+                <c:otherwise>
+                    <a href="${context}/login.html" class="btn">
+                        <fmt:message key="header.login"/>
+                    </a>
+                </c:otherwise>
             </c:choose>
         </div>
     </header>
@@ -64,7 +69,6 @@
 </div>
 <footer>
     <span><fmt:message key="footer.copyright"/></span>
-    <span><a href="https://dvorkin.by/" target="_blank" class="footer-link">dvorkin.by</a></span>
 </footer>
 </body>
 </html>

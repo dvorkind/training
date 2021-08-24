@@ -73,8 +73,7 @@ public class AccountServiceImpl implements AccountService {
     public void changePassword(String oldPassword, String newPassword, Account account) throws ServiceException {
         try {
             transaction.start();
-            if (account.getPassword()
-                    .equals(accountDao.passwordToSHA(oldPassword))) {
+            if (account.getPassword().equals(accountDao.passwordToSHA(oldPassword))) {
                 account.setPassword(accountDao.passwordToSHA(newPassword));
                 accountDao.update(account);
             } else {

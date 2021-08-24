@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page trimDirectiveWhitespaces="true" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -11,26 +12,23 @@
 <fmt:message var="title" key="admin.title"/>
 <fmt:message var="titlePage" key="admin.users"/>
 <u:html title="${title} : ${titlePage}">
-    <div class="content-block">
-    <div class="menu">
+    <nav>
         <jsp:include page="/WEB-INF/jsp/admin/admin_menu.jsp"/>
-    </div>
-    <c:choose>
-        <c:when test="${empty users}">
-            <div class="main">
-                <h3>
+    </nav>
+    <div class="main">
+        <c:choose>
+            <c:when test="${empty users}">
+                <h2 class="text-center">
                     <fmt:message key="admin.usersEmpty"/>
-                </h3>
-            </div>
-        </c:when>
-        <c:otherwise>
-
-            <div class="main">
-                <h3>
+                </h2>
+            </c:when>
+            <c:otherwise>
+                <h2 class="text-center">
                     <fmt:message key="admin.users"/>
-                </h3>
+                </h2>
                 <br>
-                <table border="1">
+                <table class="data-table">
+                    <thead>
                     <tr>
                         <th width="150"><fmt:message key="admin.userLogin"/></th>
                         <th width="150"><fmt:message key="admin.userFirstname"/></th>
@@ -38,15 +36,17 @@
                         <th width="150"><fmt:message key="admin.userPhoneNumber"/></th>
                         <th width="150"><fmt:message key="admin.userBalance"/></th>
                         <th width="150"><fmt:message key="admin.userState"/></th>
-                        <th width="150"></th>
+                        <th></th>
                     </tr>
+                    </thead>
+                    <tbody>
                     <c:forEach var="user" items="${users}">
                         <tr>
                             <td>${user.key}</td>
                             <td>${user.value.firstname}</td>
                             <td>${user.value.lastname}</td>
                             <td>${user.value.phoneNumber}</td>
-                            <td align="center"><ctg:money-format balance="${user.value.balance}"/>&nbsp<fmt:message
+                            <td><ctg:money-format balance="${user.value.balance}"/>&nbsp<fmt:message
                                     key="user.money"/></td>
                             <c:choose>
                                 <c:when test="${user.value.blocked}">
@@ -56,17 +56,18 @@
                                     <td><fmt:message key="admin.userStateActive"/></td>
                                 </c:otherwise>
                             </c:choose>
-                            <td>
+                            <td class="button-cell">
                                 <form action="edit.html" method="POST">
                                     <input type="hidden" name="id" value="${user.value.id}">
-                                    <input type="submit" value="<fmt:message key="admin.userManage"/>" class="btn">
+                                    <input type="submit" value="<fmt:message key="admin.userManage"/> 📝"
+                                           class="btn btn-small">
                                 </form>
                             </td>
                         </tr>
                     </c:forEach>
+                    </tbody>
                 </table>
-            </div>
-            </div>
-        </c:otherwise>
-    </c:choose>
+            </c:otherwise>
+        </c:choose>
+    </div>
 </u:html>

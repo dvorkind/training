@@ -12,6 +12,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class LoginCommand implements Command {
     @Override
@@ -27,11 +29,14 @@ public class LoginCommand implements Command {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         if (login != null && password != null) {
+            Logger logger;
             try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
                 AccountService accountService = serviceFactory.getAccountService();
                 Account account = accountService.login(login, password);
                 Forward forward = getForward(session, account);
                 if (forward != null) {
+                    logger = LogManager.getLogger("User");
+                    logger.info("User " + login + " has logged in. IP [" + req.getRemoteAddr() + "]");
                     return forward;
                 } else {
                     req.setAttribute("login", login);

@@ -5,36 +5,43 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
 public class CommandManager extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         process(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         process(req, resp);
     }
 
-    private void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void process(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String context = req.getContextPath();
         String url = Helper.extractPath(req.getRequestURI(), context);
-        Command command = CommandFactory.getCommand(url);
-        Forward forward = null;
-        if (command != null) {
-            forward = command.execute(req, resp);
-        }
-        if (forward != null && forward.isRedirect()) {
-            resp.sendRedirect(context + forward.getUrl());
-        } else {
-            if (forward != null && forward.getUrl() != null) {
-                url = forward.getUrl();
+        try {
+            Command command = CommandFactory.getCommand(url);
+            Forward forward = null;
+            if (command != null) {
+                forward = command.execute(req, resp);
             }
-            req.getRequestDispatcher("/WEB-INF/jsp" + url + ".jsp")
-                    .forward(req, resp);
+            if (forward != null && forward.isRedirect()) {
+                resp.sendRedirect(context + forward.getUrl());
+            } else {
+                if (forward != null && forward.getUrl() != null) {
+                    url = forward.getUrl();
+                }
+                req.getRequestDispatcher("/WEB-INF/jsp" + url + ".jsp").forward(req, resp);
+            }
+        } catch (ServletException e) {
+            Logger logger = LogManager.getLogger();
+            logger.error("Servlet Exception: " + e);
+            resp.sendError(404);
         }
     }
 }

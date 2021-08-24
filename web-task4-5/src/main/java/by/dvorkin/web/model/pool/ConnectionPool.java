@@ -61,6 +61,7 @@ public final class ConnectionPool {
                         connection = null;
                     }
                 } else if (usedConnections.size() < maxSizeConnections) {
+                    //TODO: Log
                     connection = newConnection();
                 } else {
                     throw new ConnectionPoolException("The database connections amount is over limited");

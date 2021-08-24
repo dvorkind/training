@@ -16,11 +16,10 @@ public class MoneyFormatTag extends TagSupport {
     public int doStartTag() throws JspException {
         //TODO: правильно ли обрабатываю деньги
         String formattedPrice;
+        int absBalance = Math.abs(balance);
+        formattedPrice = String.format("%d,%02d", absBalance / 100, absBalance % 100);
         if (balance < 0) {
-            balance = Math.abs(balance);
-            formattedPrice = "-" + String.format("%d,%02d", balance / 100, balance % 100);
-        } else {
-            formattedPrice = String.format("%d,%02d", balance / 100, balance % 100);
+            formattedPrice = "-" + formattedPrice;
         }
         try {
             pageContext.getOut()

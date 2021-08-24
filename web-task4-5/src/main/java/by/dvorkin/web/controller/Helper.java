@@ -10,6 +10,5 @@ public class Helper {
         }
         return url;
     }
-
-
+    //TODO: ask for synchronize
 }
