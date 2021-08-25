@@ -1,6 +1,7 @@
 package by.dvorkin.web.model.service;
 
 import by.dvorkin.web.model.dao.AccountDao;
+import by.dvorkin.web.model.dao.TariffDao;
 import by.dvorkin.web.model.dao.UserDao;
 import by.dvorkin.web.model.service.exceptions.FactoryException;
 
@@ -11,9 +12,13 @@ public interface ServiceFactory extends AutoCloseable {
 
     UserService getUserService() throws FactoryException;
 
+    TariffService getTariffService() throws FactoryException;
+
     AccountDao getAccountDao() throws FactoryException;
 
     UserDao getUserDao() throws FactoryException;
+
+    TariffDao getTariffDao() throws FactoryException;
 
     Connection getConnection() throws FactoryException;
 

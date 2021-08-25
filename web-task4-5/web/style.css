@@ -64,6 +64,11 @@ main form h2 {
 
 .text-center {
     text-align: center;
+    margin-bottom: 30px;
+}
+
+.msg {
+    text-align: center;
 }
 
 .submit-form {
@@ -103,7 +108,12 @@ main form h2 {
     color: gray;
 }
 
-.input-group input {
+.input-group label.small-label {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.input-group input, .input-group textarea {
     display: block;
     width: 100%;
     padding: 5px;
@@ -113,6 +123,26 @@ main form h2 {
     border-radius: 3px;
 }
 
+.input-group textarea {
+    box-sizing: border-box;
+    resize: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    white-space: pre-wrap;
+}
+
+.input-group textarea::-webkit-scrollbar {
+    display: none;
+}
+
+.input-group input.small-input {
+    display: inline-block;
+    width: 100px;
+}
+
+.pre-wrap {
+    white-space: pre-wrap;
+}
 .validation-indicator {
     position: absolute;
     color: lawngreen;
@@ -159,6 +189,23 @@ select.btn option {
     border-radius: 1px;
     font-size: 16px;
     background: #608bd2;
+}
+
+.center-btn {
+    display: block;
+    width: fit-content;
+    margin: 15px auto;
+    padding: 10px 20px;
+    color: #282c2f;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+td .btn-small.btn-in-cell {
+    display: block;
+    width: 120px;
+    margin: 5px 0;
 }
 
 .form-link {

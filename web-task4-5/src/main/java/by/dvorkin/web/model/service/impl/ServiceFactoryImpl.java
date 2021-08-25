@@ -1,13 +1,16 @@
 package by.dvorkin.web.model.service.impl;
 
 import by.dvorkin.web.model.dao.AccountDao;
+import by.dvorkin.web.model.dao.TariffDao;
 import by.dvorkin.web.model.dao.UserDao;
 import by.dvorkin.web.model.dao.impl.AccountDaoImpl;
+import by.dvorkin.web.model.dao.impl.TariffDaoImpl;
 import by.dvorkin.web.model.dao.impl.UserDaoImpl;
 import by.dvorkin.web.model.pool.ConnectionPool;
 import by.dvorkin.web.model.pool.ConnectionPoolException;
 import by.dvorkin.web.model.service.AccountService;
 import by.dvorkin.web.model.service.ServiceFactory;
+import by.dvorkin.web.model.service.TariffService;
 import by.dvorkin.web.model.service.Transaction;
 import by.dvorkin.web.model.service.UserService;
 import by.dvorkin.web.model.service.exceptions.FactoryException;
@@ -18,8 +21,10 @@ public class ServiceFactoryImpl implements ServiceFactory {
     private Connection connection;
     private AccountDao accountDao = null;
     private UserDao userDao = null;
+    private TariffDao tariffDao = null;
     private AccountService accountService = null;
     private UserService userService = null;
+    private TariffService tariffService = null;
     private Transaction transaction = null;
 
     @Override
@@ -46,6 +51,17 @@ public class ServiceFactoryImpl implements ServiceFactory {
     }
 
     @Override
+    public TariffService getTariffService() throws FactoryException {
+        if (tariffService == null) {
+            TariffServiceImpl tariffServiceImpl = new TariffServiceImpl();
+            tariffServiceImpl.setTransaction(getTransaction());
+            tariffServiceImpl.setTariffDao(getTariffDao());
+            tariffService = tariffServiceImpl;
+        }
+        return tariffService;
+    }
+
+    @Override
     public AccountDao getAccountDao() throws FactoryException {
         if (accountDao == null) {
             AccountDaoImpl accountDaoImpl = new AccountDaoImpl();
@@ -63,6 +79,16 @@ public class ServiceFactoryImpl implements ServiceFactory {
             userDao = userDaoImpl;
         }
         return userDao;
+    }
+
+    @Override
+    public TariffDao getTariffDao() throws FactoryException {
+        if (tariffDao == null) {
+            TariffDaoImpl tariffDaoImpl = new TariffDaoImpl();
+            tariffDaoImpl.setConnection(getConnection());
+            tariffDao = tariffDaoImpl;
+        }
+        return tariffDao;
     }
 
     @Override

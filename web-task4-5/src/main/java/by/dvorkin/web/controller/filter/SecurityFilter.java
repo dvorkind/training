@@ -33,8 +33,10 @@ public class SecurityFilter implements Filter {
         permissions.put("/change_password", all);
 
         permissions.put("/admin/admin", admin);
-        permissions.put("/admin/new_users", admin);
-        permissions.put("/admin/users", admin);
+        permissions.put("/admin/users_new", admin);
+        permissions.put("/admin/users_all", admin);
+        permissions.put("/admin/tariffs", admin);
+        permissions.put("/admin/tariff_add", admin);
 
         permissions.put("/user/user", subscriber);
     }

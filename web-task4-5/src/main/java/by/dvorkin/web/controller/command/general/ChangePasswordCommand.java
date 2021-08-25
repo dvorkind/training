@@ -12,6 +12,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ChangePasswordCommand implements Command {
     private static final String PASSWORD_REGEX = "^[A-Za-z0-9~!@#$%^&*()-_=+'/|.]{5,20}$";
@@ -28,12 +30,13 @@ public class ChangePasswordCommand implements Command {
                     AccountService accountService = serviceFactory.getAccountService();
                     accountService.changePassword(oldPassword, newPassword, account);
                     req.setAttribute("success", "changePassword.success");
+                    Logger logger = LogManager.getLogger("User");
+                    logger.info("User " + account.getLogin() + " changed the password. IP [" + req.getRemoteAddr() + "]");
                     return null;
                 } catch (FactoryException e) {
-                    e.printStackTrace();
                     throw new ServletException(e);
                 } catch (AccountPasswordIncorrectException e) {
-                    req.setAttribute("oldPasswordError", "changePassword.error.oldPassword");
+                    req.setAttribute("oldPasswordError", "changePassword.errorOldPassword");
                     return null;
                 } catch (Exception ignored) {
                 }
@@ -52,11 +55,11 @@ public class ChangePasswordCommand implements Command {
         } else {
             if (password.trim()
                     .equals("")) {
-                req.setAttribute("oldPasswordError", "changePassword.error.empty");
+                req.setAttribute("oldPasswordError", "changePassword.errorEmpty");
                 return false;
             }
             if (!password.matches(PASSWORD_REGEX)) {
-                req.setAttribute("oldPasswordError", "changePassword.error.password");
+                req.setAttribute("oldPasswordError", "changePassword.errorPassword");
                 return false;
             }
         }
@@ -72,11 +75,11 @@ public class ChangePasswordCommand implements Command {
         } else {
             if (password.trim()
                     .equals("")) {
-                req.setAttribute("newPasswordError", "changePassword.error.empty");
+                req.setAttribute("newPasswordError", "changePassword.errorEmpty");
                 return false;
             }
             if (!password.matches(PASSWORD_REGEX)) {
-                req.setAttribute("newPasswordError", "changePassword.error.password");
+                req.setAttribute("newPasswordError", "changePassword.errorPassword");
                 return false;
             }
         }
@@ -93,15 +96,15 @@ public class ChangePasswordCommand implements Command {
         } else {
             if (confirmedNewPassword.trim()
                     .equals("")) {
-                req.setAttribute("confirmedNewPasswordError", "changePassword.error.confirmedPasswordDifferent");
+                req.setAttribute("confirmedNewPasswordError", "changePassword.errorConfirmedPasswordDifferent");
                 return false;
             }
             if (!confirmedNewPassword.matches(PASSWORD_REGEX)) {
-                req.setAttribute("confirmedNewPasswordError", "changePassword.error.password");
+                req.setAttribute("confirmedNewPasswordError", "changePassword.errorPassword");
                 return false;
             }
             if (!confirmedNewPassword.equals(newPassword)) {
-                req.setAttribute("confirmedNewPasswordError", "changePassword.error.confirmedPasswordDifferent");
+                req.setAttribute("confirmedNewPasswordError", "changePassword.errorConfirmedPasswordDifferent");
                 return false;
             }
         }

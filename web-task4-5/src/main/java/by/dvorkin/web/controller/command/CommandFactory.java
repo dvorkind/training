@@ -1,15 +1,17 @@
 package by.dvorkin.web.controller.command;
 
-import by.dvorkin.web.controller.command.admin.SummaryCommand;
-import by.dvorkin.web.controller.command.admin.NewUsersCommand;
-import by.dvorkin.web.controller.command.admin.UsersCommand;
+import by.dvorkin.web.controller.command.admin.AdminAddTariffCommand;
+import by.dvorkin.web.controller.command.admin.AdminSummaryCommand;
+import by.dvorkin.web.controller.command.admin.AdminNewUsersCommand;
+import by.dvorkin.web.controller.command.admin.AdminTariffsCommand;
+import by.dvorkin.web.controller.command.admin.AdminUsersCommand;
 import by.dvorkin.web.controller.command.general.ChangePasswordCommand;
 import by.dvorkin.web.controller.command.general.LanguageCommand;
 import by.dvorkin.web.controller.command.general.LoginCommand;
 import by.dvorkin.web.controller.command.general.LogoutCommand;
-import by.dvorkin.web.controller.command.general.MainCommand;
+import by.dvorkin.web.controller.command.general.MainPageCommand;
 import by.dvorkin.web.controller.command.general.RegistrationCommand;
-import by.dvorkin.web.controller.command.user.UserCommand;
+import by.dvorkin.web.controller.command.user.UserSummaryCommand;
 import jakarta.servlet.ServletException;
 
 import java.lang.reflect.InvocationTargetException;
@@ -20,15 +22,17 @@ public class CommandFactory {
     private static Map<String, Class<? extends Command>> commands = new HashMap<>();
 
     static {
-        commands.put("/", MainCommand.class);
+        commands.put("/", MainPageCommand.class);
         commands.put("/login", LoginCommand.class);
         commands.put("/registration", RegistrationCommand.class);
         commands.put("/language", LanguageCommand.class);
         commands.put("/logout", LogoutCommand.class);
-        commands.put("/admin/admin",  SummaryCommand.class);
-        commands.put("/admin/new_users",  NewUsersCommand.class);
-        commands.put("/admin/users",  UsersCommand.class);
-        commands.put("/user/user",  UserCommand.class);
+        commands.put("/admin/admin",  AdminSummaryCommand.class);
+        commands.put("/admin/users_new",  AdminNewUsersCommand.class);
+        commands.put("/admin/users_all",  AdminUsersCommand.class);
+        commands.put("/admin/tariffs",  AdminTariffsCommand.class);
+        commands.put("/admin/tariff_add",  AdminAddTariffCommand.class);
+        commands.put("/user/user",  UserSummaryCommand.class);
         commands.put("/change_password",  ChangePasswordCommand.class);
     }
 

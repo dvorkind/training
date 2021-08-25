@@ -17,13 +17,13 @@
         </a>
     </li>
     <li>
-        <a href="${context}/admin/users.html" ${fn:contains(pageContext.request.servletPath, 'admin/users.jsp') ? 'class="active-item"' : ''}>
+        <a href="${context}/admin/users_all.html" ${fn:contains(pageContext.request.servletPath, 'admin/users_all.jsp') ? 'class="active-item"' : ''}>
             <fmt:message key="menu.users"/>
         </a>
     </li>
     <li>
-        <a href="${context}/admin/new_users.html" ${fn:contains(pageContext.request.servletPath, 'admin/new_users.jsp') ? 'class="active-item"' : ''}>
-            <fmt:message key="menu.new.users"/>
+        <a href="${context}/admin/users_new.html" ${fn:contains(pageContext.request.servletPath, 'admin/users_new.jsp') ? 'class="active-item"' : ''}>
+            <fmt:message key="menu.newUsers"/>
         </a>
     </li>
     <li>

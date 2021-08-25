@@ -52,7 +52,7 @@
                         </p>
                         <div class="input-group">
                             <label for="confirmedNewPassword"><fmt:message
-                                    key="changePassword.confirm.newPassword"/></label>
+                                    key="changePassword.confirmNewPassword"/></label>
                             <input type="password" id="confirmedNewPassword" name="confirmedNewPassword"
                                    value=${confirmedNewPassword}>
                             <c:if test="${confirmedNewPasswordIsValid}">

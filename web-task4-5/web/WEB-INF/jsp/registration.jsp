@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page trimDirectiveWhitespaces="true" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -39,7 +40,7 @@
                     </c:if>
                 </p>
                 <div class="input-group">
-                    <label for="confirmedPassword"><fmt:message key="registration.confirm.password"/></label>
+                    <label for="confirmedPassword"><fmt:message key="registration.confirmPassword"/></label>
                     <input type="password" id="confirmedPassword" name="confirmedPassword" value=${confirmedPassword}>
                     <c:if test="${confirmedPasswordIsValid}">
                         <span class="validation-indicator"> &#10004 </span>
@@ -75,7 +76,7 @@
                     </c:if>
                 </p>
                 <div class="input-group">
-                    <label for="phoneNumber"><fmt:message key="registration.phone.number"/></label>
+                    <label for="phoneNumber"><fmt:message key="registration.phoneNumber"/></label>
                     <input type="text" id="phoneNumber" name="phoneNumber" value=${phoneNumber}>
                     <c:if test="${phoneNumberIsValid}">
                         <span class="validation-indicator"> &#10004 </span>
@@ -88,7 +89,7 @@
                 </p>
             </div>
             <div>
-                <input type="submit" value="<fmt:message key="registration.sign.up" />" class="btn">
+                <input type="submit" value="<fmt:message key="registration.signUp" />" class="btn">
             </div>
         </form>
     </div>

@@ -9,7 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ApplicationInitializerListener implements ServletContextListener {
-    private final static Logger LOGGER = LogManager.getLogger("Application");
+    private Logger logger = LogManager.getLogger("Application");
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
@@ -20,15 +20,16 @@ public class ApplicationInitializerListener implements ServletContextListener {
             String jdbcUsername = context.getInitParameter("jdbc-username");
             String jdbcPassword = context.getInitParameter("jdbc-password");
             ConnectionPool.getInstance().init(jdbcDriver, jdbcUrl, jdbcUsername, jdbcPassword, 5, 10, 0);
-            LOGGER.info("APPLICATION START");
+            logger.info("APPLICATION START");
         } catch (ConnectionPoolException e) {
-            e.printStackTrace();
+            Logger loggerError = LogManager.getLogger();
+            loggerError.error("Connection pool " + e);
         }
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        LOGGER.info("APPLICATION FINISH");
+        logger.info("APPLICATION FINISH");
         ConnectionPool.getInstance().destroy();
     }
 }

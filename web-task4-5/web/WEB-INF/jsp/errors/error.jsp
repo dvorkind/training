@@ -8,9 +8,13 @@
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="messages"/>
 
-<fmt:message var="title" key="error.forbidden"/>
+<fmt:message var="title" key="error.unexpected"/>
 <u:html title="${title}">
     <div class="main">
-        <h2 class="text-center"><fmt:message key="error.forbidden"/></h2>
+        <h2 class="text-center">
+            <fmt:message key="error.unexpectedMessageOne"/>
+        </h2>
+        <p class="msg"><fmt:message key="error.unexpectedMessageTwo"/></p>
+        <p class="msg"><fmt:message key="error.unexpectedMessageThree"/></p>
     </div>
 </u:html>

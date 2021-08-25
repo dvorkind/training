@@ -8,9 +8,9 @@ import java.util.Map;
 public interface UserService {
     User findByAccountId(Long id) throws ServiceException;
 
-    Map<String, User> findAll() throws ServiceException;
+    Map<String, User> getAll() throws ServiceException;
 
-    Map<String, User> findNewUsers() throws ServiceException;
+    Map<String, User> getNewUsers() throws ServiceException;
 
     void activate(int id) throws ServiceException;
 }

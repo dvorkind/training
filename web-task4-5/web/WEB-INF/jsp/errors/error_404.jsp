@@ -8,7 +8,9 @@
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="messages"/>
 
-<fmt:message var="title" key="error.404.title"/>
+<fmt:message var="title" key="error.404Title"/>
 <u:html title="${title}">
-    <h2 class="text-center"><fmt:message key="error.404"/></h2>
+    <div class="main">
+        <h2 class="text-center"><fmt:message key="error.404"/></h2>
+    </div>
 </u:html>

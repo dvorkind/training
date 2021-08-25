@@ -19,35 +19,38 @@
             </nav>
             <div class="main">
                 <h2 class="text-center">
-                    <fmt:message key="user.hello"/>, ${user.firstname} (${account.login}) (${account.password})!
+                    <fmt:message key="user.hello"/>, ${user.firstname} (${sessionAccount.login}) (${sessionAccount.password})!
                 </h2>
-                <br>
                 <table>
                     <tr>
-                        <td><fmt:message key="user.profile.firstname"/>: &nbsp</td>
+                        <td><fmt:message key="user.profileFirstname"/>: &nbsp</td>
                         <td>${user.firstname}</td>
                     </tr>
                     <tr>
-                        <td><fmt:message key="user.profile.lastname"/>: &nbsp</td>
+                        <td><fmt:message key="user.profileLastname"/>: &nbsp</td>
                         <td>${user.lastname}</td>
                     </tr>
                     <tr>
-                        <td><fmt:message key="user.profile.phoneNumber"/>: &nbsp</td>
+                        <td><fmt:message key="user.profilePhoneNumber"/>: &nbsp</td>
                         <td>${user.phoneNumber}</td>
                     </tr>
                     <tr>
-                        <td><fmt:message key="user.profile.balance"/>: &nbsp</td>
+                        <td><fmt:message key="user.profileTariff"/>: &nbsp</td>
+                        <td>${tariffName}</td>
+                    </tr>
+                    <tr>
+                        <td><fmt:message key="user.profileBalance"/>: &nbsp</td>
                         <td><ctg:money-format balance="${user.balance}"/>&nbsp<fmt:message key="user.money"/></td>
                     </tr>
                     <tr>
-                        <td><fmt:message key="user.profile.status"/>: &nbsp</td>
+                        <td><fmt:message key="user.profileStatus"/>: &nbsp</td>
                         <td>
                             <c:choose>
                                 <c:when test="${user.isBlocked()}">
-                                    <fmt:message key="user.profile.blocked"/>
+                                    <fmt:message key="user.profileBlocked"/>
                                 </c:when>
                                 <c:otherwise>
-                                    <fmt:message key="user.profile.active"/>
+                                    <fmt:message key="user.profileActive"/>
                                 </c:otherwise>
                             </c:choose>
                         </td>
@@ -56,16 +59,16 @@
             </div>
         </c:when>
         <c:otherwise>
-            <form action="user.html" method="post" class="reg-form submit-form">
+            <div class="main">
                 <h2 class="text-center">
-                    <fmt:message key="registration.congratulation.sentence1"/><br>
-                    <fmt:message key="registration.congratulation.sentence2"/><br>
-                    <fmt:message key="registration.congratulation.sentence3"/>
+                    <fmt:message key="registration.congratulationSentence1"/>
                 </h2>
-                <div>
-                    <input type="submit" value="<fmt:message key="user.refresh" />" class="btn">
-                </div>
-            </form>
+                <p class="msg"><fmt:message key="registration.congratulationSentence2"/></p>
+                <p class="msg"><fmt:message key="registration.congratulationSentence3"/></p>
+                <a href="user.html" class="btn center-btn">
+                    <fmt:message key="user.refresh"/>
+                </a>
+            </div>
         </c:otherwise>
     </c:choose>
 </u:html>

@@ -25,17 +25,17 @@
         <c:choose>
             <c:when test="${sessionAccount.role == 'ADMINISTRATOR'}">
                 <a class="header-link" href="${context}/admin/admin.html">
-                    <fmt:message key="header.phone.station" />
+                    <fmt:message key="header.phoneStation" />
                 </a>
             </c:when>
             <c:when test="${sessionAccount.role == 'SUBSCRIBER'}">
                 <a class="header-link" href="${context}/user/user.html">
-                    <fmt:message key="header.phone.station" />
+                    <fmt:message key="header.phoneStation" />
                 </a>
             </c:when>
             <c:otherwise>
                 <a class="header-link" href="${context}/index.html">
-                    <fmt:message key="header.phone.station" />
+                    <fmt:message key="header.phoneStation" />
                 </a>
             </c:otherwise>
         </c:choose>
@@ -52,7 +52,7 @@
             <c:choose>
                 <c:when test="${not empty sessionAccount}">
                     <a href="${context}/logout.html" class="btn">
-                        <fmt:message key="header.logout"/>
+                        <fmt:message key="header.logout"/> (${sessionAccount.login})
                     </a>
                 </c:when>
                 <c:otherwise>

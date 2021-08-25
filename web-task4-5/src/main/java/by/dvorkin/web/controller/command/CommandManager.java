@@ -9,6 +9,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 public class CommandManager extends HttpServlet {
     @Override
@@ -40,8 +42,10 @@ public class CommandManager extends HttpServlet {
             }
         } catch (ServletException e) {
             Logger logger = LogManager.getLogger();
-            logger.error("Servlet Exception: " + e);
-            resp.sendError(404);
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            logger.error(sw.toString());
+            resp.sendError(500);
         }
     }
 }

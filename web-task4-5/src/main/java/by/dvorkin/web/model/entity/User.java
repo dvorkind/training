@@ -6,8 +6,18 @@ public class User {
     private String firstname;
     private String lastname;
     private String phoneNumber;
+    private Long tariff;
     private int balance;
     private boolean blocked;
+    private boolean registered;
+
+    public Long getTariff() {
+        return tariff;
+    }
+
+    public void setTariff(Long tariff) {
+        this.tariff = tariff;
+    }
 
     public boolean isRegistered() {
         return registered;
@@ -16,8 +26,6 @@ public class User {
     public void setRegistered(boolean registered) {
         this.registered = registered;
     }
-
-    private boolean registered;
 
     public Long getId() {
         return id;

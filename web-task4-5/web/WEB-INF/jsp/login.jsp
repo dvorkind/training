@@ -20,7 +20,6 @@
                 </div>
                 <div class="input-group">
                     <label for="password"><fmt:message key="login.password"/></label>
-                    <!-- TODO ask for hash-->
                     <input type="password" id="password" name="password">
                 </div>
             </div>
@@ -30,8 +29,8 @@
                 </c:if>
             </p>
             <div>
-                <input type="submit" value="<fmt:message key="login.sign.in" />" class="btn">
-                <a href="registration.html" class="form-link"><fmt:message key="login.sign.up"/></a>
+                <input type="submit" value="<fmt:message key="login.signIn" />" class="btn">
+                <a href="registration.html" class="form-link"><fmt:message key="login.signUp"/></a>
             </div>
         </form>
     </div>

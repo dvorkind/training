@@ -21,7 +21,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Long create(User user) throws DaoException {
-        String sql = "INSERT INTO `user` (`account_id`, `firstname`, `lastname`, `phone_number`, `balance`, " +
+        String sql = "INSERT INTO `user` (`account_id`, `firstname`, `lastname`, `phone_number`, `balance`, `tariff`," +
                 "`is_blocked`, `is_registered`) VALUES (?, ?, ?, ?, ?, ?, ?)";
         ResultSet resultSet;
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -30,8 +30,9 @@ public class UserDaoImpl implements UserDao {
             statement.setString(3, user.getLastname());
             statement.setString(4, user.getPhoneNumber());
             statement.setInt(5, user.getBalance());
-            statement.setBoolean(6, user.isBlocked());
-            statement.setBoolean(7, user.isRegistered());
+            statement.setLong(6, user.getTariff());
+            statement.setBoolean(7, user.isBlocked());
+            statement.setBoolean(8, user.isRegistered());
             statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
             resultSet.next();
@@ -80,7 +81,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User readByPhoneNumber(String phoneNumber) throws DaoException {
-        String sql = "SELECT `id`, `account_id`, `firstname`, `lastname`, `balance`, `is_blocked`, `is_registered` "
+        String sql = "SELECT `id`, `account_id`, `firstname`, `lastname`, `balance`, `tariff`, `is_blocked`, `is_registered` "
                 + "FROM `user` WHERE" + " `phone_number` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, phoneNumber);
@@ -94,6 +95,7 @@ public class UserDaoImpl implements UserDao {
                 user.setLastname(resultSet.getString("lastname"));
                 user.setPhoneNumber(phoneNumber);
                 user.setBalance(resultSet.getInt("balance"));
+                user.setTariff(resultSet.getLong("tariff"));
                 user.setBlocked(resultSet.getBoolean("is_blocked"));
                 user.setRegistered(resultSet.getBoolean("is_registered"));
             }
@@ -105,7 +107,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User readByAccountId(Long id) throws DaoException {
-        String sql = "SELECT `id`, `firstname`, `lastname`, `phone_number`, `balance`, `is_blocked`, `is_registered` "
+        String sql = "SELECT `id`, `firstname`, `lastname`, `phone_number`, `balance`, `tariff`, `is_blocked`, `is_registered` "
                 + "FROM `user` WHERE" + " `account_id` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
@@ -119,6 +121,7 @@ public class UserDaoImpl implements UserDao {
                 user.setLastname(resultSet.getString("lastname"));
                 user.setPhoneNumber(resultSet.getString("phone_number"));
                 user.setBalance(resultSet.getInt("balance"));
+                user.setTariff(resultSet.getLong("tariff"));
                 user.setBlocked(resultSet.getBoolean("is_blocked"));
                 user.setRegistered(resultSet.getBoolean("is_registered"));
             }
@@ -149,6 +152,7 @@ public class UserDaoImpl implements UserDao {
         user.setLastname(resultSet.getString("user.lastname"));
         user.setPhoneNumber(resultSet.getString("user.phone_number"));
         user.setBalance(resultSet.getInt("user.balance"));
+        user.setTariff(resultSet.getLong("user.tariff"));
         user.setBlocked(resultSet.getBoolean("user.is_blocked"));
         user.setRegistered(resultSet.getBoolean("user.is_registered"));
         return user;

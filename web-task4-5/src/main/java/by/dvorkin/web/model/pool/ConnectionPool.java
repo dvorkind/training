@@ -16,6 +16,7 @@ public final class ConnectionPool {
     private String jdbcUrl;
     private String user;
     private String password;
+    private Driver driver;
     private int validationConnectionTimeout;
     private int maxSizeConnections;
     private final Queue<Connection> freeConnections = new ConcurrentLinkedQueue<>();
@@ -32,7 +33,7 @@ public final class ConnectionPool {
                      int maxSizeConnections, int validationConnectionTimeout) throws ConnectionPoolException {
         try {
             destroy();
-            Driver driver = (Driver) Class.forName(jdbcDriver).getConstructor().newInstance();
+            driver = (Driver) Class.forName(jdbcDriver).getConstructor().newInstance();
             DriverManager.registerDriver(driver);
             this.jdbcUrl = jdbcUrl;
             this.user = user;
@@ -99,6 +100,10 @@ public final class ConnectionPool {
                     }
                 }
                 usedConnections.clear();
+                try {
+                    DriverManager.deregisterDriver(driver);
+                } catch (SQLException ignored) {
+                }
             }
         }
     }

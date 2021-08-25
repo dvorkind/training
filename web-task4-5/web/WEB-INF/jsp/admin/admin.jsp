@@ -19,6 +19,5 @@
         <h2 class="text-center">
             <fmt:message key="admin.users"/>
         </h2>
-        <br>
     </div>
 </u:html>

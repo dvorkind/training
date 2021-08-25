@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, User> findAll() throws ServiceException {
+    public Map<String, User> getAll() throws ServiceException {
         try {
             return userDao.readAll();
         } catch (DaoException e) {
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, User> findNewUsers() throws ServiceException {
+    public Map<String, User> getNewUsers() throws ServiceException {
         try {
             return userDao.readNewUsers();
         } catch (DaoException e) {

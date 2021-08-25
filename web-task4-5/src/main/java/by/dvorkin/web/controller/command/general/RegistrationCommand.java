@@ -14,6 +14,8 @@ import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class RegistrationCommand implements Command {
     private static final String NAME_REGEX = "^[A-Za-zА-Яа-яЁё\\s'-]{1,20}$";
@@ -30,17 +32,18 @@ public class RegistrationCommand implements Command {
                 User user = createUser(req);
                 accountService.create(account, user);
                 req.getSession(false).setAttribute("sessionAccount", account);
+                Logger logger = LogManager.getLogger("User");
+                logger.info("User " + account.getLogin() + " has registered. IP [" + req.getRemoteAddr() + "]");
                 return new Forward("/login.html");
             } catch (FactoryException e) {
-                e.printStackTrace();
                 throw new ServletException(e);
             } catch (AccountLoginNotUniqueException e) {
                 req.removeAttribute("loginIsValid");
-                req.setAttribute("loginError", "registration.error.existAccountError");
+                req.setAttribute("loginError", "registration.errorExistAccountError");
                 return null;
             } catch (UserPhoneNotUniqueException e) {
                 req.removeAttribute("phoneNumberIsValid");
-                req.setAttribute("phoneNumberError", "registration.error.existUserError");
+                req.setAttribute("phoneNumberError", "registration.errorExistUserError");
                 return null;
             } catch (Exception ignored) {
             }
@@ -59,6 +62,7 @@ public class RegistrationCommand implements Command {
     private User createUser(HttpServletRequest req) {
         User user = new User();
         user.setBalance(0);
+        user.setTariff(1L);
         user.setBlocked(true);
         user.setRegistered(false);
         user.setFirstname(req.getParameter("firstname"));
@@ -79,11 +83,11 @@ public class RegistrationCommand implements Command {
         } else {
             if (firstname.trim()
                     .equals("")) {
-                req.setAttribute("firstnameError", "registration.error.empty");
+                req.setAttribute("firstnameError", "registration.errorEmpty");
                 return false;
             }
             if (!firstname.matches(NAME_REGEX)) {
-                req.setAttribute("firstnameError", "registration.error.firstname");
+                req.setAttribute("firstnameError", "registration.errorFirstname");
                 return false;
             }
         }
@@ -99,11 +103,11 @@ public class RegistrationCommand implements Command {
         } else {
             if (lastname.trim()
                     .equals("")) {
-                req.setAttribute("lastnameError", "registration.error.empty");
+                req.setAttribute("lastnameError", "registration.errorEmpty");
                 return false;
             }
             if (!lastname.matches(NAME_REGEX)) {
-                req.setAttribute("lastnameError", "registration.error.lastname");
+                req.setAttribute("lastnameError", "registration.errorLastname");
                 return false;
             }
         }
@@ -123,11 +127,11 @@ public class RegistrationCommand implements Command {
             req.setAttribute("phoneNumber", phoneNumber);
             if (phoneNumber.trim()
                     .equals("")) {
-                req.setAttribute("phoneNumberError", "registration.error.empty");
+                req.setAttribute("phoneNumberError", "registration.errorEmpty");
                 return false;
             }
             if (!phoneNumber.matches(PHONE_NUMBER_REGEX)) {
-                req.setAttribute("phoneNumberError", "registration.error.phoneNumber");
+                req.setAttribute("phoneNumberError", "registration.errorPhoneNumber");
                 return false;
             }
         }
@@ -143,11 +147,11 @@ public class RegistrationCommand implements Command {
         } else {
             if (login.trim()
                     .equals("")) {
-                req.setAttribute("loginError", "registration.error.empty");
+                req.setAttribute("loginError", "registration.errorEmpty");
                 return false;
             }
             if (!login.matches(LOGIN_REGEX)) {
-                req.setAttribute("loginError", "registration.error.login");
+                req.setAttribute("loginError", "registration.errorLogin");
                 return false;
             }
         }
@@ -163,11 +167,11 @@ public class RegistrationCommand implements Command {
         } else {
             if (password.trim()
                     .equals("")) {
-                req.setAttribute("passwordError", "registration.error.empty");
+                req.setAttribute("passwordError", "registration.errorEmpty");
                 return false;
             }
             if (!password.matches(PASSWORD_REGEX)) {
-                req.setAttribute("passwordError", "registration.error.password");
+                req.setAttribute("passwordError", "registration.errorPassword");
                 return false;
             }
         }
@@ -184,15 +188,15 @@ public class RegistrationCommand implements Command {
         } else {
             if (confirmedPassword.trim()
                     .equals("")) {
-                req.setAttribute("confirmedPasswordError", "registration.error.confirmedPasswordDifferent");
+                req.setAttribute("confirmedPasswordError", "registration.errorConfirmedPasswordDifferent");
                 return false;
             }
             if (!confirmedPassword.matches(PASSWORD_REGEX)) {
-                req.setAttribute("confirmedPasswordError", "registration.error.password");
+                req.setAttribute("confirmedPasswordError", "registration.errorPassword");
                 return false;
             }
             if (!confirmedPassword.equals(password)) {
-                req.setAttribute("confirmedPasswordError", "registration.error.confirmedPasswordDifferent");
+                req.setAttribute("confirmedPasswordError", "registration.errorConfirmedPasswordDifferent");
                 return false;
             }
         }

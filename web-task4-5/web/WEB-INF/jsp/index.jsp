@@ -7,7 +7,7 @@
 
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="messages"/>
-<fmt:message var="title" key="header.phone.station"/>
+<fmt:message var="title" key="header.phoneStation"/>
 
 <u:html title="${title}">
     <form method="post" class="submit-form">

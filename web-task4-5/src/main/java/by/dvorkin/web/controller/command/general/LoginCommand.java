@@ -40,7 +40,7 @@ public class LoginCommand implements Command {
                     return forward;
                 } else {
                     req.setAttribute("login", login);
-                    req.setAttribute("error", "login.message.incorrect.password");
+                    req.setAttribute("error", "login.messageIncorrectPassword");
                     return null;
                 }
             } catch (ServiceException | FactoryException e) {
