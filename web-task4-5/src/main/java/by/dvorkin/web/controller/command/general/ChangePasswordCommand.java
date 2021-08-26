@@ -7,6 +7,7 @@ import by.dvorkin.web.model.service.AccountService;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.exceptions.AccountPasswordIncorrectException;
 import by.dvorkin.web.model.service.exceptions.FactoryException;
+import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,11 +34,11 @@ public class ChangePasswordCommand implements Command {
                     Logger logger = LogManager.getLogger("User");
                     logger.info("User " + account.getLogin() + " changed the password. IP [" + req.getRemoteAddr() + "]");
                     return null;
-                } catch (FactoryException e) {
-                    throw new ServletException(e);
                 } catch (AccountPasswordIncorrectException e) {
                     req.setAttribute("oldPasswordError", "changePassword.errorOldPassword");
                     return null;
+                } catch (ServiceException | FactoryException e) {
+                    throw new ServletException(e);
                 } catch (Exception ignored) {
                 }
             } else {

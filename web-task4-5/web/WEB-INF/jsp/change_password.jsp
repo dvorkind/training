@@ -10,16 +10,7 @@
 
 <fmt:message var="title" key="changePassword.title"/>
 <u:html title="${title}">
-    <nav>
-        <c:choose>
-            <c:when test="${sessionAccount.role == 'SUBSCRIBER'}">
-                <jsp:include page="/WEB-INF/jsp/user/user_menu.jsp"/>
-            </c:when>
-            <c:otherwise>
-                <jsp:include page="/WEB-INF/jsp/admin/admin_menu.jsp"/>
-            </c:otherwise>
-        </c:choose>
-    </nav>
+    <u:menu/>
     <div class="main">
         <form action="change_password.html" method="post" class="reg-form submit-form">
             <c:choose>
@@ -67,6 +58,7 @@
                     </div>
                     <div>
                         <input type="submit" value="<fmt:message key="changePassword.button" />" class="btn">
+                        <a href="login.html" class="form-link"><fmt:message key="changePassword.cancel"/></a>
                     </div>
                 </c:when>
                 <c:otherwise>

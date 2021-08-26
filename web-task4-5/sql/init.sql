@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `user`
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
-CREATE TABLE IF NOT EXISTS `phone_station`.`tariff`
+CREATE TABLE IF NOT EXISTS `tariff`
 (
     `id`               INT          NOT NULL AUTO_INCREMENT,
     `name`             VARCHAR(50)  NOT NULL,

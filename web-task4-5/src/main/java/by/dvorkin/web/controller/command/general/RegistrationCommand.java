@@ -9,11 +9,13 @@ import by.dvorkin.web.model.service.AccountService;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.exceptions.AccountLoginNotUniqueException;
 import by.dvorkin.web.model.service.exceptions.FactoryException;
+import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.exceptions.UserPhoneNotUniqueException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,6 +27,19 @@ public class RegistrationCommand implements Command {
 
     @Override
     public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+        HttpSession session = req.getSession(false);
+        if (session != null) {
+            Account sessionAccount = (Account) session.getAttribute("sessionAccount");
+            if (sessionAccount != null) {
+                switch (sessionAccount.getRole()) {
+                    case ADMINISTRATOR:
+                        return new Forward("/admin/admin.html");
+                    case SUBSCRIBER:
+                        return new Forward("/user/user.html");
+                }
+            }
+        }
+
         if (isInputValid(req)) {
             try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
                 AccountService accountService = serviceFactory.getAccountService();
@@ -35,8 +50,6 @@ public class RegistrationCommand implements Command {
                 Logger logger = LogManager.getLogger("User");
                 logger.info("User " + account.getLogin() + " has registered. IP [" + req.getRemoteAddr() + "]");
                 return new Forward("/login.html");
-            } catch (FactoryException e) {
-                throw new ServletException(e);
             } catch (AccountLoginNotUniqueException e) {
                 req.removeAttribute("loginIsValid");
                 req.setAttribute("loginError", "registration.errorExistAccountError");
@@ -45,6 +58,8 @@ public class RegistrationCommand implements Command {
                 req.removeAttribute("phoneNumberIsValid");
                 req.setAttribute("phoneNumberError", "registration.errorExistUserError");
                 return null;
+            } catch (ServiceException |FactoryException e) {
+                throw new ServletException(e);
             } catch (Exception ignored) {
             }
         }

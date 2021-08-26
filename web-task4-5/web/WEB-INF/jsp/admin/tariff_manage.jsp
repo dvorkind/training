@@ -7,17 +7,21 @@
 
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="messages"/>
-<%@ page trimDirectiveWhitespaces="true" %>
 
 <fmt:message var="title" key="admin.title"/>
 <fmt:message var="titlePage" key="admin.tariffAddTitle"/>
 <u:html title="${title} : ${titlePage}">
-    <nav>
-        <jsp:include page="/WEB-INF/jsp/admin/admin_menu.jsp"/>
-    </nav>
+    <u:menu/>
     <div class="main">
-        <form action="tariff_add.html" method="post" class="reg-form submit-form">
-            <h2><fmt:message key="admin.tariffAddTitle"/></h2>
+        <form action="tariff_manage.html" method="post" class="reg-form submit-form">
+            <c:choose>
+                <c:when test="${not empty id}">
+                    <h2><fmt:message key="admin.tariffEditTitle"/></h2>
+                </c:when>
+                <c:otherwise>
+                    <h2><fmt:message key="admin.tariffAddTitle"/></h2>
+                </c:otherwise>
+            </c:choose>
             <div class="form-inputs">
                 <div class="input-group">
                     <label for="tariffName"><fmt:message key="admin.tariffName"/></label>
@@ -96,7 +100,16 @@
                 </p>
             </div>
             <div>
-                <input type="submit" value="<fmt:message key="admin.tariffAdd" />" class="btn">
+                <c:choose>
+                    <c:when test="${not empty id}">
+                        <input type="hidden" name="id" value="${id}">
+                        <input type="submit" value="<fmt:message key="admin.tariffEditButton" />" class="btn">
+                    </c:when>
+                    <c:otherwise>
+                        <input type="submit" value="<fmt:message key="admin.tariffAddButton" />" class="btn">
+                    </c:otherwise>
+                </c:choose>
+                <a href="tariff_list.html" class="form-link"><fmt:message key="admin.tariffCancel"/></a>
             </div>
         </form>
     </div>

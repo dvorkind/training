@@ -10,6 +10,7 @@
 
 <fmt:message var="title" key="error.unexpected"/>
 <u:html title="${title}">
+    <u:menu/>
     <div class="main">
         <h2 class="text-center">
             <fmt:message key="error.unexpectedMessageOne"/>

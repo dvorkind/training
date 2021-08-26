@@ -49,6 +49,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public void delete(Long id) throws DaoException {
+
+    }
+
+    @Override
     public User read(Long id) throws DaoException {
         return null;
     }

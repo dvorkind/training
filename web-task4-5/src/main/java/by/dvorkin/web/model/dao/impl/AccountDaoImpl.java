@@ -115,6 +115,11 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
+    public void delete(Long id) throws DaoException {
+
+    }
+
+    @Override
     public Account read(Long id) throws DaoException {
         String sql = "SELECT `login`, `password`, `role` FROM `account` WHERE `id` = ?";
         ResultSet resultSet;

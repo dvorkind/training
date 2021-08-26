@@ -3,6 +3,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
 
@@ -12,14 +13,12 @@
 <fmt:message var="title" key="admin.title"/>
 <fmt:message var="titlePage" key="admin.tariffs"/>
 <u:html title="${title} : ${titlePage}">
-    <nav>
-        <jsp:include page="/WEB-INF/jsp/admin/admin_menu.jsp"/>
-    </nav>
+    <u:menu/>
     <div class="main">
         <h2 class="text-center">
             <fmt:message key="admin.tariffs"/>
         </h2>
-        <a href="tariff_add.html" class="btn center-btn">
+        <a href="tariff_manage.html" class="btn center-btn">
             <fmt:message key="admin.tariffAdd"/> ➕
         </a>
         <table class="data-table">
@@ -39,7 +38,8 @@
                     <td>${tariff.name}</td>
                     <td class="pre-wrap">${tariff.description}</td>
                     <td>
-                        <ctg:money-format balance="${tariff.subscriptionFee}"/>&nbsp<fmt:message key="admin.tariffMoney"/>
+                        <ctg:money-format balance="${tariff.subscriptionFee}"/>&nbsp<fmt:message
+                            key="admin.tariffMoney"/>
                     </td>
                     <td>
                         <ctg:money-format balance="${tariff.callCost}"/>&nbsp<fmt:message key="admin.tariffMoney"/>
@@ -48,15 +48,18 @@
                         <ctg:money-format balance="${tariff.smsCost}"/>&nbsp<fmt:message key="admin.tariffMoney"/>
                     </td>
                     <td class="button-cell">
-                        <form action="tariff_edit.html" method="POST">
+                        <form action="tariff_manage.html" method="POST">
                             <input type="hidden" name="id" value="${tariff.id}">
                             <input type="submit" value="<fmt:message key="admin.tariffEdit"/> 📝"
                                    class="btn btn-small btn-in-cell">
                         </form>
                         <form action="tariff_delete.html" method="POST">
                             <input type="hidden" name="id" value="${tariff.id}">
-                            <input type="submit" value="<fmt:message key="admin.tariffDelete"/> ❌"
-                                   class="btn btn-small btn-in-cell">
+
+                            <c:if test="${fn:length(tariffs) != 1}">
+                                <input type="submit" value="<fmt:message key="admin.tariffDelete"/> ❌"
+                                       class="btn btn-small btn-in-cell">
+                            </c:if>
                         </form>
                     </td>
                 </tr>

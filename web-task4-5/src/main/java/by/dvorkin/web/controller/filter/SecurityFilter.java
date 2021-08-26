@@ -35,8 +35,9 @@ public class SecurityFilter implements Filter {
         permissions.put("/admin/admin", admin);
         permissions.put("/admin/users_new", admin);
         permissions.put("/admin/users_all", admin);
-        permissions.put("/admin/tariffs", admin);
-        permissions.put("/admin/tariff_add", admin);
+        permissions.put("/admin/tariff_list", admin);
+        permissions.put("/admin/tariff_manage", admin);
+        permissions.put("/admin/tariff_delete", admin);
 
         permissions.put("/user/user", subscriber);
     }

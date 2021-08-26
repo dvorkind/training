@@ -6,6 +6,7 @@ import by.dvorkin.web.model.entity.Tariff;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.TariffService;
 import by.dvorkin.web.model.service.exceptions.FactoryException;
+import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.exceptions.TariffNameNotUniqueException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
@@ -14,30 +15,59 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class AdminAddTariffCommand implements Command {
+public class AdminManageTariffCommand implements Command {
     private static final String NAME_REGEX = "^[A-Za-zА-Яа-яЁё0-9\\s'-]{5,20}$";
     private static final String SUBSCRIPTION_REGEX = "^[A-Za-zА-Яа-яЁё0-9\\s'~!@#$%^&*()-_=+'/|.]{5,50}$";
 
     @Override
     public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
-        if (isInputValid(req)) {//TODO: спросить, нужно ли здесь проверять сессию и админа, если фильтр не пропустит же
-            try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
-                TariffService tariffService = serviceFactory.getTariffService();
-                Tariff tariff = createTariff(req);
-                tariffService.create(tariff);
-                Logger logger = LogManager.getLogger("User");
-                logger.info("TariffID #" + tariff.getId() + " was added by Administrator");
-                return new Forward("/admin/tariffs.html");
-            } catch (FactoryException e) {
-                throw new ServletException(e);
-            } catch (TariffNameNotUniqueException e) {
-                req.removeAttribute("tariffNameIsValid");
-                req.setAttribute("tariffNameError", "admin.errorExistTariffError");
-                return null;
-            } catch (Exception ignored) {
+        try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
+            TariffService tariffService = serviceFactory.getTariffService();
+            Tariff tariff;
+            if (req.getParameter("id") == null) {
+                if (isInputValid(req)) {
+                    tariff = createTariff(req);
+                    tariffService.save(tariff);
+                    Logger logger = LogManager.getLogger("User");
+                    logger.info("TariffID #" + tariff.getId() + " was added by Administrator");
+                    return new Forward("/admin/tariff_list.html");
+                }
+            } else {
+                if (isInputValid(req)) {
+                    tariff = createTariff(req);
+                    tariff.setId(Long.parseLong(req.getParameter("id")));
+                    tariffService.save(tariff);
+                    Logger logger = LogManager.getLogger("User");
+                    logger.info("TariffID #" + req.getParameter("id") + " was updated by Administrator");
+                    return new Forward("/admin/tariff_list.html");
+                } else {
+                    tariff = tariffService.readById(Long.parseLong(req.getParameter("id")));
+                    setTariffToAttribute(req, tariff);
+                    return null;
+                }
             }
+        } catch (TariffNameNotUniqueException e) {
+            req.setAttribute("id", req.getParameter("id"));
+            req.removeAttribute("tariffNameIsValid");
+            req.setAttribute("tariffNameError", "admin.errorExistTariffError");
+            return null;
+        } catch (ServiceException | FactoryException e) {
+            throw new ServletException(e);
+        } catch (Exception ignored) {
         }
         return null;
+    }
+
+    private void setTariffToAttribute(HttpServletRequest req, Tariff tariff) {
+        req.setAttribute("id", tariff.getId());
+        req.setAttribute("tariffName", tariff.getName());
+        req.setAttribute("tariffDescription", tariff.getDescription());
+        req.setAttribute("tariffSubscriptionFeeRoubles", (tariff.getSubscriptionFee() / 100));
+        req.setAttribute("tariffSubscriptionFeeKopecks", (tariff.getSubscriptionFee() % 100));
+        req.setAttribute("tariffCallCostRoubles", (tariff.getCallCost() / 100));
+        req.setAttribute("tariffCallCostKopecks", (tariff.getCallCost() % 100));
+        req.setAttribute("tariffSmsCostRoubles", (tariff.getSmsCost() / 100));
+        req.setAttribute("tariffSmsCostKopecks", (tariff.getSmsCost() % 100));
     }
 
     private Tariff createTariff(HttpServletRequest req) {
@@ -49,10 +79,10 @@ public class AdminAddTariffCommand implements Command {
         tariff.setSubscriptionFee((tariffSubscriptionFeeRoubles * 100) + tariffSubscriptionFeeKopecks);
         int tariffCallCostRoubles = Integer.parseInt(req.getParameter("tariffCallCostRoubles"));
         int tariffCallCostKopecks = Integer.parseInt(req.getParameter("tariffCallCostKopecks"));
-        tariff.setSubscriptionFee((tariffCallCostRoubles * 100) + tariffCallCostKopecks);
+        tariff.setCallCost((tariffCallCostRoubles * 100) + tariffCallCostKopecks);
         int tariffSmsCostRoubles = Integer.parseInt(req.getParameter("tariffSmsCostRoubles"));
         int tariffSmsCostKopecks = Integer.parseInt(req.getParameter("tariffSmsCostKopecks"));
-        tariff.setSubscriptionFee((tariffSmsCostRoubles * 100) + tariffSmsCostKopecks);
+        tariff.setSmsCost((tariffSmsCostRoubles * 100) + tariffSmsCostKopecks);
         return tariff;
     }
 

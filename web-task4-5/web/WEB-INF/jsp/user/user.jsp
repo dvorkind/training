@@ -14,9 +14,7 @@
 <u:html title="${title} : ${titlePage}">
     <c:choose>
         <c:when test="${user.isRegistered()}">
-            <nav>
-                <jsp:include page="/WEB-INF/jsp/user/user_menu.jsp"/>
-            </nav>
+            <u:menu/>
             <div class="main">
                 <h2 class="text-center">
                     <fmt:message key="user.hello"/>, ${user.firstname} (${sessionAccount.login}) (${sessionAccount.password})!

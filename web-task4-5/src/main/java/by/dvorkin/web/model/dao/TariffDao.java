@@ -8,5 +8,10 @@ public interface TariffDao extends Dao<Tariff> {
     List<Tariff> readAll() throws DaoException;
 
     Tariff readByName(String tariffName) throws DaoException;
-    //TODO: добавить проверку невозможности удаления последнего тарифа
+
+    boolean isLastTariff() throws DaoException;
+
+    int getCountUsingTariff(Long id) throws DaoException;
+
+    void switchTariffs(Long sourceId, Long destinationId) throws DaoException;
 }

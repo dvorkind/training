@@ -26,7 +26,7 @@ public class UserSummaryCommand implements Command {
                     UserService userService = serviceFactory.getUserService();
                     TariffService tariffService = serviceFactory.getTariffService();
                     User user = userService.findByAccountId(account.getId());
-                    req.setAttribute("tariffName", tariffService.getName(user.getTariff()));
+                    req.setAttribute("tariffName", tariffService.readById(user.getTariff()).getName());
                     req.setAttribute("user", user);
                     // req.setAttribute("users", userService.findAll()); TODO: статистику
                     return null;

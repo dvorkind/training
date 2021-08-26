@@ -12,9 +12,7 @@
 <fmt:message var="title" key="admin.title"/>
 <fmt:message var="titlePage" key="admin.main"/>
 <u:html title="${title} : ${titlePage}">
-    <nav>
-        <jsp:include page="/WEB-INF/jsp/admin/admin_menu.jsp"/>
-    </nav>
+    <u:menu/>
     <div class="main">
         <h2 class="text-center">
             <fmt:message key="admin.users"/>

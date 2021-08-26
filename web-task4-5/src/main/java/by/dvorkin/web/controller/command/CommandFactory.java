@@ -1,6 +1,7 @@
 package by.dvorkin.web.controller.command;
 
-import by.dvorkin.web.controller.command.admin.AdminAddTariffCommand;
+import by.dvorkin.web.controller.command.admin.AdminDeleteTariffCommand;
+import by.dvorkin.web.controller.command.admin.AdminManageTariffCommand;
 import by.dvorkin.web.controller.command.admin.AdminSummaryCommand;
 import by.dvorkin.web.controller.command.admin.AdminNewUsersCommand;
 import by.dvorkin.web.controller.command.admin.AdminTariffsCommand;
@@ -30,8 +31,9 @@ public class CommandFactory {
         commands.put("/admin/admin",  AdminSummaryCommand.class);
         commands.put("/admin/users_new",  AdminNewUsersCommand.class);
         commands.put("/admin/users_all",  AdminUsersCommand.class);
-        commands.put("/admin/tariffs",  AdminTariffsCommand.class);
-        commands.put("/admin/tariff_add",  AdminAddTariffCommand.class);
+        commands.put("/admin/tariff_list",  AdminTariffsCommand.class);
+        commands.put("/admin/tariff_manage",  AdminManageTariffCommand.class);
+        commands.put("/admin/tariff_delete",  AdminDeleteTariffCommand.class);
         commands.put("/user/user",  UserSummaryCommand.class);
         commands.put("/change_password",  ChangePasswordCommand.class);
     }

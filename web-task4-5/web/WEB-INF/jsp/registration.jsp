@@ -7,7 +7,6 @@
 
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="messages"/>
-<%@ page trimDirectiveWhitespaces="true" %>
 
 <fmt:message var="title" key="registration.title"/>
 <u:html title="${title}">
@@ -90,6 +89,7 @@
             </div>
             <div>
                 <input type="submit" value="<fmt:message key="registration.signUp" />" class="btn">
+                <a href="login.html" class="form-link"><fmt:message key="registration.cancel"/></a>
             </div>
         </form>
     </div>
