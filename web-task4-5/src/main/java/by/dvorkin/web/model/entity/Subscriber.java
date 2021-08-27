@@ -1,6 +1,6 @@
 package by.dvorkin.web.model.entity;
 
-public class User {
+public class Subscriber {
     private Long id;
     private Long accountId;
     private String firstname;

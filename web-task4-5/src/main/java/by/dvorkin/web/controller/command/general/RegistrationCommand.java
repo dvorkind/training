@@ -4,13 +4,13 @@ import by.dvorkin.web.controller.command.Command;
 import by.dvorkin.web.controller.command.Forward;
 import by.dvorkin.web.model.entity.Account;
 import by.dvorkin.web.model.entity.Role;
-import by.dvorkin.web.model.entity.User;
+import by.dvorkin.web.model.entity.Subscriber;
 import by.dvorkin.web.model.service.AccountService;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.exceptions.AccountLoginNotUniqueException;
 import by.dvorkin.web.model.service.exceptions.FactoryException;
 import by.dvorkin.web.model.service.exceptions.ServiceException;
-import by.dvorkin.web.model.service.exceptions.UserPhoneNotUniqueException;
+import by.dvorkin.web.model.service.exceptions.SubscriberPhoneNotUniqueException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +35,7 @@ public class RegistrationCommand implements Command {
                     case ADMINISTRATOR:
                         return new Forward("/admin/admin.html");
                     case SUBSCRIBER:
-                        return new Forward("/user/user.html");
+                        return new Forward("/subscriber/subscriber.html");
                 }
             }
         }
@@ -44,8 +44,8 @@ public class RegistrationCommand implements Command {
             try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
                 AccountService accountService = serviceFactory.getAccountService();
                 Account account = createAccount(req);
-                User user = createUser(req);
-                accountService.create(account, user);
+                Subscriber subscriber = createSubscriber(req);
+                accountService.create(account, subscriber);
                 req.getSession(false).setAttribute("sessionAccount", account);
                 Logger logger = LogManager.getLogger("User");
                 logger.info("User " + account.getLogin() + " has registered. IP [" + req.getRemoteAddr() + "]");
@@ -54,9 +54,9 @@ public class RegistrationCommand implements Command {
                 req.removeAttribute("loginIsValid");
                 req.setAttribute("loginError", "registration.errorExistAccountError");
                 return null;
-            } catch (UserPhoneNotUniqueException e) {
+            } catch (SubscriberPhoneNotUniqueException e) {
                 req.removeAttribute("phoneNumberIsValid");
-                req.setAttribute("phoneNumberError", "registration.errorExistUserError");
+                req.setAttribute("phoneNumberError", "registration.errorExistSubscriberError");
                 return null;
             } catch (ServiceException |FactoryException e) {
                 throw new ServletException(e);
@@ -74,16 +74,16 @@ public class RegistrationCommand implements Command {
         return account;
     }
 
-    private User createUser(HttpServletRequest req) {
-        User user = new User();
-        user.setBalance(0);
-        user.setTariff(1L);
-        user.setBlocked(true);
-        user.setRegistered(false);
-        user.setFirstname(req.getParameter("firstname"));
-        user.setLastname(req.getParameter("lastname"));
-        user.setPhoneNumber(req.getParameter("phoneNumber"));
-        return user;
+    private Subscriber createSubscriber(HttpServletRequest req) {
+        Subscriber subscriber = new Subscriber();
+        subscriber.setBalance(0);
+        subscriber.setTariff(1L);
+        subscriber.setBlocked(true);
+        subscriber.setRegistered(false);
+        subscriber.setFirstname(req.getParameter("firstname"));
+        subscriber.setLastname(req.getParameter("lastname"));
+        subscriber.setPhoneNumber(req.getParameter("phoneNumber"));
+        return subscriber;
     }
 
     private boolean isInputValid(HttpServletRequest req) {

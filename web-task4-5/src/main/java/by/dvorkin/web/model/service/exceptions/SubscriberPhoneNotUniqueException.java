@@ -1,9 +1,9 @@
 package by.dvorkin.web.model.service.exceptions;
 
-public class UserPhoneNotUniqueException extends ServiceException {
+public class SubscriberPhoneNotUniqueException extends ServiceException {
     private String phoneNumber;
 
-    public UserPhoneNotUniqueException(String phoneNumber) {
+    public SubscriberPhoneNotUniqueException(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

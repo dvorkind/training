@@ -15,7 +15,7 @@
     <u:menu/>
     <div class="main">
         <h2 class="text-center">
-            <fmt:message key="admin.users"/>
+            <fmt:message key="admin.subscribers"/>
         </h2>
     </div>
 </u:html>

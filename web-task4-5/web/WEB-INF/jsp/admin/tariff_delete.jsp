@@ -14,24 +14,23 @@
 <u:html title="${title} : ${titlePage}">
     <u:menu/>
     <div class="main">
-        <form action="tariff_delete.html" method="post" class="submit-form">
+        <form action="tariff_delete.html" method="post" class="submit-form reg-form">
             <h2 class="text-center">
                 <fmt:message key="admin.tariffDeleteTitle"/> "${tariffName}"
             </h2>
             <c:if test="${not empty using}">
-                <p class="msg">Выбранный тариф используется пользователями: ${using}</p>
-                <p class="msg">Пожалуйста, выберите тариф, который им будет назначен взамен удаляемого:</p>
-                <select name="newTariff" class="btn">
-                    <c:forEach var="tariff" items="${tariffs}">
-                        <c:if test="${tariff.id != id}">
-                            <option value="${tariff.id}">${tariff.name}</option>
+                <p class="msg"><fmt:message key="admin.tariffMessageOne"/><span class="bold"> ${using}</span></p>
+                <p class="msg"><fmt:message key="admin.tariffMessageTwo"/></p>
+                <select name="newTariff" class="btn center-btn">
+                    <c:forEach var="service" items="${tariffs}">
+                        <c:if test="${service.id != id}">
+                            <option value="${service.id}">${service.name}</option>
                         </c:if>
                     </c:forEach>
                 </select>
             </c:if>
-            <p class="msg">Вы действительно хотите удалить этот тариф?</p>
-            <p class="msg">Тариф будет удален немедленно.</p>
-            <p class="msg">Вы не сможете отменить это действие.</p>
+            <p class="msg"><fmt:message key="admin.tariffMessageThree"/></p>
+            <p class="msg"><fmt:message key="admin.tariffMessageFour"/></p>
             <p class="form-message">
                 <c:if test="${not empty tariffDeleteError}">
                     <span><fmt:message key="${tariffDeleteError}"/></span>

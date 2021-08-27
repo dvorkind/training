@@ -58,7 +58,7 @@ public class LoginCommand implements Command {
                 case ADMINISTRATOR:
                     return new Forward("/admin/admin.html");
                 case SUBSCRIBER:
-                    return new Forward("/user/user.html");
+                    return new Forward("/subscriber/subscriber.html");
             }
         }
         return null;

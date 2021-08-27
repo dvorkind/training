@@ -2,7 +2,7 @@ package by.dvorkin.web.model.entity;
 
 public enum Role {
     ADMINISTRATOR("role.admin"),
-    SUBSCRIBER("role.user");
+    SUBSCRIBER("role.subscriber");
 
     private String name;
 

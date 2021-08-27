@@ -37,7 +37,7 @@
                 </p>
                 <div class="input-group">
                     <label for="tariffDescription"><fmt:message key="admin.tariffDescription"/></label>
-                    <textarea id="tariffDescription" name="tariffDescription" maxlength="50">${tariffDescription}</textarea>
+                    <textarea id="tariffDescription" name="tariffDescription" maxlength="200">${tariffDescription}</textarea>
                     <c:if test="${tariffDescriptionIsValid}">
                         <span class="validation-indicator"> &#10004 </span>
                     </c:if>

@@ -22,7 +22,8 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public Long create(Tariff tariff) throws DaoException {
-        String sql = "INSERT INTO `tariff` (`name`, `description`, `subscription_fee`, `call_cost`, `sms_cost`) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO `tariff` (`name`, `description`, `subscription_fee`, `call_cost`, `sms_cost`) " +
+                "VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, tariff.getName());
             statement.setString(2, tariff.getDescription());
@@ -40,7 +41,8 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public void update(Tariff tariff) throws DaoException {
-    String sql = "UPDATE `tariff` SET `name` = ?, `description` = ?, `subscription_fee` = ?, `call_cost` = ?, `sms_cost` = ? WHERE `id` = ?";
+        String sql = "UPDATE `tariff` SET `name` = ?, `description` = ?, `subscription_fee` = ?, `call_cost` = ?, " +
+                "`sms_cost` = ? WHERE `id` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, tariff.getName());
             statement.setString(2, tariff.getDescription());
@@ -50,7 +52,7 @@ public class TariffDaoImpl implements TariffDao {
             statement.setLong(6, tariff.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-         throw new DaoException(e);
+            throw new DaoException(e);
         }
     }
 
@@ -94,14 +96,7 @@ public class TariffDaoImpl implements TariffDao {
             ResultSet resultSet = statement.executeQuery(sql);
             List<Tariff> tariffs = new ArrayList<>();
             while (resultSet.next()) {
-                Tariff tariff = new Tariff();
-                tariff.setId(resultSet.getLong("id"));
-                tariff.setName(resultSet.getString("name"));
-                tariff.setDescription(resultSet.getString("description"));
-                tariff.setSubscriptionFee(resultSet.getInt("subscription_fee"));
-                tariff.setCallCost(resultSet.getInt("call_cost"));
-                tariff.setSmsCost(resultSet.getInt("sms_cost"));
-                tariffs.add(tariff);
+                tariffs.add(createTariff(resultSet));
             }
             return tariffs;
         } catch (SQLException e) {
@@ -117,13 +112,7 @@ public class TariffDaoImpl implements TariffDao {
             ResultSet resultSet = statement.executeQuery();
             Tariff tariff = null;
             if (resultSet.next()) {
-                tariff = new Tariff();
-                tariff.setId(resultSet.getLong("id"));
-                tariff.setName(tariffName);
-                tariff.setDescription(resultSet.getString("description"));
-                tariff.setSubscriptionFee(resultSet.getInt("subscription_fee"));
-                tariff.setCallCost(resultSet.getInt("call_cost"));
-                tariff.setSmsCost(resultSet.getInt("sms_cost"));
+                tariff = createTariff(resultSet);
             }
             return tariff;
         } catch (SQLException e) {
@@ -147,12 +136,12 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public int getCountUsingTariff(Long id) throws DaoException {
-        String sql = "SELECT COUNT(*) AS users FROM `user` WHERE `tariff` = ?";
+        String sql = "SELECT COUNT(*) AS subscribers FROM `subscriber` WHERE `tariff` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return resultSet.getInt("users");
+                return resultSet.getInt("subscribers");
             }
             return 0;
         } catch (SQLException e) {
@@ -162,7 +151,7 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public void switchTariffs(Long sourceId, Long destinationId) throws DaoException {
-        String sql = "UPDATE user SET tariff = ? WHERE tariff = ?";
+        String sql = "UPDATE subscriber SET tariff = ? WHERE tariff = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, destinationId);
             statement.setLong(2, sourceId);
@@ -172,4 +161,14 @@ public class TariffDaoImpl implements TariffDao {
         }
     }
 
+    private Tariff createTariff(ResultSet resultSet) throws SQLException {
+        Tariff tariff = new Tariff();
+        tariff.setId(resultSet.getLong("id"));
+        tariff.setName(resultSet.getString("name"));
+        tariff.setDescription(resultSet.getString("description"));
+        tariff.setSubscriptionFee(resultSet.getInt("subscription_fee"));
+        tariff.setCallCost(resultSet.getInt("call_cost"));
+        tariff.setSmsCost(resultSet.getInt("sms_cost"));
+        return tariff;
+    }
 }

@@ -12,6 +12,8 @@ import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class AdminDeleteTariffCommand implements Command {
     @Override
@@ -34,6 +36,8 @@ public class AdminDeleteTariffCommand implements Command {
                     tariffService.switchTariffs(tariff.getId(), Long.parseLong(req.getParameter("newTariff")));
                 }
                 tariffService.safetyDelete(tariff.getId());
+                Logger logger = LogManager.getLogger("User");
+                logger.info("TariffID #" + req.getParameter("id") + " was deleted by Administrator");
                 return new Forward("/admin/tariff_list.html");
             } else {
                 return null;

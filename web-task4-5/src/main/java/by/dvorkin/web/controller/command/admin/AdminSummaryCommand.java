@@ -3,7 +3,7 @@ package by.dvorkin.web.controller.command.admin;
 import by.dvorkin.web.controller.command.Command;
 import by.dvorkin.web.controller.command.Forward;
 import by.dvorkin.web.model.service.ServiceFactory;
-import by.dvorkin.web.model.service.UserService;
+import by.dvorkin.web.model.service.SubscriberService;
 import by.dvorkin.web.model.service.exceptions.FactoryException;
 import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
@@ -15,7 +15,7 @@ public class AdminSummaryCommand implements Command {
     @Override
     public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
-            UserService userService = serviceFactory.getUserService();
+            SubscriberService subscriberService = serviceFactory.getSubscriberService();
             //TODO: статистику
             return null;
         } catch (ServiceException | FactoryException e) {

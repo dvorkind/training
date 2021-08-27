@@ -9,46 +9,46 @@
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="messages"/>
 
-<fmt:message var="title" key="user.title"/>
-<fmt:message var="titlePage" key="user.main"/>
+<fmt:message var="title" key="subscriber.title"/>
+<fmt:message var="titlePage" key="subscriber.main"/>
 <u:html title="${title} : ${titlePage}">
     <c:choose>
-        <c:when test="${user.isRegistered()}">
+        <c:when test="${subscriber.isRegistered()}">
             <u:menu/>
             <div class="main">
                 <h2 class="text-center">
-                    <fmt:message key="user.hello"/>, ${user.firstname} (${sessionAccount.login}) (${sessionAccount.password})!
+                    <fmt:message key="subscriber.hello"/>, ${subscriber.firstname}!
                 </h2>
                 <table>
                     <tr>
-                        <td><fmt:message key="user.profileFirstname"/>: &nbsp</td>
-                        <td>${user.firstname}</td>
+                        <td><fmt:message key="subscriber.profileFirstname"/>: &nbsp</td>
+                        <td>${subscriber.firstname}</td>
                     </tr>
                     <tr>
-                        <td><fmt:message key="user.profileLastname"/>: &nbsp</td>
-                        <td>${user.lastname}</td>
+                        <td><fmt:message key="subscriber.profileLastname"/>: &nbsp</td>
+                        <td>${subscriber.lastname}</td>
                     </tr>
                     <tr>
-                        <td><fmt:message key="user.profilePhoneNumber"/>: &nbsp</td>
-                        <td>${user.phoneNumber}</td>
+                        <td><fmt:message key="subscriber.profilePhoneNumber"/>: &nbsp</td>
+                        <td>${subscriber.phoneNumber}</td>
                     </tr>
                     <tr>
-                        <td><fmt:message key="user.profileTariff"/>: &nbsp</td>
+                        <td><fmt:message key="subscriber.profileTariff"/>: &nbsp</td>
                         <td>${tariffName}</td>
                     </tr>
                     <tr>
-                        <td><fmt:message key="user.profileBalance"/>: &nbsp</td>
-                        <td><ctg:money-format balance="${user.balance}"/>&nbsp<fmt:message key="user.money"/></td>
+                        <td><fmt:message key="subscriber.profileBalance"/>: &nbsp</td>
+                        <td><ctg:money-format balance="${subscriber.balance}"/>&nbsp<fmt:message key="subscriber.money"/></td>
                     </tr>
                     <tr>
-                        <td><fmt:message key="user.profileStatus"/>: &nbsp</td>
+                        <td><fmt:message key="subscriber.profileStatus"/>: &nbsp</td>
                         <td>
                             <c:choose>
-                                <c:when test="${user.isBlocked()}">
-                                    <fmt:message key="user.profileBlocked"/>
+                                <c:when test="${subscriber.isBlocked()}">
+                                    <fmt:message key="subscriber.profileBlocked"/>
                                 </c:when>
                                 <c:otherwise>
-                                    <fmt:message key="user.profileActive"/>
+                                    <fmt:message key="subscriber.profileActive"/>
                                 </c:otherwise>
                             </c:choose>
                         </td>
@@ -63,8 +63,8 @@
                 </h2>
                 <p class="msg"><fmt:message key="registration.congratulationSentence2"/></p>
                 <p class="msg"><fmt:message key="registration.congratulationSentence3"/></p>
-                <a href="user.html" class="btn center-btn">
-                    <fmt:message key="user.refresh"/>
+                <a href="subscriber.html" class="btn center-btn">
+                    <fmt:message key="subscriber.refresh"/>
                 </a>
             </div>
         </c:otherwise>

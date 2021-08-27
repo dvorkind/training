@@ -29,7 +29,7 @@
                 </a>
             </c:when>
             <c:when test="${sessionAccount.role == 'SUBSCRIBER'}">
-                <a class="header-link" href="${context}/user/user.html">
+                <a class="header-link" href="${context}/subscriber/subscriber.html">
                     <fmt:message key="header.phoneStation" />
                 </a>
             </c:when>
@@ -44,8 +44,8 @@
                 <input type="hidden" name="pagePath" value="${pageContext.request.requestURI}">
                 <input type="hidden" name="queryString" value="${pageContext.request.queryString}">
                 <select name="locale" onchange="submit()" class="btn">
-                    <option value="en" ${sessionScope.locale == 'en' ? 'selected' : ''}>English</option>
-                    <option value="ru" ${sessionScope.locale == 'ru' ? 'selected' : ''}>Русский</option>
+                    <option value="en" ${sessionScope.locale == 'en' ? 'selected' : ''}><fmt:message key="header.english"/></option>
+                    <option value="ru" ${sessionScope.locale == 'ru' ? 'selected' : ''}><fmt:message key="header.russian"/></option>
                 </select>
             </form>
 

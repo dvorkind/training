@@ -14,7 +14,6 @@ public class MoneyFormatTag extends TagSupport {
 
     @Override
     public int doStartTag() throws JspException {
-        //TODO: правильно ли обрабатываю деньги
         String formattedPrice;
         int absBalance = Math.abs(balance);
         formattedPrice = String.format("%d,%02d", absBalance / 100, absBalance % 100);

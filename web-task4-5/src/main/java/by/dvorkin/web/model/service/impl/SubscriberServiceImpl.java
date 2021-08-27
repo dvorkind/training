@@ -1,48 +1,48 @@
 package by.dvorkin.web.model.service.impl;
 
 import by.dvorkin.web.model.dao.DaoException;
-import by.dvorkin.web.model.dao.UserDao;
-import by.dvorkin.web.model.entity.User;
+import by.dvorkin.web.model.dao.SubscriberDao;
+import by.dvorkin.web.model.entity.Subscriber;
+import by.dvorkin.web.model.service.SubscriberService;
 import by.dvorkin.web.model.service.Transaction;
-import by.dvorkin.web.model.service.UserService;
 import by.dvorkin.web.model.service.exceptions.ServiceException;
 
-import java.util.Map;
+import java.util.List;
 
-public class UserServiceImpl implements UserService {
-    private UserDao userDao;
+public class SubscriberServiceImpl implements SubscriberService {
+    private SubscriberDao subscriberDao;
     private Transaction transaction;
 
     public void setTransaction(Transaction transaction) {
         this.transaction = transaction;
     }
 
-    public void setUserDao(UserDao userDao) {
-        this.userDao = userDao;
+    public void setSubscriberDao(SubscriberDao subscriberDao) {
+        this.subscriberDao = subscriberDao;
     }
 
     @Override
-    public User findByAccountId(Long id) throws ServiceException {
+    public Subscriber findByAccountId(Long id) throws ServiceException {
         try {
-            return userDao.readByAccountId(id);
+            return subscriberDao.readByAccountId(id);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public Map<String, User> getAll() throws ServiceException {
+    public List<Subscriber> getAll() throws ServiceException {
         try {
-            return userDao.readAll();
+            return subscriberDao.readAll();
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public Map<String, User> getNewUsers() throws ServiceException {
+    public List<Subscriber> getNewSubscribers() throws ServiceException {
         try {
-            return userDao.readNewUsers();
+            return subscriberDao.readNewSubscribers();
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void activate(int id) throws ServiceException {
         try {
-            userDao.activate(id);
+            subscriberDao.activate(id);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

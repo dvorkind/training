@@ -33,13 +33,14 @@ public class SecurityFilter implements Filter {
         permissions.put("/change_password", all);
 
         permissions.put("/admin/admin", admin);
-        permissions.put("/admin/users_new", admin);
-        permissions.put("/admin/users_all", admin);
+        permissions.put("/admin/subscribers_new", admin);
+        permissions.put("/admin/subscribers_all", admin);
         permissions.put("/admin/tariff_list", admin);
         permissions.put("/admin/tariff_manage", admin);
         permissions.put("/admin/tariff_delete", admin);
+        permissions.put("/admin/service_list", admin);
 
-        permissions.put("/user/user", subscriber);
+        permissions.put("/subscriber/subscriber", subscriber);
     }
 
     @Override
@@ -48,7 +49,8 @@ public class SecurityFilter implements Filter {
         HttpServletRequest httpReq = (HttpServletRequest) req;
         HttpServletResponse httpResp = (HttpServletResponse) resp;
         String context = httpReq.getContextPath();
-        String url = Helper.extractPath(httpReq.getRequestURI(), context);
+        Helper helper = new Helper();
+        String url = helper.extractPath(httpReq.getRequestURI(), context);
         Set<Role> roles = permissions.get(url);
         if (roles != null) {
             HttpSession session = httpReq.getSession(false);

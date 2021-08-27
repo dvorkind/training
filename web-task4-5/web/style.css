@@ -31,6 +31,10 @@ header, main, footer {
     margin-right: 20px;
 }
 
+.no-margin {
+    margin: 0;
+}
+
 .header-link {
     display: inline-block;
     color: #608bd2;
@@ -174,7 +178,12 @@ main form h2 {
 }
 
 select.btn option {
+    background: white;
+    color: black;
+}
+header select.btn option {
     background: #282c2f;
+    color: white;
 }
 
 .btn[type="submit"] {
@@ -196,9 +205,16 @@ select.btn option {
     width: fit-content;
     margin: 15px auto;
     padding: 10px 20px;
-    color: #282c2f;
     text-align: center;
     font-size: 16px;
+    font-weight: bold;
+}
+
+.btn-no-margin {
+    margin-bottom: 0;
+}
+
+.bold {
     font-weight: bold;
 }
 
@@ -206,6 +222,12 @@ td .btn-small.btn-in-cell {
     display: block;
     width: 120px;
     margin: 5px 0;
+}
+
+.btn-transparent{
+    background: transparent;
+    color: black;
+    outline: none;
 }
 
 .form-link {
@@ -274,6 +296,12 @@ nav li {
 
 .button-cell {
     padding: 0 !important;
+}
+
+.sort-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 footer {

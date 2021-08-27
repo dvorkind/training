@@ -1,18 +1,21 @@
 package by.dvorkin.web.model.service.impl;
 
 import by.dvorkin.web.model.dao.AccountDao;
+import by.dvorkin.web.model.dao.ServiceDao;
 import by.dvorkin.web.model.dao.TariffDao;
-import by.dvorkin.web.model.dao.UserDao;
+import by.dvorkin.web.model.dao.SubscriberDao;
 import by.dvorkin.web.model.dao.impl.AccountDaoImpl;
+import by.dvorkin.web.model.dao.impl.ServiceDaoImpl;
 import by.dvorkin.web.model.dao.impl.TariffDaoImpl;
-import by.dvorkin.web.model.dao.impl.UserDaoImpl;
+import by.dvorkin.web.model.dao.impl.SubscriberDaoImpl;
 import by.dvorkin.web.model.pool.ConnectionPool;
 import by.dvorkin.web.model.pool.ConnectionPoolException;
 import by.dvorkin.web.model.service.AccountService;
 import by.dvorkin.web.model.service.ServiceFactory;
+import by.dvorkin.web.model.service.ServiceService;
 import by.dvorkin.web.model.service.TariffService;
 import by.dvorkin.web.model.service.Transaction;
-import by.dvorkin.web.model.service.UserService;
+import by.dvorkin.web.model.service.SubscriberService;
 import by.dvorkin.web.model.service.exceptions.FactoryException;
 
 import java.sql.Connection;
@@ -20,11 +23,13 @@ import java.sql.Connection;
 public class ServiceFactoryImpl implements ServiceFactory {
     private Connection connection;
     private AccountDao accountDao = null;
-    private UserDao userDao = null;
+    private SubscriberDao subscriberDao = null;
     private TariffDao tariffDao = null;
+    private ServiceDao serviceDao = null;
     private AccountService accountService = null;
-    private UserService userService = null;
+    private SubscriberService subscriberService = null;
     private TariffService tariffService = null;
+    private ServiceService serviceService = null;
     private Transaction transaction = null;
 
     @Override
@@ -33,21 +38,21 @@ public class ServiceFactoryImpl implements ServiceFactory {
             AccountServiceImpl accountServiceImpl = new AccountServiceImpl();
             accountServiceImpl.setTransaction(getTransaction());
             accountServiceImpl.setAccountDao(getAccountDao());
-            accountServiceImpl.setUserDao(getUserDao());
+            accountServiceImpl.setSubscriberDao(getSubscriberDao());
             accountService = accountServiceImpl;
         }
         return accountService;
     }
 
     @Override
-    public UserService getUserService() throws FactoryException {
-        if (userService == null) {
-            UserServiceImpl userServiceImpl = new UserServiceImpl();
-            userServiceImpl.setTransaction(getTransaction());
-            userServiceImpl.setUserDao(getUserDao());
-            userService = userServiceImpl;
+    public SubscriberService getSubscriberService() throws FactoryException {
+        if (subscriberService == null) {
+            SubscriberServiceImpl subscriberServiceImpl = new SubscriberServiceImpl();
+            subscriberServiceImpl.setTransaction(getTransaction());
+            subscriberServiceImpl.setSubscriberDao(getSubscriberDao());
+            subscriberService = subscriberServiceImpl;
         }
-        return userService;
+        return subscriberService;
     }
 
     @Override
@@ -62,6 +67,17 @@ public class ServiceFactoryImpl implements ServiceFactory {
     }
 
     @Override
+    public ServiceService getServiceService() throws FactoryException {
+        if (serviceService == null) {
+            ServiceServiceImpl serviceServiceImpl = new ServiceServiceImpl();
+            serviceServiceImpl.setTransaction(getTransaction());
+            serviceServiceImpl.setServiceDao(getServiceDao());
+            serviceService = serviceServiceImpl;
+        }
+        return serviceService;
+    }
+
+    @Override
     public AccountDao getAccountDao() throws FactoryException {
         if (accountDao == null) {
             AccountDaoImpl accountDaoImpl = new AccountDaoImpl();
@@ -72,13 +88,13 @@ public class ServiceFactoryImpl implements ServiceFactory {
     }
 
     @Override
-    public UserDao getUserDao() throws FactoryException {
-        if (userDao == null) {
-            UserDaoImpl userDaoImpl = new UserDaoImpl();
-            userDaoImpl.setConnection(getConnection());
-            userDao = userDaoImpl;
+    public SubscriberDao getSubscriberDao() throws FactoryException {
+        if (subscriberDao == null) {
+            SubscriberDaoImpl subscriberDaoImpl = new SubscriberDaoImpl();
+            subscriberDaoImpl.setConnection(getConnection());
+            subscriberDao = subscriberDaoImpl;
         }
-        return userDao;
+        return subscriberDao;
     }
 
     @Override
@@ -89,6 +105,16 @@ public class ServiceFactoryImpl implements ServiceFactory {
             tariffDao = tariffDaoImpl;
         }
         return tariffDao;
+    }
+
+    @Override
+    public ServiceDao getServiceDao() throws FactoryException {
+        if (serviceDao == null) {
+            ServiceDaoImpl serviceDaoImpl = new ServiceDaoImpl();
+            serviceDaoImpl.setConnection(getConnection());
+            serviceDao = serviceDaoImpl;
+        }
+        return serviceDao;
     }
 
     @Override

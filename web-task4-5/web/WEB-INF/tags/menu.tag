@@ -15,22 +15,22 @@
         <nav>
             <ul>
                 <li>
-                    <a href="${context}/user/user.html" ${fn:contains(pageContext.request.servletPath, 'user/user.jsp') ? 'class="active-item"' : ''}>
+                    <a href="${context}/subscriber/subscriber.html" ${fn:contains(pageContext.request.servletPath, 'subscriber/subscriber.jsp') ? 'class="active-item"' : ''}>
                         <fmt:message key="menu.profile"/>
                     </a>
                 </li>
                 <li>
-                    <a href="${context}/user/services.html" ${fn:contains(pageContext.request.servletPath, 'user/services.jsp') ? 'class="active-item"' : ''}>
+                    <a href="${context}/subscriber/services.html" ${fn:contains(pageContext.request.servletPath, 'subscriber/services.jsp') ? 'class="active-item"' : ''}>
                         <fmt:message key="menu.services"/>
                     </a>
                 </li>
                 <li>
-                    <a href="${context}/user/tariffs.html" ${fn:contains(pageContext.request.servletPath, 'user/tariffs.jsp') ? 'class="active-item"' : ''}>
+                    <a href="${context}/subscriber/tariffs.html" ${fn:contains(pageContext.request.servletPath, 'subscriber/tariffs.jsp') ? 'class="active-item"' : ''}>
                         <fmt:message key="menu.tariffs"/>
                     </a>
                 </li>
                 <li>
-                    <a href="${context}/user/bills.html" ${fn:contains(pageContext.request.servletPath, 'user/bills.jsp') ? 'class="active-item"' : ''}>
+                    <a href="${context}/subscriber/bills.html" ${fn:contains(pageContext.request.servletPath, 'subscriber/bills.jsp') ? 'class="active-item"' : ''}>
                         <fmt:message key="menu.bills"/>
                     </a>
                 </li>
@@ -51,13 +51,13 @@
                     </a>
                 </li>
                 <li>
-                    <a href="${context}/admin/users_all.html" ${fn:contains(pageContext.request.servletPath, 'admin/users_all.jsp') ? 'class="active-item"' : ''}>
-                        <fmt:message key="menu.users"/>
+                    <a href="${context}/admin/subscribers_all.html" ${fn:contains(pageContext.request.servletPath, 'admin/subscribers_all.jsp') ? 'class="active-item"' : ''}>
+                        <fmt:message key="menu.subscribers"/>
                     </a>
                 </li>
                 <li>
-                    <a href="${context}/admin/users_new.html" ${fn:contains(pageContext.request.servletPath, 'admin/users_new.jsp') ? 'class="active-item"' : ''}>
-                        <fmt:message key="menu.newUsers"/>
+                    <a href="${context}/admin/subscribers_new.html" ${fn:contains(pageContext.request.servletPath, 'admin/subscribers_new.jsp') ? 'class="active-item"' : ''}>
+                        <fmt:message key="menu.newSubscribers"/>
                     </a>
                 </li>
                 <li>
@@ -66,7 +66,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="${context}/admin/services.html" ${fn:contains(pageContext.request.servletPath, 'admin/services.jsp') ? 'class="active-item"' : ''}>
+                    <a href="${context}/admin/service_list.html" ${fn:contains(pageContext.request.servletPath, 'admin/service_list.jsp') ? 'class="active-item"' : ''}>
                         <fmt:message key="menu.services"/>
                     </a>
                 </li>

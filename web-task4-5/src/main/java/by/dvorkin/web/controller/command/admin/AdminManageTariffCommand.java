@@ -17,18 +17,18 @@ import org.apache.logging.log4j.Logger;
 
 public class AdminManageTariffCommand implements Command {
     private static final String NAME_REGEX = "^[A-Za-zА-Яа-яЁё0-9\\s'-]{5,20}$";
-    private static final String SUBSCRIPTION_REGEX = "^[A-Za-zА-Яа-яЁё0-9\\s'~!@#$%^&*()-_=+'/|.]{5,50}$";
+    private static final String SUBSCRIPTION_REGEX = "^[A-Za-zА-Яа-яЁё0-9\\s'~!@#$%^&*()-_=+'/|.]{5,200}$";
 
     @Override
     public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
+            Logger logger = LogManager.getLogger("User");
             TariffService tariffService = serviceFactory.getTariffService();
             Tariff tariff;
             if (req.getParameter("id") == null) {
                 if (isInputValid(req)) {
                     tariff = createTariff(req);
                     tariffService.save(tariff);
-                    Logger logger = LogManager.getLogger("User");
                     logger.info("TariffID #" + tariff.getId() + " was added by Administrator");
                     return new Forward("/admin/tariff_list.html");
                 }
@@ -37,7 +37,6 @@ public class AdminManageTariffCommand implements Command {
                     tariff = createTariff(req);
                     tariff.setId(Long.parseLong(req.getParameter("id")));
                     tariffService.save(tariff);
-                    Logger logger = LogManager.getLogger("User");
                     logger.info("TariffID #" + req.getParameter("id") + " was updated by Administrator");
                     return new Forward("/admin/tariff_list.html");
                 } else {
