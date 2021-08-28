@@ -12,4 +12,6 @@ public interface ServiceService {
 
     void save(Service service) throws ServiceException;
 
+    void delete(Long id) throws ServiceException;
+
 }

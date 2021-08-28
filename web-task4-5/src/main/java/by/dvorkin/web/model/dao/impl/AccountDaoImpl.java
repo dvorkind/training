@@ -25,17 +25,13 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public Account readByLogin(String login) throws DaoException {
-        String sql = "SELECT `id`, `password`, `role` FROM `account` WHERE `login` = ?";
+        String sql = "SELECT * FROM `account` WHERE `login` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
             Account account = null;
             if (resultSet.next()) {
-                account = new Account();
-                account.setId(resultSet.getLong("id"));
-                account.setLogin(login);
-                account.setPassword(resultSet.getString("password"));
-                account.setRole(Role.values()[resultSet.getInt("role")]);
+                account = createAccount(resultSet);
             }
             return account;
         } catch (SQLException e) {
@@ -45,7 +41,7 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public Account readByLoginAndPassword(String login, String password) throws DaoException {
-        String sql = "SELECT `id`, `role` FROM `account` WHERE `login` = ? AND `password` = ?";
+        String sql = "SELECT * FROM `account` WHERE `login` = ? AND `password` = ? AND `is_deleted` = 0";
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
@@ -55,11 +51,7 @@ public class AccountDaoImpl implements AccountDao {
             resultSet = statement.executeQuery();
             Account account = null;
             if (resultSet.next()) {
-                account = new Account();
-                account.setId(resultSet.getLong("id"));
-                account.setLogin(login);
-                account.setPassword(passwordToSHA(password));
-                account.setRole(Role.values()[resultSet.getInt("role")]);
+                account = createAccount(resultSet);
             }
             return account;
         } catch (SQLException e) {
@@ -82,13 +74,14 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public Long create(Account account) throws DaoException {
-        String sql = "INSERT INTO `account` (`login`, `password`, `role`) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO `account` (`login`, `password`, `role`, `is_deleted`) VALUES (?, ?, ?, ?)";
         ResultSet resultSet;
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, account.getLogin());
             statement.setString(2, passwordToSHA(account.getPassword()));
             statement.setInt(3, account.getRole()
                     .ordinal());
+            statement.setInt(4,0);
             statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
             resultSet.next();
@@ -116,23 +109,26 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public void delete(Long id) throws DaoException {
-
+        String sql = "UPDATE `account` SET `is_deleted` = ? WHERE `id` = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, 1);
+            statement.setLong(2, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
     public Account read(Long id) throws DaoException {
-        String sql = "SELECT `login`, `password`, `role` FROM `account` WHERE `id` = ?";
+        String sql = "SELECT * FROM `account` WHERE `id` = ?";
         ResultSet resultSet;
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
             resultSet = statement.executeQuery();
             Account account = null;
             if (resultSet.next()) {
-                account = new Account();
-                account.setId(id);
-                account.setLogin(resultSet.getString("login"));
-                account.setPassword(resultSet.getString("password"));
-                account.setRole(Role.values()[resultSet.getInt("role")]);
+                account = createAccount(resultSet);
             }
             return account;
         } catch (SQLException e) {
@@ -156,5 +152,14 @@ public class AccountDaoImpl implements AccountDao {
             return bigInt.toString(16);
         }
         return sourcePassword;
+    }
+
+    private Account createAccount(ResultSet resultSet) throws SQLException {
+        Account account = new Account();
+        account.setId(resultSet.getLong("id"));
+        account.setLogin(resultSet.getString("login"));
+        account.setPassword(resultSet.getString("password"));
+        account.setRole(Role.values()[resultSet.getInt("role")]);
+        return account;
     }
 }

@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class AdminDeleteTariffCommand implements Command {
+public class AdminTariffDeleteCommand implements Command {
     @Override
     public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
         if (req.getParameter("id") == null) {

@@ -10,7 +10,6 @@
 
 <fmt:message var="title" key="changePassword.title"/>
 <u:html title="${title}">
-    <u:menu/>
     <div class="main">
         <form action="change_password.html" method="post" class="reg-form submit-form">
             <c:choose>

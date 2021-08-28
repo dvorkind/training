@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class AdminManageTariffCommand implements Command {
+public class AdminTariffManageCommand implements Command {
     private static final String NAME_REGEX = "^[A-Za-zА-Яа-яЁё0-9\\s'-]{5,20}$";
     private static final String SUBSCRIPTION_REGEX = "^[A-Za-zА-Яа-яЁё0-9\\s'~!@#$%^&*()-_=+'/|.]{5,200}$";
 
@@ -86,7 +86,7 @@ public class AdminManageTariffCommand implements Command {
     }
 
     private boolean isInputValid(HttpServletRequest req) {
-        return isTariffNameValid(req) & isTariffDescription(req) & isTariffSubscriptionFeeValid(req) & isTariffCallCostValid(req) & isTariffSmsCostValid(req);
+        return isTariffNameValid(req) & isTariffDescriptionValid(req) & isTariffSubscriptionFeeValid(req) & isTariffCallCostValid(req) & isTariffSmsCostValid(req);
     }
 
     private boolean isTariffNameValid(HttpServletRequest req) {
@@ -108,7 +108,7 @@ public class AdminManageTariffCommand implements Command {
         return true;
     }
 
-    private boolean isTariffDescription(HttpServletRequest req) {
+    private boolean isTariffDescriptionValid(HttpServletRequest req) {
         String tariffDescription = req.getParameter("tariffDescription");
         req.setAttribute("tariffDescription", tariffDescription);
         if (tariffDescription == null) {

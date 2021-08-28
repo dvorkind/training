@@ -70,17 +70,13 @@ public class TariffServiceImpl implements TariffService {
                     throw new TariffNameNotUniqueException(tariff.getName());
                 }
             }
-
             transaction.commit();
         } catch (DaoException e) {
-            transaction.rollback();
-            throw new ServiceException(e);
-        } catch (ServiceException e) {
             try {
                 transaction.rollback();
             } catch (ServiceException ignored) {
             }
-            throw e;
+            throw new ServiceException(e);
         }
     }
 
@@ -90,9 +86,15 @@ public class TariffServiceImpl implements TariffService {
             if (tariffDao.isLastTariff()) {
                 throw new TariffLastException(id);
             } else {
+                transaction.start();
                 tariffDao.delete(id);
+                transaction.commit();
             }
         } catch (DaoException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
             throw new ServiceException(e);
         }
     }
@@ -109,9 +111,14 @@ public class TariffServiceImpl implements TariffService {
     @Override
     public void switchTariffs(Long sourceId, Long destinationId) throws ServiceException {
         try {
+            transaction.start();
             tariffDao.switchTariffs(sourceId, destinationId);
-        }
-        catch (DaoException e) {
+            transaction.commit();
+        } catch (DaoException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
             throw new ServiceException(e);
         }
     }

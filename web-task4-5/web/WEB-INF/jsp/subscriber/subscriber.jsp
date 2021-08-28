@@ -3,7 +3,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tld/money.tld" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
 
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
@@ -14,7 +14,6 @@
 <u:html title="${title} : ${titlePage}">
     <c:choose>
         <c:when test="${subscriber.isRegistered()}">
-            <u:menu/>
             <div class="main">
                 <h2 class="text-center">
                     <fmt:message key="subscriber.hello"/>, ${subscriber.firstname}!

@@ -3,7 +3,6 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
 
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
@@ -12,15 +11,14 @@
 <fmt:message var="title" key="admin.title"/>
 <fmt:message var="titlePage" key="admin.tariffDeleteTitle"/>
 <u:html title="${title} : ${titlePage}">
-    <u:menu/>
     <div class="main">
         <form action="tariff_delete.html" method="post" class="submit-form reg-form">
             <h2 class="text-center">
                 <fmt:message key="admin.tariffDeleteTitle"/> "${tariffName}"
             </h2>
             <c:if test="${not empty using}">
-                <p class="msg"><fmt:message key="admin.tariffMessageOne"/><span class="bold"> ${using}</span></p>
-                <p class="msg"><fmt:message key="admin.tariffMessageTwo"/></p>
+                <p class="msg"><fmt:message key="admin.tariffDeleteMessageOne"/><span class="bold"> ${using}</span></p>
+                <p class="msg"><fmt:message key="admin.tariffDeleteMessageTwo"/></p>
                 <select name="newTariff" class="btn center-btn">
                     <c:forEach var="service" items="${tariffs}">
                         <c:if test="${service.id != id}">
@@ -29,8 +27,8 @@
                     </c:forEach>
                 </select>
             </c:if>
-            <p class="msg"><fmt:message key="admin.tariffMessageThree"/></p>
-            <p class="msg"><fmt:message key="admin.tariffMessageFour"/></p>
+            <p class="msg"><fmt:message key="admin.tariffDeleteMessageThree"/></p>
+            <p class="msg"><fmt:message key="admin.tariffDeleteMessageFour"/></p>
             <p class="form-message">
                 <c:if test="${not empty tariffDeleteError}">
                     <span><fmt:message key="${tariffDeleteError}"/></span>

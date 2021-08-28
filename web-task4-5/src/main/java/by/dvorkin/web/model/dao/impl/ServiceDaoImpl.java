@@ -22,11 +22,12 @@ public class ServiceDaoImpl implements ServiceDao {
 
     @Override
     public Long create(Service service) throws DaoException {
-        String sql = "INSERT INTO `service` (`name`, `description`, `price`) " + "VALUES (?, ?, ?)";
+        String sql = "INSERT INTO `service` (`name`, `description`, `price`, `is_deleted`) " + "VALUES (?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, service.getName());
             statement.setString(2, service.getDescription());
             statement.setInt(3, service.getPrice());
+            statement.setInt(4, 0);
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
@@ -52,7 +53,16 @@ public class ServiceDaoImpl implements ServiceDao {
 
     @Override
     public void delete(Long id) throws DaoException {
-        String sql = "DELETE FROM `service` WHERE `id` = ?";
+        String sql = "UPDATE `service` SET `is_deleted` = ? WHERE `id` = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, 1);
+            statement.setLong(2, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+
+        sql = "DELETE FROM `subscriber_service` WHERE `service_id` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
             statement.executeUpdate();
@@ -69,11 +79,7 @@ public class ServiceDaoImpl implements ServiceDao {
             ResultSet resultSet = statement.executeQuery();
             Service service = null;
             if (resultSet.next()) {
-                service = new Service();
-                service.setId(id);
-                service.setName(resultSet.getString("name"));
-                service.setDescription(resultSet.getString("description"));
-                service.setPrice(resultSet.getInt("price"));
+                service = createService(resultSet);
             }
             return service;
         } catch (SQLException e) {
@@ -83,17 +89,12 @@ public class ServiceDaoImpl implements ServiceDao {
 
     @Override
     public List<Service> readAll() throws DaoException {
-        String sql = "SELECT * FROM `service`";
+        String sql = "SELECT * FROM `service` WHERE `is_deleted` = 0";
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(sql);
             List<Service> services = new ArrayList<>();
             while (resultSet.next()) {
-                Service service = new Service();
-                service.setId(resultSet.getLong("id"));
-                service.setName(resultSet.getString("name"));
-                service.setDescription(resultSet.getString("description"));
-                service.setPrice(resultSet.getInt("price"));
-                services.add(service);
+                services.add(createService(resultSet));
             }
             return services;
         } catch (SQLException e) {
@@ -109,15 +110,20 @@ public class ServiceDaoImpl implements ServiceDao {
             ResultSet resultSet = statement.executeQuery();
             Service service = null;
             if (resultSet.next()) {
-                service = new Service();
-                service.setId(resultSet.getLong("id"));
-                service.setName(serviceName);
-                service.setDescription(resultSet.getString("description"));
-                service.setPrice(resultSet.getInt("price"));
+                service = createService(resultSet);
             }
             return service;
         } catch (SQLException e) {
             throw new DaoException(e);
         }
+    }
+
+    private Service createService(ResultSet resultSet) throws SQLException {
+        Service service = new Service();
+        service.setId(resultSet.getLong("id"));
+        service.setName(resultSet.getString("name"));
+        service.setDescription(resultSet.getString("description"));
+        service.setPrice(resultSet.getInt("price"));
+        return service;
     }
 }

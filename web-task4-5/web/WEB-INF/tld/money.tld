@@ -7,7 +7,7 @@
 
     <tlib-version>2.1</tlib-version>
     <short-name>ctg</short-name>
-    <uri>/WEB-INF/tld/custom.tld</uri>
+    <uri>/WEB-INF/tld/money.tld</uri>
 
     <tag>
         <name>money-format</name>

@@ -9,19 +9,19 @@
 <fmt:setBundle basename="messages"/>
 
 <fmt:message var="title" key="admin.title"/>
-<fmt:message var="titlePage" key="admin.tariffAddTitle"/>
+<c:choose>
+    <c:when test="${not empty id}">
+        <fmt:message var="titlePage" key="admin.tariffEditTitle"/>
+    </c:when>
+    <c:otherwise>
+        <fmt:message var="titlePage" key="admin.tariffAddTitle"/>
+    </c:otherwise>
+</c:choose>
+
 <u:html title="${title} : ${titlePage}">
-    <u:menu/>
     <div class="main">
         <form action="tariff_manage.html" method="post" class="reg-form submit-form">
-            <c:choose>
-                <c:when test="${not empty id}">
-                    <h2><fmt:message key="admin.tariffEditTitle"/></h2>
-                </c:when>
-                <c:otherwise>
-                    <h2><fmt:message key="admin.tariffAddTitle"/></h2>
-                </c:otherwise>
-            </c:choose>
+            <h2>${titlePage}</h2>
             <div class="form-inputs">
                 <div class="input-group">
                     <label for="tariffName"><fmt:message key="admin.tariffName"/></label>

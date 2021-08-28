@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tld/money.tld" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
 
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
@@ -13,12 +13,11 @@
 <fmt:message var="title" key="admin.title"/>
 <fmt:message var="titlePage" key="admin.tariffs"/>
 <u:html title="${title} : ${titlePage}">
-    <u:menu/>
     <div class="main">
         <h2 class="text-center">
             <fmt:message key="admin.tariffs"/>
         </h2>
-        <a href="tariff_manage.html" class="btn center-btn btn-no-margin">
+        <a href="tariff_manage.html" class="btn center-btn no-margin-bottom">
             <fmt:message key="admin.tariffAdd"/> ➕
         </a>
         <div class="sort-wrapper">

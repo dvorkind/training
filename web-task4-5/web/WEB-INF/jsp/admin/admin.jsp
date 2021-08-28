@@ -12,7 +12,6 @@
 <fmt:message var="title" key="admin.title"/>
 <fmt:message var="titlePage" key="admin.main"/>
 <u:html title="${title} : ${titlePage}">
-    <u:menu/>
     <div class="main">
         <h2 class="text-center">
             <fmt:message key="admin.subscribers"/>

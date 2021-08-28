@@ -3,7 +3,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tld/money.tld" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
 
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
@@ -12,16 +12,15 @@
 <fmt:message var="title" key="admin.title"/>
 <fmt:message var="titlePage" key="admin.subscribers"/>
 <u:html title="${title} : ${titlePage}">
-    <u:menu/>
     <div class="main">
         <c:choose>
             <c:when test="${empty subscribers}">
-                <h2 class="text-center">
+                <h2 class="text-center no-margin-bottom">
                     <fmt:message key="admin.subscribersEmpty"/>
                 </h2>
             </c:when>
             <c:otherwise>
-                <h2 class="text-center">
+                <h2 class="text-center no-margin-bottom">
                     <fmt:message key="admin.subscribers"/>
                 </h2>
                 <div class="sort-wrapper">

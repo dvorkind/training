@@ -23,7 +23,7 @@ public class SubscriberDaoImpl implements SubscriberDao {
     @Override
     public Long create(Subscriber subscriber) throws DaoException {
         String sql = "INSERT INTO `subscriber` (`account_id`, `firstname`, `lastname`, `phone_number`, `balance`, " +
-                "`tariff`," + "`is_blocked`, `is_registered`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                "`tariff`, `is_blocked`, `is_registered`, `is_deleted`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         ResultSet resultSet;
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setLong(1, subscriber.getAccountId());
@@ -34,6 +34,7 @@ public class SubscriberDaoImpl implements SubscriberDao {
             statement.setLong(6, subscriber.getTariff());
             statement.setBoolean(7, subscriber.isBlocked());
             statement.setBoolean(8, subscriber.isRegistered());
+            statement.setInt(9, 0);
             statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
             resultSet.next();
@@ -50,7 +51,14 @@ public class SubscriberDaoImpl implements SubscriberDao {
 
     @Override
     public void delete(Long id) throws DaoException {
-
+        String sql = "UPDATE `subscriber` SET `is_deleted` = ? WHERE `id` = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, 1);
+            statement.setLong(2, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
@@ -60,13 +68,13 @@ public class SubscriberDaoImpl implements SubscriberDao {
 
     @Override
     public List<Subscriber> readAll() throws DaoException {
-        String sql = "SELECT * FROM `subscriber`";
+        String sql = "SELECT * FROM `subscriber` WHERE `is_deleted` = 0";
         return getSubscriberList(sql);
     }
 
     @Override
     public List<Subscriber> readNewSubscribers() throws DaoException {
-        String sql = "SELECT * FROM `subscriber` WHERE  `is_registered` = 0";
+        String sql = "SELECT * FROM `subscriber` WHERE  `is_registered` = 0 AND `is_deleted` = 0";
         return getSubscriberList(sql);
     }
 

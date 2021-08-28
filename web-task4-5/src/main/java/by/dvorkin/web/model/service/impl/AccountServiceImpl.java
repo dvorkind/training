@@ -57,13 +57,11 @@ public class AccountServiceImpl implements AccountService {
             }
             transaction.commit();
         } catch (DaoException e) {
-            transaction.rollback();
-        } catch (ServiceException e) {
             try {
                 transaction.rollback();
             } catch (ServiceException ignored) {
             }
-            throw e;
+            throw new ServiceException(e);
         }
     }
 
@@ -84,12 +82,6 @@ public class AccountServiceImpl implements AccountService {
             } catch (ServiceException ignored) {
             }
             throw new ServiceException(e);
-        } catch (ServiceException e) {
-            try {
-                transaction.rollback();
-            } catch (ServiceException ignored) {
-            }
-            throw e;
         }
     }
 }

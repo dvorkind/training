@@ -17,7 +17,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.Comparator;
 import java.util.List;
 
-public class AdminNewSubscribersCommand implements Command {
+public class AdminSubscribersNewListCommand implements Command {
     @Override
     public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
@@ -27,7 +27,7 @@ public class AdminNewSubscribersCommand implements Command {
                 Logger logger = LogManager.getLogger("User");
                 logger.info("UserID #" + req.getParameter("id") + " was activated by Administrator");
             }
-            List<Subscriber> subscribers = subscriberService.getAll();
+            List<Subscriber> subscribers = subscriberService.getNewSubscribers();
             String sortBy = req.getParameter("sort");
             if (sortBy != null) {
                 sortTable(sortBy, subscribers);

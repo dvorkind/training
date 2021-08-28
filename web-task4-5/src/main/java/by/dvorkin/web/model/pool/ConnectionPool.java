@@ -72,6 +72,7 @@ public final class ConnectionPool {
             }
         }
         usedConnections.add(connection);
+        System.out.println(connection);
         return new ConnectionWrapper(connection);
     }
 

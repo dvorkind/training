@@ -11,18 +11,17 @@
 <fmt:message var="title" key="admin.title"/>
 <fmt:message var="titlePage" key="admin.newSubscribers"/>
 <u:html title="${title} : ${titlePage}">
-    <u:menu/>
     <c:choose>
         <c:when test="${empty subscribers}">
             <div class="main">
-                <h2 class="text-center">
+                <h2 class="text-center no-margin-bottom">
                     <fmt:message key="admin.newSubscribersEmpty"/>
                 </h2>
             </div>
         </c:when>
         <c:otherwise>
             <div class="main">
-                <h2 class="text-center">
+                <h2 class="text-center no-margin-bottom">
                     <fmt:message key="admin.newSubscribers"/>
                 </h2>
                 <div class="sort-wrapper">

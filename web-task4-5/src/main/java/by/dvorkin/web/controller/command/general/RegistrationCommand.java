@@ -87,7 +87,7 @@ public class RegistrationCommand implements Command {
     }
 
     private boolean isInputValid(HttpServletRequest req) {
-        return isLoginValid(req) & isPasswordValid(req) & isConfirmedPassword(req) & isFirstnameValid(req) & isLastnameValid(req) & isPhoneValid(req);
+        return isLoginValid(req) & isPasswordValid(req) & isConfirmedPasswordValid(req) & isFirstnameValid(req) & isLastnameValid(req) & isPhoneValid(req);
     }
 
     private boolean isFirstnameValid(HttpServletRequest req) {
@@ -194,7 +194,7 @@ public class RegistrationCommand implements Command {
         return true;
     }
 
-    private boolean isConfirmedPassword(HttpServletRequest req) {
+    private boolean isConfirmedPasswordValid(HttpServletRequest req) {
         String password = req.getParameter("password");
         String confirmedPassword = req.getParameter("confirmedPassword");
         req.setAttribute("confirmedPassword", confirmedPassword);

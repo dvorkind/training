@@ -1,12 +1,14 @@
 package by.dvorkin.web.controller.command;
 
-import by.dvorkin.web.controller.command.admin.AdminDeleteTariffCommand;
-import by.dvorkin.web.controller.command.admin.AdminManageTariffCommand;
-import by.dvorkin.web.controller.command.admin.AdminServicesCommand;
+import by.dvorkin.web.controller.command.admin.AdminServiceDeleteCommand;
+import by.dvorkin.web.controller.command.admin.AdminServiceManageCommand;
+import by.dvorkin.web.controller.command.admin.AdminTariffDeleteCommand;
+import by.dvorkin.web.controller.command.admin.AdminTariffManageCommand;
+import by.dvorkin.web.controller.command.admin.AdminServicesListCommand;
 import by.dvorkin.web.controller.command.admin.AdminSummaryCommand;
-import by.dvorkin.web.controller.command.admin.AdminNewSubscribersCommand;
-import by.dvorkin.web.controller.command.admin.AdminTariffsCommand;
-import by.dvorkin.web.controller.command.admin.AdminSubscribersCommand;
+import by.dvorkin.web.controller.command.admin.AdminSubscribersNewListCommand;
+import by.dvorkin.web.controller.command.admin.AdminTariffsListCommand;
+import by.dvorkin.web.controller.command.admin.AdminSubscribersListCommand;
 import by.dvorkin.web.controller.command.general.ChangePasswordCommand;
 import by.dvorkin.web.controller.command.general.LanguageCommand;
 import by.dvorkin.web.controller.command.general.LoginCommand;
@@ -30,12 +32,14 @@ public class CommandFactory {
         commands.put("/language", LanguageCommand.class);
         commands.put("/logout", LogoutCommand.class);
         commands.put("/admin/admin",  AdminSummaryCommand.class);
-        commands.put("/admin/subscribers_new",  AdminNewSubscribersCommand.class);
-        commands.put("/admin/subscribers_all",  AdminSubscribersCommand.class);
-        commands.put("/admin/tariff_list",  AdminTariffsCommand.class);
-        commands.put("/admin/tariff_manage",  AdminManageTariffCommand.class);
-        commands.put("/admin/tariff_delete",  AdminDeleteTariffCommand.class);
-        commands.put("/admin/service_list",  AdminServicesCommand.class);
+        commands.put("/admin/subscribers_new",  AdminSubscribersNewListCommand.class);
+        commands.put("/admin/subscribers_all",  AdminSubscribersListCommand.class);
+        commands.put("/admin/tariff_list",  AdminTariffsListCommand.class);
+        commands.put("/admin/tariff_manage",  AdminTariffManageCommand.class);
+        commands.put("/admin/tariff_delete",  AdminTariffDeleteCommand.class);
+        commands.put("/admin/service_list",  AdminServicesListCommand.class);
+        commands.put("/admin/service_delete",  AdminServiceDeleteCommand.class);
+        commands.put("/admin/service_manage",  AdminServiceManageCommand.class);
         commands.put("/subscriber/subscriber",  SubscriberSummaryCommand.class);
         commands.put("/change_password",  ChangePasswordCommand.class);
     }

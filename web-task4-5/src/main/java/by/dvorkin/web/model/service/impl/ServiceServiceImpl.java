@@ -72,14 +72,26 @@ public class ServiceServiceImpl implements ServiceService {
 
             transaction.commit();
         } catch (DaoException e) {
-            transaction.rollback();
-            throw new ServiceException(e);
-        } catch (ServiceException e) {
             try {
                 transaction.rollback();
             } catch (ServiceException ignored) {
             }
-            throw e;
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public void delete(Long id) throws ServiceException {
+        try {
+            transaction.start();
+            serviceDao.delete(id);
+            transaction.commit();
+        } catch (DaoException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw new ServiceException(e);
         }
     }
 }

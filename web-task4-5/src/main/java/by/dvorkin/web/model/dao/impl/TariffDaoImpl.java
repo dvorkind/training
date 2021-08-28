@@ -22,14 +22,15 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public Long create(Tariff tariff) throws DaoException {
-        String sql = "INSERT INTO `tariff` (`name`, `description`, `subscription_fee`, `call_cost`, `sms_cost`) " +
-                "VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO `tariff` (`name`, `description`, `subscription_fee`, `call_cost`, `sms_cost`, `is_deleted`) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, tariff.getName());
             statement.setString(2, tariff.getDescription());
             statement.setInt(3, tariff.getSubscriptionFee());
             statement.setInt(4, tariff.getCallCost());
             statement.setInt(5, tariff.getSmsCost());
+            statement.setInt(6, 0);
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
@@ -58,9 +59,10 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public void delete(Long id) throws DaoException {
-        String sql = "DELETE FROM `tariff` WHERE `id` = ?";
+        String sql = "UPDATE `tariff` SET `is_deleted` = ? WHERE `id` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setLong(1, id);
+            statement.setLong(1, 1);
+            statement.setLong(2, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -75,13 +77,7 @@ public class TariffDaoImpl implements TariffDao {
             ResultSet resultSet = statement.executeQuery();
             Tariff tariff = null;
             if (resultSet.next()) {
-                tariff = new Tariff();
-                tariff.setId(id);
-                tariff.setName(resultSet.getString("name"));
-                tariff.setDescription(resultSet.getString("description"));
-                tariff.setSubscriptionFee(resultSet.getInt("subscription_fee"));
-                tariff.setCallCost(resultSet.getInt("call_cost"));
-                tariff.setSmsCost(resultSet.getInt("sms_cost"));
+                tariff = createTariff(resultSet);
             }
             return tariff;
         } catch (SQLException e) {
@@ -91,7 +87,7 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public List<Tariff> readAll() throws DaoException {
-        String sql = "SELECT * FROM `tariff`";
+        String sql = "SELECT * FROM `tariff` WHERE `is_deleted` = 0";
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(sql);
             List<Tariff> tariffs = new ArrayList<>();
@@ -122,7 +118,7 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public boolean isLastTariff() throws DaoException {
-        String sql = "SELECT COUNT(*) AS tariffs FROM `tariff`";
+        String sql = "SELECT COUNT(*) AS tariffs FROM `tariff` WHERE `is_deleted` = 0";
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(sql);
             if (resultSet.next()) {
