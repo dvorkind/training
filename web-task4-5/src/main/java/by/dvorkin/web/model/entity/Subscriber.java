@@ -11,6 +11,9 @@ public class Subscriber {
     private boolean blocked;
     private boolean registered;
 
+    public Subscriber() {
+    }
+
     public Long getTariff() {
         return tariff;
     }

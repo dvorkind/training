@@ -2,6 +2,7 @@ package by.dvorkin.web.model.service;
 
 import by.dvorkin.web.model.dao.AccountDao;
 import by.dvorkin.web.model.dao.ServiceDao;
+import by.dvorkin.web.model.dao.SubscriberActionDao;
 import by.dvorkin.web.model.dao.TariffDao;
 import by.dvorkin.web.model.dao.SubscriberDao;
 import by.dvorkin.web.model.service.exceptions.FactoryException;
@@ -17,6 +18,8 @@ public interface ServiceFactory extends AutoCloseable {
 
     ServiceService getServiceService() throws FactoryException;
 
+    SubscriberActionService getSubscriberActionService() throws FactoryException;
+
     AccountDao getAccountDao() throws FactoryException;
 
     SubscriberDao getSubscriberDao() throws FactoryException;
@@ -24,6 +27,8 @@ public interface ServiceFactory extends AutoCloseable {
     TariffDao getTariffDao() throws FactoryException;
 
     ServiceDao getServiceDao() throws FactoryException;
+
+    SubscriberActionDao getSubscriberActionDao() throws FactoryException;
 
     Connection getConnection() throws FactoryException;
 

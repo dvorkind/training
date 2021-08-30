@@ -65,11 +65,11 @@ CREATE TABLE IF NOT EXISTS `service`
 
 CREATE TABLE IF NOT EXISTS `subscriber_service`
 (
-    `id`            INT     NOT NULL AUTO_INCREMENT,
-    `subscriber_id` INT(10) NOT NULL,
-    `service_id`    INT(10) NOT NULL,
-    `begin_date`    DATE    NOT NULL,
-    `end_date`      DATE DEFAULT NULL,
+    `id`            INT      NOT NULL AUTO_INCREMENT,
+    `subscriber_id` INT(10)  NOT NULL,
+    `service_id`    INT(10)  NOT NULL,
+    `begin_date`    DATETIME NOT NULL,
+    `end_date`      DATETIME DEFAULT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`subscriber_id`)
         REFERENCES `subscriber` (`id`)
@@ -77,6 +77,22 @@ CREATE TABLE IF NOT EXISTS `subscriber_service`
         ON UPDATE NO ACTION,
     FOREIGN KEY (`service_id`)
         REFERENCES `service` (`id`)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `subscriber_action`
+(
+    `id`            INT        NOT NULL AUTO_INCREMENT,
+    `subscriber_id` INT(10)    NOT NULL,
+    `action`        TINYINT(1) NOT NULL,
+    `date`          DATETIME   NOT NULL,
+    `sum`           INT(10)    NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`subscriber_id`)
+        REFERENCES `subscriber` (`id`)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION
 )
@@ -115,27 +131,27 @@ VALUES ('Конференц-связь',
         0, 0);
 
 INSERT INTO `account` (`login`, `password`, `role`, `is_deleted`)
-VALUES ('admin', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '0', 0),
-       ('Test1', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '1', 0),
-       ('Test2', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '1', 0),
-       ('Test3', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '1', 0),
-       ('Test4', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '1', 0),
-       ('Test5', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '1', 0),
-       ('Test6', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '1', 0),
-       ('Test7', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '1', 0),
-       ('Test8', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '1', 0),
-       ('Test9', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '1', 0),
-       ('Test10', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '1', 0);
+VALUES ('admin', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '0', 0);
+#        ('Test1', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '1', 0),
+#        ('Test2', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '1', 0),
+#        ('Test3', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '1', 0),
+#        ('Test4', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '1', 0),
+#        ('Test5', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '1', 0),
+#        ('Test6', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '1', 0),
+#        ('Test7', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '1', 0),
+#        ('Test8', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '1', 0),
+#        ('Test9', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '1', 0),
+#        ('Test10', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '1', 0);
 
-INSERT INTO `subscriber` (`account_id`, `firstname`, `lastname`, `phone_number`, `balance`, `tariff`, `is_blocked`,
-                          `is_registered`, `is_deleted`)
-VALUES ('2', 'Иван', 'Иванов', '+375000000000', 0, 1, 1, 0, 0),
-       ('3', 'Петр', 'Петров', '+375000000001', 0, 1, 1, 0, 0),
-       ('4', 'Борис', 'Борисов', '+375000000002', 0, 1, 1, 0, 0),
-       ('5', 'Анна', 'Анина', '+375000000003', 0, 1, 1, 0, 0),
-       ('6', 'Виктория', 'Викториева', '+375000000004', 0, 1, 1, 0, 0),
-       ('7', 'Юлия', 'Юлиева', '+375000000005', 0, 1, 1, 0, 0),
-       ('8', 'Наташа', 'Наталина', '+375000000006', 0, 1, 1, 0, 0),
-       ('9', 'Сидор', 'Сидоров', '+375000000007', 0, 1, 1, 0, 0),
-       ('10', 'Василий', 'Васильев', '+375000000008', 0, 1, 1, 0, 0),
-       ('11', 'Марина', 'Маринина', '+375000000009', 0, 1, 1, 0, 0);
+# INSERT INTO `subscriber` (`account_id`, `firstname`, `lastname`, `phone_number`, `balance`, `tariff`, `is_blocked`,
+#                           `is_registered`, `is_deleted`)
+# VALUES ('2', 'Иван', 'Иванов', '+375000000000', 0, 1, 1, 0, 0),
+#        ('3', 'Петр', 'Петров', '+375000000001', 0, 1, 1, 0, 0),
+#        ('4', 'Борис', 'Борисов', '+375000000002', 0, 1, 1, 0, 0),
+#        ('5', 'Анна', 'Анина', '+375000000003', 0, 1, 1, 0, 0),
+#        ('6', 'Виктория', 'Викториева', '+375000000004', 0, 1, 1, 0, 0),
+#        ('7', 'Юлия', 'Юлиева', '+375000000005', 0, 1, 1, 0, 0),
+#        ('8', 'Наташа', 'Наталина', '+375000000006', 0, 1, 1, 0, 0),
+#        ('9', 'Сидор', 'Сидоров', '+375000000007', 0, 1, 1, 0, 0),
+#        ('10', 'Василий', 'Васильев', '+375000000008', 0, 1, 1, 0, 0),
+#        ('11', 'Марина', 'Маринина', '+375000000009', 0, 1, 1, 0, 0);

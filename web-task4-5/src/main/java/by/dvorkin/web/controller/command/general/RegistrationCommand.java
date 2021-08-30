@@ -58,7 +58,7 @@ public class RegistrationCommand implements Command {
                 req.removeAttribute("phoneNumberIsValid");
                 req.setAttribute("phoneNumberError", "registration.errorExistSubscriberError");
                 return null;
-            } catch (ServiceException |FactoryException e) {
+            } catch (ServiceException | FactoryException e) {
                 throw new ServletException(e);
             } catch (Exception ignored) {
             }
@@ -96,8 +96,7 @@ public class RegistrationCommand implements Command {
         if (firstname == null) {
             return false;
         } else {
-            if (firstname.trim()
-                    .equals("")) {
+            if (firstname.trim().equals("")) {
                 req.setAttribute("firstnameError", "registration.errorEmpty");
                 return false;
             }
@@ -116,8 +115,7 @@ public class RegistrationCommand implements Command {
         if (lastname == null) {
             return false;
         } else {
-            if (lastname.trim()
-                    .equals("")) {
+            if (lastname.trim().equals("")) {
                 req.setAttribute("lastnameError", "registration.errorEmpty");
                 return false;
             }
@@ -135,13 +133,10 @@ public class RegistrationCommand implements Command {
         if (phoneNumber == null) {
             return false;
         } else {
-            phoneNumber = phoneNumber.replaceAll("\\s", "")
-                    .replaceAll("-", "")
-                    .replaceAll("\\(", "")
+            phoneNumber = phoneNumber.replaceAll("\\s", "").replaceAll("-", "").replaceAll("\\(", "")
                     .replaceAll("\\)", "");
             req.setAttribute("phoneNumber", phoneNumber);
-            if (phoneNumber.trim()
-                    .equals("")) {
+            if (phoneNumber.trim().equals("")) {
                 req.setAttribute("phoneNumberError", "registration.errorEmpty");
                 return false;
             }
@@ -160,8 +155,7 @@ public class RegistrationCommand implements Command {
         if (login == null) {
             return false;
         } else {
-            if (login.trim()
-                    .equals("")) {
+            if (login.trim().equals("")) {
                 req.setAttribute("loginError", "registration.errorEmpty");
                 return false;
             }
@@ -180,8 +174,7 @@ public class RegistrationCommand implements Command {
         if (password == null) {
             return false;
         } else {
-            if (password.trim()
-                    .equals("")) {
+            if (password.trim().equals("")) {
                 req.setAttribute("passwordError", "registration.errorEmpty");
                 return false;
             }
@@ -201,8 +194,7 @@ public class RegistrationCommand implements Command {
         if (confirmedPassword == null) {
             return false;
         } else {
-            if (confirmedPassword.trim()
-                    .equals("")) {
+            if (confirmedPassword.trim().equals("")) {
                 req.setAttribute("confirmedPasswordError", "registration.errorConfirmedPasswordDifferent");
                 return false;
             }

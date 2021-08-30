@@ -13,14 +13,15 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 public final class ConnectionPool {
     private static ConnectionPool instance = new ConnectionPool();
+    private final Queue<Connection> freeConnections = new ConcurrentLinkedQueue<>();
+    private final Set<Connection> usedConnections =
+            new ConcurrentSkipListSet<>(Comparator.comparingInt(Object::hashCode));
     private String jdbcUrl;
     private String user;
     private String password;
     private Driver driver;
     private int validationConnectionTimeout;
     private int maxSizeConnections;
-    private final Queue<Connection> freeConnections = new ConcurrentLinkedQueue<>();
-    private final Set<Connection> usedConnections = new ConcurrentSkipListSet<>(Comparator.comparingInt(Object::hashCode));
 
     private ConnectionPool() {
     }
@@ -61,18 +62,18 @@ public final class ConnectionPool {
                         }
                         connection = null;
                     }
-                } else if (usedConnections.size() < maxSizeConnections) {
-                    //TODO: Log
-                    connection = newConnection();
                 } else {
-                    throw new ConnectionPoolException("The database connections amount is over limited");
+                    if (usedConnections.size() < maxSizeConnections) {
+                        connection = newConnection();
+                    } else {
+                        throw new ConnectionPoolException("The database connections amount is over limited");
+                    }
                 }
             } catch (SQLException e) {
                 throw new ConnectionPoolException(e);
             }
         }
         usedConnections.add(connection);
-        System.out.println(connection);
         return new ConnectionWrapper(connection);
     }
 

@@ -47,28 +47,28 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach var="service" items="${tariffs}">
+            <c:forEach var="tariff" items="${tariffs}">
                 <tr>
-                    <td>${service.name}</td>
-                    <td class="pre-wrap">${service.description}</td>
+                    <td>${tariff.name}</td>
+                    <td class="pre-wrap">${tariff.description}</td>
                     <td>
-                        <ctg:money-format balance="${service.subscriptionFee}"/>&nbsp<fmt:message
+                        <ctg:money-format balance="${tariff.subscriptionFee}"/>&nbsp<fmt:message
                             key="admin.tariffMoney"/>
                     </td>
                     <td>
-                        <ctg:money-format balance="${service.callCost}"/>&nbsp<fmt:message key="admin.tariffMoney"/>
+                        <ctg:money-format balance="${tariff.callCost}"/>&nbsp<fmt:message key="admin.tariffMoney"/>
                     </td>
                     <td>
-                        <ctg:money-format balance="${service.smsCost}"/>&nbsp<fmt:message key="admin.tariffMoney"/>
+                        <ctg:money-format balance="${tariff.smsCost}"/>&nbsp<fmt:message key="admin.tariffMoney"/>
                     </td>
                     <td class="button-cell">
                         <form action="tariff_manage.html" method="POST">
-                            <input type="hidden" name="id" value="${service.id}">
+                            <input type="hidden" name="id" value="${tariff.id}">
                             <input type="submit" value="<fmt:message key="admin.tariffEdit"/> 📝"
                                    class="btn btn-small btn-in-cell">
                         </form>
                         <form action="tariff_delete.html" method="POST">
-                            <input type="hidden" name="id" value="${service.id}">
+                            <input type="hidden" name="id" value="${tariff.id}">
                             <c:if test="${fn:length(tariffs) != 1}">
                                 <input type="submit" value="<fmt:message key="admin.tariffDelete"/> ❌"
                                        class="btn btn-small btn-in-cell">

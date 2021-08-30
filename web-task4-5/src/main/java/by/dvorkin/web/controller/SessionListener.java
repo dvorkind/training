@@ -13,7 +13,7 @@ public class SessionListener implements HttpSessionListener {
         Account sessionAccount = (Account) se.getSession().getAttribute("sessionAccount");
         if (sessionAccount != null) {
             Logger logger = LogManager.getLogger("User");
-            logger.info("User " + sessionAccount.getLogin() + " has logged out by the system");
+            logger.info("User " + sessionAccount.getLogin() + " has logged out");
         }
     }
 }

@@ -77,16 +77,22 @@ public class TariffServiceImpl implements TariffService {
             } catch (ServiceException ignored) {
             }
             throw new ServiceException(e);
+        } catch (ServiceException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw e;
         }
     }
 
     @Override
     public void safetyDelete(Long id) throws ServiceException {
         try {
+            transaction.start();
             if (tariffDao.isLastTariff()) {
                 throw new TariffLastException(id);
             } else {
-                transaction.start();
                 tariffDao.delete(id);
                 transaction.commit();
             }
@@ -96,6 +102,12 @@ public class TariffServiceImpl implements TariffService {
             } catch (ServiceException ignored) {
             }
             throw new ServiceException(e);
+        } catch (ServiceException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw e;
         }
     }
 
@@ -120,6 +132,12 @@ public class TariffServiceImpl implements TariffService {
             } catch (ServiceException ignored) {
             }
             throw new ServiceException(e);
+        } catch (ServiceException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw e;
         }
     }
 }

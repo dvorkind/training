@@ -24,26 +24,24 @@ public class ChangePasswordCommand implements Command {
         HttpSession session = req.getSession(false);
         String oldPassword = req.getParameter("oldPassword");
         String newPassword = req.getParameter("newPassword");
-        if (session != null) {
-            Account account = (Account) session.getAttribute("sessionAccount");
-            if (account != null && isOldPasswordValid(req) & isNewPasswordValid(req) & isConfirmedNewPassword(req)) {
-                try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
-                    AccountService accountService = serviceFactory.getAccountService();
-                    accountService.changePassword(oldPassword, newPassword, account);
-                    req.setAttribute("success", "changePassword.success");
-                    Logger logger = LogManager.getLogger("User");
-                    logger.info("User " + account.getLogin() + " changed the password. IP [" + req.getRemoteAddr() + "]");
-                    return null;
-                } catch (AccountPasswordIncorrectException e) {
-                    req.setAttribute("oldPasswordError", "changePassword.errorOldPassword");
-                    return null;
-                } catch (ServiceException | FactoryException e) {
-                    throw new ServletException(e);
-                } catch (Exception ignored) {
-                }
-            } else {
+        Account account = (Account) session.getAttribute("sessionAccount");
+        if (account != null && isOldPasswordValid(req) & isNewPasswordValid(req) & isConfirmedNewPassword(req)) {
+            try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
+                AccountService accountService = serviceFactory.getAccountService();
+                accountService.changePassword(oldPassword, newPassword, account);
+                req.setAttribute("success", "changePassword.success");
+                Logger logger = LogManager.getLogger("User");
+                logger.info("User " + account.getLogin() + " changed the password. IP [" + req.getRemoteAddr() + "]");
                 return null;
+            } catch (AccountPasswordIncorrectException e) {
+                req.setAttribute("oldPasswordError", "changePassword.errorOldPassword");
+                return null;
+            } catch (ServiceException | FactoryException e) {
+                throw new ServletException(e);
+            } catch (Exception ignored) {
             }
+        } else {
+            return null;
         }
         return null;
     }
@@ -54,8 +52,7 @@ public class ChangePasswordCommand implements Command {
         if (password == null) {
             return false;
         } else {
-            if (password.trim()
-                    .equals("")) {
+            if (password.trim().equals("")) {
                 req.setAttribute("oldPasswordError", "changePassword.errorEmpty");
                 return false;
             }
@@ -74,8 +71,7 @@ public class ChangePasswordCommand implements Command {
         if (password == null) {
             return false;
         } else {
-            if (password.trim()
-                    .equals("")) {
+            if (password.trim().equals("")) {
                 req.setAttribute("newPasswordError", "changePassword.errorEmpty");
                 return false;
             }
@@ -95,8 +91,7 @@ public class ChangePasswordCommand implements Command {
         if (confirmedNewPassword == null) {
             return false;
         } else {
-            if (confirmedNewPassword.trim()
-                    .equals("")) {
+            if (confirmedNewPassword.trim().equals("")) {
                 req.setAttribute("confirmedNewPasswordError", "changePassword.errorConfirmedPasswordDifferent");
                 return false;
             }

@@ -70,37 +70,35 @@
     <main>
         <c:choose>
             <c:when test="${sessionAccount.role == 'SUBSCRIBER'}">
-                <c:if test="${subscriber.isRegistered()}">
-                    <nav>
-                        <ul>
-                            <li>
-                                <a href="${context}/subscriber/subscriber.html" ${fn:contains(pageContext.request.servletPath, 'subscriber/subscriber.jsp') ? 'class="active-item"' : ''}>
-                                    <fmt:message key="menu.profile"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="${context}/subscriber/services.html" ${fn:contains(pageContext.request.servletPath, 'subscriber/services.jsp') ? 'class="active-item"' : ''}>
-                                    <fmt:message key="menu.services"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="${context}/subscriber/tariffs.html" ${fn:contains(pageContext.request.servletPath, 'subscriber/tariffs.jsp') ? 'class="active-item"' : ''}>
-                                    <fmt:message key="menu.tariffs"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="${context}/subscriber/bills.html" ${fn:contains(pageContext.request.servletPath, 'subscriber/bills.jsp') ? 'class="active-item"' : ''}>
-                                    <fmt:message key="menu.bills"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="${context}/change_password.html" ${fn:contains(pageContext.request.servletPath, 'change_password.jsp') ? 'class="active-item"'  : ''}>
-                                    <fmt:message key="menu.changePassword"/>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </c:if>
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="${context}/subscriber/subscriber.html" ${fn:contains(pageContext.request.servletPath, 'subscriber/subscriber.jsp') ? 'class="active-item"' : ''}>
+                                <fmt:message key="menu.profile"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="${context}/subscriber/services.html" ${fn:contains(pageContext.request.servletPath, 'subscriber/services.jsp') ? 'class="active-item"' : ''}>
+                                <fmt:message key="menu.services"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="${context}/subscriber/tariff.html" ${fn:contains(pageContext.request.servletPath, 'subscriber/tariff.jsp') ? 'class="active-item"' : ''}>
+                                <fmt:message key="menu.changeTariff"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="${context}/subscriber/bills.html" ${fn:contains(pageContext.request.servletPath, 'subscriber/bills.jsp') ? 'class="active-item"' : ''}>
+                                <fmt:message key="menu.bills"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="${context}/change_password.html" ${fn:contains(pageContext.request.servletPath, 'change_password.jsp') ? 'class="active-item"'  : ''}>
+                                <fmt:message key="menu.changePassword"/>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </c:when>
             <c:when test="${sessionAccount.role == 'ADMINISTRATOR'}">
                 <nav>

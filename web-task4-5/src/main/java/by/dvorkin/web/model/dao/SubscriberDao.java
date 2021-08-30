@@ -13,6 +13,4 @@ public interface SubscriberDao extends Dao<Subscriber> {
 
     Subscriber readByAccountId(Long id) throws DaoException;
 
-    void activate(int id) throws DaoException;
-
 }

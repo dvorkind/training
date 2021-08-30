@@ -23,7 +23,10 @@ public class AdminSubscribersNewListCommand implements Command {
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
             SubscriberService subscriberService = serviceFactory.getSubscriberService();
             if (req.getParameter("id") != null) {
-                subscriberService.activate(Integer.parseInt(req.getParameter("id")));
+                Subscriber subscriber = subscriberService.readById(Long.parseLong(req.getParameter("id")));
+                subscriber.setRegistered(true);
+                subscriber.setBlocked(false);
+                subscriberService.update(subscriber);
                 Logger logger = LogManager.getLogger("User");
                 logger.info("UserID #" + req.getParameter("id") + " was activated by Administrator");
             }

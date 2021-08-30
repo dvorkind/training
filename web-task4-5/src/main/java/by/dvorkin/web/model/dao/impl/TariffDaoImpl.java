@@ -34,7 +34,9 @@ public class TariffDaoImpl implements TariffDao {
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
-            return resultSet.getLong(1);
+            Long result = resultSet.getLong(1);
+            resultSet.close();
+            return result;
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -79,6 +81,7 @@ public class TariffDaoImpl implements TariffDao {
             if (resultSet.next()) {
                 tariff = createTariff(resultSet);
             }
+            resultSet.close();
             return tariff;
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -94,6 +97,7 @@ public class TariffDaoImpl implements TariffDao {
             while (resultSet.next()) {
                 tariffs.add(createTariff(resultSet));
             }
+            resultSet.close();
             return tariffs;
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -102,7 +106,7 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public Tariff readByName(String tariffName) throws DaoException {
-        String sql = "SELECT * FROM `tariff` WHERE `name` = ?";
+        String sql = "SELECT * FROM `tariff` WHERE BINARY `name` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, tariffName);
             ResultSet resultSet = statement.executeQuery();
@@ -110,6 +114,7 @@ public class TariffDaoImpl implements TariffDao {
             if (resultSet.next()) {
                 tariff = createTariff(resultSet);
             }
+            resultSet.close();
             return tariff;
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -122,8 +127,11 @@ public class TariffDaoImpl implements TariffDao {
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(sql);
             if (resultSet.next()) {
-                return resultSet.getInt("tariffs") == 1;
+                int result = resultSet.getInt("tariffs");
+                resultSet.close();
+                return result == 1;
             }
+            resultSet.close();
             return false;
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -137,7 +145,9 @@ public class TariffDaoImpl implements TariffDao {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return resultSet.getInt("subscribers");
+                int result = resultSet.getInt("subscribers");
+                resultSet.close();
+                return result;
             }
             return 0;
         } catch (SQLException e) {

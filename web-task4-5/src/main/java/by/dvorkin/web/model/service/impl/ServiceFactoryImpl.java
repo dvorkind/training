@@ -2,10 +2,12 @@ package by.dvorkin.web.model.service.impl;
 
 import by.dvorkin.web.model.dao.AccountDao;
 import by.dvorkin.web.model.dao.ServiceDao;
+import by.dvorkin.web.model.dao.SubscriberActionDao;
 import by.dvorkin.web.model.dao.TariffDao;
 import by.dvorkin.web.model.dao.SubscriberDao;
 import by.dvorkin.web.model.dao.impl.AccountDaoImpl;
 import by.dvorkin.web.model.dao.impl.ServiceDaoImpl;
+import by.dvorkin.web.model.dao.impl.SubscriberActionDaoImpl;
 import by.dvorkin.web.model.dao.impl.TariffDaoImpl;
 import by.dvorkin.web.model.dao.impl.SubscriberDaoImpl;
 import by.dvorkin.web.model.pool.ConnectionPool;
@@ -13,6 +15,7 @@ import by.dvorkin.web.model.pool.ConnectionPoolException;
 import by.dvorkin.web.model.service.AccountService;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.ServiceService;
+import by.dvorkin.web.model.service.SubscriberActionService;
 import by.dvorkin.web.model.service.TariffService;
 import by.dvorkin.web.model.service.Transaction;
 import by.dvorkin.web.model.service.SubscriberService;
@@ -26,10 +29,12 @@ public class ServiceFactoryImpl implements ServiceFactory {
     private SubscriberDao subscriberDao = null;
     private TariffDao tariffDao = null;
     private ServiceDao serviceDao = null;
+    private SubscriberActionDao subscriberActionDao = null;
     private AccountService accountService = null;
     private SubscriberService subscriberService = null;
     private TariffService tariffService = null;
     private ServiceService serviceService = null;
+    private SubscriberActionService subscriberActionService = null;
     private Transaction transaction = null;
 
     @Override
@@ -39,6 +44,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
             accountServiceImpl.setTransaction(getTransaction());
             accountServiceImpl.setAccountDao(getAccountDao());
             accountServiceImpl.setSubscriberDao(getSubscriberDao());
+            accountServiceImpl.setSubscriberActionDao(getSubscriberActionDao());
             accountService = accountServiceImpl;
         }
         return accountService;
@@ -75,6 +81,17 @@ public class ServiceFactoryImpl implements ServiceFactory {
             serviceService = serviceServiceImpl;
         }
         return serviceService;
+    }
+
+    @Override
+    public SubscriberActionService getSubscriberActionService() throws FactoryException {
+        if (subscriberActionService == null) {
+            SubscriberActionServiceImpl subscriberActionServiceImpl = new SubscriberActionServiceImpl();
+            subscriberActionServiceImpl.setTransaction(getTransaction());
+            subscriberActionServiceImpl.setSubscriberActionDao(getSubscriberActionDao());
+            subscriberActionService = subscriberActionServiceImpl;
+        }
+        return subscriberActionService;
     }
 
     @Override
@@ -115,6 +132,16 @@ public class ServiceFactoryImpl implements ServiceFactory {
             serviceDao = serviceDaoImpl;
         }
         return serviceDao;
+    }
+
+    @Override
+    public SubscriberActionDao getSubscriberActionDao() throws FactoryException {
+        if (subscriberActionDao == null) {
+            SubscriberActionDaoImpl subscriberActionDaoImpl = new SubscriberActionDaoImpl();
+            subscriberActionDaoImpl.setConnection(getConnection());
+            subscriberActionDao = subscriberActionDaoImpl;
+        }
+        return subscriberActionDao;
     }
 
     @Override

@@ -49,16 +49,31 @@ public class SubscriberServiceImpl implements SubscriberService {
     }
 
     @Override
-    public void activate(int id) throws ServiceException {
+    public void update(Subscriber subscriber) throws ServiceException {
         try {
             transaction.start();
-            subscriberDao.activate(id);
+            subscriberDao.update(subscriber);
             transaction.commit();
         } catch (DaoException e) {
             try {
                 transaction.rollback();
             } catch (ServiceException ignored) {
             }
+            throw new ServiceException(e);
+        } catch (ServiceException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw e;
+        }
+    }
+
+    @Override
+    public Subscriber readById(Long id) throws ServiceException {
+        try {
+            return subscriberDao.read(id);
+        } catch (DaoException e) {
             throw new ServiceException(e);
         }
     }

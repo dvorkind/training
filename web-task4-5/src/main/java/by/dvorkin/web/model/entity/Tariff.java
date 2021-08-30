@@ -8,6 +8,9 @@ public class Tariff {
     private int callCost;
     private int smsCost;
 
+    public Tariff() {
+    }
+
     public String getName() {
         return name;
     }

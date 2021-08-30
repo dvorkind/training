@@ -31,7 +31,9 @@ public class ServiceDaoImpl implements ServiceDao {
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
-            return resultSet.getLong(1);
+            Long result =resultSet.getLong(1);
+            resultSet.close();
+            return result;
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -81,6 +83,7 @@ public class ServiceDaoImpl implements ServiceDao {
             if (resultSet.next()) {
                 service = createService(resultSet);
             }
+            resultSet.close();
             return service;
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -96,6 +99,7 @@ public class ServiceDaoImpl implements ServiceDao {
             while (resultSet.next()) {
                 services.add(createService(resultSet));
             }
+            resultSet.close();
             return services;
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -104,7 +108,7 @@ public class ServiceDaoImpl implements ServiceDao {
 
     @Override
     public Service readByName(String serviceName) throws DaoException {
-        String sql = "SELECT * FROM `service` WHERE `name` = ?";
+        String sql = "SELECT * FROM `service` WHERE BINARY `name` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, serviceName);
             ResultSet resultSet = statement.executeQuery();
@@ -112,6 +116,7 @@ public class ServiceDaoImpl implements ServiceDao {
             if (resultSet.next()) {
                 service = createService(resultSet);
             }
+            resultSet.close();
             return service;
         } catch (SQLException e) {
             throw new DaoException(e);

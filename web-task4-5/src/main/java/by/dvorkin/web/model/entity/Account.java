@@ -6,6 +6,9 @@ public class Account {
     private String password;
     private Role role;
 
+    public Account() {
+    }
+
     public Long getId() {
         return id;
     }

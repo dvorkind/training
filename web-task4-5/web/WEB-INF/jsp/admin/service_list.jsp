@@ -33,14 +33,18 @@
                     <span><fmt:message key="admin.serviceSortTitle"/></span>
                     <form action="service_list.html" method="POST" class="select-form no-margin">
                         <select name="sort" onchange="submit()" class="btn btn-transparent">
-                            <option value="nameUp" ${sort == 'nameUp' ? 'selected' : ''}><fmt:message
-                                    key="admin.serviceSortNameUp"/></option>
-                            <option value="nameDown" ${sort == 'nameDown' ? 'selected' : ''}><fmt:message
-                                    key="admin.serviceSortNameDown"/></option>
-                            <option value="priceUp" ${sort == 'priceUp' ? 'selected' : ''}><fmt:message
-                                    key="admin.serviceSortPriceUp"/></option>
-                            <option value="priceDown" ${sort == 'priceDown' ? 'selected' : ''}><fmt:message
-                                    key="admin.serviceSortPriceDown"/></option>
+                            <option value="nameUp" ${sort == 'nameUp' ? 'selected' : ''}>
+                                <fmt:message key="admin.serviceSortNameUp"/>
+                            </option>
+                            <option value="nameDown" ${sort == 'nameDown' ? 'selected' : ''}>
+                                <fmt:message key="admin.serviceSortNameDown"/>
+                            </option>
+                            <option value="priceUp" ${sort == 'priceUp' ? 'selected' : ''}>
+                                <fmt:message key="admin.serviceSortPriceUp"/>
+                            </option>
+                            <option value="priceDown" ${sort == 'priceDown' ? 'selected' : ''}>
+                                <fmt:message key="admin.serviceSortPriceDown"/>
+                            </option>
                         </select>
                     </form>
                 </div>

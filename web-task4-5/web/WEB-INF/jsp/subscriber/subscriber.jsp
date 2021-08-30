@@ -13,7 +13,7 @@
 <fmt:message var="titlePage" key="subscriber.main"/>
 <u:html title="${title} : ${titlePage}">
     <c:choose>
-        <c:when test="${subscriber.isRegistered()}">
+        <c:when test="${subscriber.registered}">
             <div class="main">
                 <h2 class="text-center">
                     <fmt:message key="subscriber.hello"/>, ${subscriber.firstname}!
@@ -43,7 +43,7 @@
                         <td><fmt:message key="subscriber.profileStatus"/>: &nbsp</td>
                         <td>
                             <c:choose>
-                                <c:when test="${subscriber.isBlocked()}">
+                                <c:when test="${subscriber.blocked}">
                                     <fmt:message key="subscriber.profileBlocked"/>
                                 </c:when>
                                 <c:otherwise>

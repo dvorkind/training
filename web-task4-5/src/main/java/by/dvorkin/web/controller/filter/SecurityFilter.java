@@ -43,6 +43,7 @@ public class SecurityFilter implements Filter {
         permissions.put("/admin/service_manage", admin);
 
         permissions.put("/subscriber/subscriber", subscriber);
+        permissions.put("/subscriber/tariff", subscriber);
     }
 
     @Override

@@ -27,14 +27,30 @@
                     <span><fmt:message key="admin.subscriberSortTitle"/></span>
                     <form action="subscribers_all.html" method="POST" class="select-form no-margin">
                         <select name="sort" onchange="submit()" class="btn btn-transparent">
-                            <option value="firstNameUp" ${sort == 'firstNameUp' ? 'selected' : ''}><fmt:message key="admin.subscriberSortFirstNameUp"/></option>
-                            <option value="firstNameDown" ${sort == 'firstNameDown' ? 'selected' : ''}><fmt:message key="admin.subscriberSortFirstNameDown"/></option>
-                            <option value="lastNameUp" ${sort == 'lastNameUp' ? 'selected' : ''}><fmt:message key="admin.subscriberSortLastNameUp"/></option>
-                            <option value="lastNameDown" ${sort == 'lastNameDown' ? 'selected' : ''}><fmt:message key="admin.subscriberSortLastNameDown"/></option>
-                            <option value="balanceUp" ${sort == 'balanceUp' ? 'selected' : ''}><fmt:message key="admin.subscriberSortBalanceUp"/></option>
-                            <option value="balanceDown" ${sort == 'balanceDown' ? 'selected' : ''}><fmt:message key="admin.subscriberSortBalanceDown"/></option>
-                            <option value="stateUp" ${sort == 'stateUp' ? 'selected' : ''}><fmt:message key="admin.subscriberSortStateUp"/></option>
-                            <option value="stateDown" ${sort == 'stateDown' ? 'selected' : ''}><fmt:message key="admin.subscriberSortStateDown"/></option>
+                            <option value="firstNameUp" ${sort == 'firstNameUp' ? 'selected' : ''}>
+                                <fmt:message key="admin.subscriberSortFirstNameUp"/>
+                            </option>
+                            <option value="firstNameDown" ${sort == 'firstNameDown' ? 'selected' : ''}>
+                                <fmt:message key="admin.subscriberSortFirstNameDown"/>
+                            </option>
+                            <option value="lastNameUp" ${sort == 'lastNameUp' ? 'selected' : ''}>
+                                <fmt:message key="admin.subscriberSortLastNameUp"/>
+                            </option>
+                            <option value="lastNameDown" ${sort == 'lastNameDown' ? 'selected' : ''}>
+                                <fmt:message key="admin.subscriberSortLastNameDown"/>
+                            </option>
+                            <option value="balanceUp" ${sort == 'balanceUp' ? 'selected' : ''}>
+                                <fmt:message key="admin.subscriberSortBalanceUp"/>
+                            </option>
+                            <option value="balanceDown" ${sort == 'balanceDown' ? 'selected' : ''}>
+                                <fmt:message key="admin.subscriberSortBalanceDown"/>
+                            </option>
+                            <option value="stateUp" ${sort == 'stateUp' ? 'selected' : ''}>
+                                <fmt:message key="admin.subscriberSortStateUp"/>
+                            </option>
+                            <option value="stateDown" ${sort == 'stateDown' ? 'selected' : ''}>
+                                <fmt:message key="admin.subscriberSortStateDown"/>
+                            </option>
                         </select>
                     </form>
                 </div>
@@ -55,8 +71,10 @@
                             <td>${subscriber.firstname}</td>
                             <td>${subscriber.lastname}</td>
                             <td>${subscriber.phoneNumber}</td>
-                            <td><ctg:money-format balance="${subscriber.balance}"/>&nbsp<fmt:message
-                                    key="subscriber.money"/></td>
+                            <td>
+                                <ctg:money-format balance="${subscriber.balance}"/>&nbsp
+                                <fmt:message key="subscriber.money"/>
+                            </td>
                             <c:choose>
                                 <c:when test="${subscriber.blocked}">
                                     <td><fmt:message key="admin.subscriberStateBlocked"/></td>

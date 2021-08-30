@@ -2,9 +2,12 @@ package by.dvorkin.web.model.service.impl;
 
 import by.dvorkin.web.model.dao.AccountDao;
 import by.dvorkin.web.model.dao.DaoException;
+import by.dvorkin.web.model.dao.SubscriberActionDao;
 import by.dvorkin.web.model.dao.SubscriberDao;
 import by.dvorkin.web.model.entity.Account;
+import by.dvorkin.web.model.entity.Action;
 import by.dvorkin.web.model.entity.Subscriber;
+import by.dvorkin.web.model.entity.SubscriberAction;
 import by.dvorkin.web.model.service.AccountService;
 import by.dvorkin.web.model.service.Transaction;
 import by.dvorkin.web.model.service.exceptions.AccountLoginNotUniqueException;
@@ -12,9 +15,12 @@ import by.dvorkin.web.model.service.exceptions.AccountPasswordIncorrectException
 import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.exceptions.SubscriberPhoneNotUniqueException;
 
+import java.util.Date;
+
 public class AccountServiceImpl implements AccountService {
     private AccountDao accountDao;
     private SubscriberDao subscriberDao;
+    private SubscriberActionDao subscriberActionDao;
     private Transaction transaction;
 
     public void setTransaction(Transaction transaction) {
@@ -27,6 +33,10 @@ public class AccountServiceImpl implements AccountService {
 
     public void setSubscriberDao(SubscriberDao subscriberDao) {
         this.subscriberDao = subscriberDao;
+    }
+
+    public void setSubscriberActionDao(SubscriberActionDao subscriberActionDao) {
+        this.subscriberActionDao = subscriberActionDao;
     }
 
     @Override
@@ -49,6 +59,9 @@ public class AccountServiceImpl implements AccountService {
                     subscriber.setAccountId(id);
                     id = subscriberDao.create(subscriber);
                     subscriber.setId(id);
+                    SubscriberAction subscriberAction = createSubscriberAction();
+                    subscriberAction.setSubscriberId(id);
+                    subscriberActionDao.create(subscriberAction);
                 } else {
                     throw new SubscriberPhoneNotUniqueException(subscriber.getPhoneNumber());
                 }
@@ -62,6 +75,12 @@ public class AccountServiceImpl implements AccountService {
             } catch (ServiceException ignored) {
             }
             throw new ServiceException(e);
+        } catch (ServiceException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw e;
         }
     }
 
@@ -82,6 +101,20 @@ public class AccountServiceImpl implements AccountService {
             } catch (ServiceException ignored) {
             }
             throw new ServiceException(e);
+        } catch (ServiceException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw e;
         }
+    }
+
+    private SubscriberAction createSubscriberAction() {
+        SubscriberAction subscriberAction = new SubscriberAction();
+        subscriberAction.setAction(Action.REGISTRATION);
+        subscriberAction.setDate(new Date());
+        subscriberAction.setSum(0);
+        return subscriberAction;
     }
 }

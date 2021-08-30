@@ -77,6 +77,12 @@ public class ServiceServiceImpl implements ServiceService {
             } catch (ServiceException ignored) {
             }
             throw new ServiceException(e);
+        } catch (ServiceException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw e;
         }
     }
 
@@ -92,6 +98,12 @@ public class ServiceServiceImpl implements ServiceService {
             } catch (ServiceException ignored) {
             }
             throw new ServiceException(e);
+        } catch (ServiceException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw e;
         }
     }
 }

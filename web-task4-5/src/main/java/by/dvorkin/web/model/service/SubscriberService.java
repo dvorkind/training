@@ -12,5 +12,7 @@ public interface SubscriberService {
 
     List<Subscriber> getNewSubscribers() throws ServiceException;
 
-    void activate(int id) throws ServiceException;
+    void update(Subscriber subscriber) throws ServiceException;
+
+    Subscriber readById(Long id) throws ServiceException;
 }

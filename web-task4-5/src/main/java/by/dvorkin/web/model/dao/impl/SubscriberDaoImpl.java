@@ -22,8 +22,9 @@ public class SubscriberDaoImpl implements SubscriberDao {
 
     @Override
     public Long create(Subscriber subscriber) throws DaoException {
-        String sql = "INSERT INTO `subscriber` (`account_id`, `firstname`, `lastname`, `phone_number`, `balance`, " +
-                "`tariff`, `is_blocked`, `is_registered`, `is_deleted`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql =
+                "INSERT INTO `subscriber` (`account_id`, `firstname`, `lastname`, `phone_number`, `balance`, " +
+                        "`tariff`, `is_blocked`, `is_registered`, `is_deleted`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         ResultSet resultSet;
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setLong(1, subscriber.getAccountId());
@@ -38,7 +39,9 @@ public class SubscriberDaoImpl implements SubscriberDao {
             statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
             resultSet.next();
-            return resultSet.getLong(1);
+            Long result = resultSet.getLong(1);
+            resultSet.close();
+            return result;
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -46,7 +49,21 @@ public class SubscriberDaoImpl implements SubscriberDao {
 
     @Override
     public void update(Subscriber subscriber) throws DaoException {
-
+        String sql = "UPDATE `subscriber` SET `firstname` = ?, `lastname` = ?, `phone_number` = ?, `balance` = ?, " +
+                "`tariff` = ?, `is_blocked` = ?, `is_registered` = ? WHERE `id` = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, subscriber.getFirstname());
+            statement.setString(2, subscriber.getLastname());
+            statement.setString(3, subscriber.getPhoneNumber());
+            statement.setInt(4, subscriber.getBalance());
+            statement.setLong(5, subscriber.getTariff());
+            statement.setBoolean(6, subscriber.isBlocked());
+            statement.setBoolean(7, subscriber.isRegistered());
+            statement.setLong(8, subscriber.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
@@ -63,7 +80,15 @@ public class SubscriberDaoImpl implements SubscriberDao {
 
     @Override
     public Subscriber read(Long id) throws DaoException {
-        return null;
+        String sql = "SELECT * FROM `subscriber` WHERE `id` = ?";
+        return getSubscriber(id, sql);
+    }
+
+
+    @Override
+    public Subscriber readByAccountId(Long id) throws DaoException {
+        String sql = "SELECT * FROM `subscriber` WHERE `account_id` = ?";
+        return getSubscriber(id, sql);
     }
 
     @Override
@@ -78,19 +103,6 @@ public class SubscriberDaoImpl implements SubscriberDao {
         return getSubscriberList(sql);
     }
 
-    private List<Subscriber> getSubscriberList(String sql) throws DaoException {
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(sql);
-            List<Subscriber> subscribers = new ArrayList<>();
-            while (resultSet.next()) {
-                subscribers.add(createSubscriber(resultSet));
-            }
-            return subscribers;
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-    }
-
     @Override
     public Subscriber readByPhoneNumber(String phoneNumber) throws DaoException {
         String sql = "SELECT * FROM `subscriber` WHERE `phone_number` = ?";
@@ -101,15 +113,28 @@ public class SubscriberDaoImpl implements SubscriberDao {
             if (resultSet.next()) {
                 subscriber = createSubscriber(resultSet);
             }
+            resultSet.close();
             return subscriber;
         } catch (SQLException e) {
             throw new DaoException(e);
         }
     }
 
-    @Override
-    public Subscriber readByAccountId(Long id) throws DaoException {
-        String sql = "SELECT * FROM `subscriber` WHERE `account_id` = ?";
+    private List<Subscriber> getSubscriberList(String sql) throws DaoException {
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(sql);
+            List<Subscriber> subscribers = new ArrayList<>();
+            while (resultSet.next()) {
+                subscribers.add(createSubscriber(resultSet));
+            }
+            resultSet.close();
+            return subscribers;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    private Subscriber getSubscriber(Long id, String sql) throws DaoException {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -117,20 +142,8 @@ public class SubscriberDaoImpl implements SubscriberDao {
             if (resultSet.next()) {
                 subscriber = createSubscriber(resultSet);
             }
+            resultSet.close();
             return subscriber;
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-    }
-
-    @Override
-    public void activate(int id) throws DaoException {
-        String sql = "UPDATE `subscriber` SET `is_registered` = ?, `is_blocked` = ? WHERE `id` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, 1);
-            statement.setInt(2, 0);
-            statement.setInt(3, id);
-            statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
         }

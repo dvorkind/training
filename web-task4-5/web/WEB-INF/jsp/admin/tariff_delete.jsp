@@ -20,9 +20,9 @@
                 <p class="msg"><fmt:message key="admin.tariffDeleteMessageOne"/><span class="bold"> ${using}</span></p>
                 <p class="msg"><fmt:message key="admin.tariffDeleteMessageTwo"/></p>
                 <select name="newTariff" class="btn center-btn">
-                    <c:forEach var="service" items="${tariffs}">
-                        <c:if test="${service.id != id}">
-                            <option value="${service.id}">${service.name}</option>
+                    <c:forEach var="tariff" items="${tariffs}">
+                        <c:if test="${tariff.id != id}">
+                            <option value="${tariff.id}">${tariff.name}</option>
                         </c:if>
                     </c:forEach>
                 </select>

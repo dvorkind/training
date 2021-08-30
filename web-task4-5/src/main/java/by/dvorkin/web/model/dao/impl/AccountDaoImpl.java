@@ -25,7 +25,7 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public Account readByLogin(String login) throws DaoException {
-        String sql = "SELECT * FROM `account` WHERE `login` = ?";
+        String sql = "SELECT * FROM `account` WHERE BINARY `login` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
@@ -33,6 +33,7 @@ public class AccountDaoImpl implements AccountDao {
             if (resultSet.next()) {
                 account = createAccount(resultSet);
             }
+            resultSet.close();
             return account;
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -41,41 +42,25 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public Account readByLoginAndPassword(String login, String password) throws DaoException {
-        String sql = "SELECT * FROM `account` WHERE `login` = ? AND `password` = ? AND `is_deleted` = 0";
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        try {
-            statement = connection.prepareStatement(sql);
+        String sql = "SELECT * FROM `account` WHERE BINARY `login` = ? AND `password` = ? AND `is_deleted` = 0";
+        try (PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setString(1, login);
             statement.setString(2, passwordToSHA(password));
-            resultSet = statement.executeQuery();
+            ResultSet resultSet = statement.executeQuery();
             Account account = null;
             if (resultSet.next()) {
                 account = createAccount(resultSet);
             }
+            resultSet.close();
             return account;
         } catch (SQLException e) {
             throw new DaoException(e);
-        } finally {
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-            } catch (SQLException ignored) {
-            }
-            try {
-                if (statement != null) {
-                    statement.close();
-                }
-            } catch (SQLException ignored) {
-            }
         }
     }
 
     @Override
     public Long create(Account account) throws DaoException {
         String sql = "INSERT INTO `account` (`login`, `password`, `role`, `is_deleted`) VALUES (?, ?, ?, ?)";
-        ResultSet resultSet;
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, account.getLogin());
             statement.setString(2, passwordToSHA(account.getPassword()));
@@ -83,10 +68,12 @@ public class AccountDaoImpl implements AccountDao {
                     .ordinal());
             statement.setInt(4,0);
             statement.executeUpdate();
-            resultSet = statement.getGeneratedKeys();
+            ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
             account.setPassword(passwordToSHA(account.getPassword()));
-            return resultSet.getLong(1);
+            Long result = resultSet.getLong(1);
+            resultSet.close();
+            return result;
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -122,14 +109,14 @@ public class AccountDaoImpl implements AccountDao {
     @Override
     public Account read(Long id) throws DaoException {
         String sql = "SELECT * FROM `account` WHERE `id` = ?";
-        ResultSet resultSet;
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
-            resultSet = statement.executeQuery();
+            ResultSet resultSet = statement.executeQuery();
             Account account = null;
             if (resultSet.next()) {
                 account = createAccount(resultSet);
             }
+            resultSet.close();
             return account;
         } catch (SQLException e) {
             throw new DaoException(e);
