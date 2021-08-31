@@ -61,7 +61,7 @@
                     </div>
                 </c:when>
                 <c:otherwise>
-                    <h2><fmt:message key="changePassword.success"/></h2>
+                    <h2><fmt:message key="${success}"/></h2>
                 </c:otherwise>
             </c:choose>
         </form>
