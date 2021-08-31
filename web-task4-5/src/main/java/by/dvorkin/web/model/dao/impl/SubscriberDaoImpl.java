@@ -25,7 +25,6 @@ public class SubscriberDaoImpl implements SubscriberDao {
         String sql =
                 "INSERT INTO `subscriber` (`account_id`, `firstname`, `lastname`, `phone_number`, `balance`, " +
                         "`tariff`, `is_blocked`, `is_registered`, `is_deleted`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        ResultSet resultSet;
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setLong(1, subscriber.getAccountId());
             statement.setString(2, subscriber.getFirstname());
@@ -37,7 +36,7 @@ public class SubscriberDaoImpl implements SubscriberDao {
             statement.setBoolean(8, subscriber.isRegistered());
             statement.setInt(9, 0);
             statement.executeUpdate();
-            resultSet = statement.getGeneratedKeys();
+            ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
             Long result = resultSet.getLong(1);
             resultSet.close();

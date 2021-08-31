@@ -44,6 +44,7 @@ public class SecurityFilter implements Filter {
 
         permissions.put("/subscriber/subscriber", subscriber);
         permissions.put("/subscriber/tariff", subscriber);
+        permissions.put("/subscriber/refill_balance", subscriber);
     }
 
     @Override

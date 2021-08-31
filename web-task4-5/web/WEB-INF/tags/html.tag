@@ -78,6 +78,11 @@
                             </a>
                         </li>
                         <li>
+                            <a href="${context}/subscriber/refill_balance.html" ${fn:contains(pageContext.request.servletPath, 'subscriber/refill_balance.jsp') ? 'class="active-item"' : ''}>
+                                <fmt:message key="menu.balance"/>
+                            </a>
+                        </li>
+                        <li>
                             <a href="${context}/subscriber/services.html" ${fn:contains(pageContext.request.servletPath, 'subscriber/services.jsp') ? 'class="active-item"' : ''}>
                                 <fmt:message key="menu.services"/>
                             </a>
