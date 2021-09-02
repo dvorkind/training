@@ -39,7 +39,6 @@ public class RegistrationCommand implements Command {
                 }
             }
         }
-
         if (isInputValid(req)) {
             try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
                 AccountService accountService = serviceFactory.getAccountService();

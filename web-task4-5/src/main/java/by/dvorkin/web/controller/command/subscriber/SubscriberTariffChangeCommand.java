@@ -56,6 +56,7 @@ public class SubscriberTariffChangeCommand implements Command {
                         SubscriberAction subscriberAction = createSubscriberAction(subscriber.getId());
                         subscriberActionService.create(subscriberAction);
                         req.setAttribute("success", "subscriber.changeTariffSuccess");
+                        req.removeAttribute("confirmation");
                         Logger logger = LogManager.getLogger("User");
                         logger.info("User #" + subscriber.getId() + " changed his tariff to #" + newTariff);
                         return null;

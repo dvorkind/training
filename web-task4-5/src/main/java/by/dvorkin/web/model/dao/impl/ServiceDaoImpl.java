@@ -107,6 +107,23 @@ public class ServiceDaoImpl implements ServiceDao {
     }
 
     @Override
+    public List<Long> readSubscribersService(Long subscriberId) throws DaoException {
+        String sql = "SELECT * FROM `service` INNER JOIN `subscriber_service` ON service.id = service_id  WHERE `subscriber_id` = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, subscriberId);
+            ResultSet resultSet = statement.executeQuery();
+            List<Long> services = new ArrayList<>();
+            while (resultSet.next()) {
+                services.add(resultSet.getLong("service.id"));
+            }
+            resultSet.close();
+            return services;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
     public Service readByName(String serviceName) throws DaoException {
         String sql = "SELECT * FROM `service` WHERE BINARY `name` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -123,12 +140,36 @@ public class ServiceDaoImpl implements ServiceDao {
         }
     }
 
+    @Override
+    public void switchOn(Long subscriber_id, Long service_id) throws DaoException {
+        String sql = "INSERT INTO `subscriber_service` (`subscriber_id`, `service_id`) " + "VALUES (?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, subscriber_id);
+            statement.setLong(2, service_id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public void switchOff(Long subscriber_id, Long service_id) throws DaoException {
+        String sql = "DELETE FROM `subscriber_service` WHERE `service_id` = ? AND `subscriber_id` = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, service_id);
+            statement.setLong(2, subscriber_id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
     private Service createService(ResultSet resultSet) throws SQLException {
         Service service = new Service();
-        service.setId(resultSet.getLong("id"));
-        service.setName(resultSet.getString("name"));
-        service.setDescription(resultSet.getString("description"));
-        service.setPrice(resultSet.getInt("price"));
+        service.setId(resultSet.getLong("service.id"));
+        service.setName(resultSet.getString("service.name"));
+        service.setDescription(resultSet.getString("service.description"));
+        service.setPrice(resultSet.getInt("service.price"));
         return service;
     }
 }

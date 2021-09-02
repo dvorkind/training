@@ -38,12 +38,11 @@ public class SubscriberRefillBalanceCommand implements Command {
                 SubscriberAction subscriberAction = createSubscriberAction(subscriber.getId(), balanceRefillSum);
                 subscriberActionService.create(subscriberAction);
                 req.setAttribute("success", "subscriber.refillBalanceSuccess");
+                req.removeAttribute("confirmation");
                 Logger logger = LogManager.getLogger("User");
                 logger.info("User #" + subscriber.getId() + " refilled the balance to sum: " + balanceRefillSum);
-                return null;
-            } else {
-                return null;
             }
+            return null;
         } catch (ServiceException | FactoryException e) {
             throw new ServletException(e);
         } catch (Exception ignored) {

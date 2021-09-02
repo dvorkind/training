@@ -68,8 +68,6 @@ CREATE TABLE IF NOT EXISTS `subscriber_service`
     `id`            INT      NOT NULL AUTO_INCREMENT,
     `subscriber_id` INT(10)  NOT NULL,
     `service_id`    INT(10)  NOT NULL,
-    `begin_date`    DATETIME NOT NULL,
-    `end_date`      DATETIME DEFAULT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`subscriber_id`)
         REFERENCES `subscriber` (`id`)

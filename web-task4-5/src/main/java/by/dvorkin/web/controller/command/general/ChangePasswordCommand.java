@@ -25,7 +25,7 @@ public class ChangePasswordCommand implements Command {
         String oldPassword = req.getParameter("oldPassword");
         String newPassword = req.getParameter("newPassword");
         Account account = (Account) session.getAttribute("sessionAccount");
-        if (account != null && isOldPasswordValid(req) & isNewPasswordValid(req) & isConfirmedNewPassword(req)) {
+        if (account != null && isOldPasswordValid(req) & isNewPasswordValid(req) & isConfirmedNewPasswordValid(req)) {
             try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
                 AccountService accountService = serviceFactory.getAccountService();
                 accountService.changePassword(oldPassword, newPassword, account);
@@ -84,7 +84,7 @@ public class ChangePasswordCommand implements Command {
         return true;
     }
 
-    private boolean isConfirmedNewPassword(HttpServletRequest req) {
+    private boolean isConfirmedNewPasswordValid(HttpServletRequest req) {
         String newPassword = req.getParameter("newPassword");
         String confirmedNewPassword = req.getParameter("confirmedNewPassword");
         req.setAttribute("confirmedNewPassword", confirmedNewPassword);

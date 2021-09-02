@@ -25,8 +25,7 @@ public class CommandManager extends HttpServlet {
 
     private void process(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String context = req.getContextPath();
-        Helper helper = new Helper();
-        String url = helper.extractPath(req.getRequestURI(), context);
+        String url = Helper.extractPath(req.getRequestURI(), context);
         try {
             Command command = CommandFactory.getCommand(url);
             Forward forward = null;

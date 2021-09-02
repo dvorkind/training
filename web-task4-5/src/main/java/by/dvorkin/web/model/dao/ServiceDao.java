@@ -7,5 +7,11 @@ import java.util.List;
 public interface ServiceDao extends Dao<Service> {
     List<Service> readAll() throws DaoException;
 
+    List<Long> readSubscribersService(Long subscriber_id) throws DaoException;
+
     Service readByName(String serviceName) throws DaoException;
+
+    void switchOn (Long subscriber_id, Long service_id) throws DaoException;
+
+    void switchOff (Long subscriber_id, Long service_id) throws DaoException;
 }

@@ -32,6 +32,15 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
+    public List<Long> getSubscribersService(Long subscriber_id) throws ServiceException {
+        try {
+            return serviceDao.readSubscribersService(subscriber_id);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public Service readById(Long id) throws ServiceException {
         try {
             return serviceDao.read(id);
@@ -91,6 +100,48 @@ public class ServiceServiceImpl implements ServiceService {
         try {
             transaction.start();
             serviceDao.delete(id);
+            transaction.commit();
+        } catch (DaoException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw new ServiceException(e);
+        } catch (ServiceException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw e;
+        }
+    }
+
+    @Override
+    public void switchOn(Long subscriber_id, Long service_id) throws ServiceException {
+        try {
+            transaction.start();
+            serviceDao.switchOn(subscriber_id, service_id);
+            transaction.commit();
+        } catch (DaoException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw new ServiceException(e);
+        } catch (ServiceException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw e;
+        }
+    }
+
+    @Override
+    public void switchOff(Long subscriber_id, Long service_id) throws ServiceException {
+        try {
+            transaction.start();
+            serviceDao.switchOff(subscriber_id, service_id);
             transaction.commit();
         } catch (DaoException e) {
             try {

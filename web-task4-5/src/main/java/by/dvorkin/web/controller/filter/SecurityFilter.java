@@ -44,6 +44,7 @@ public class SecurityFilter implements Filter {
 
         permissions.put("/subscriber/subscriber", subscriber);
         permissions.put("/subscriber/tariff", subscriber);
+        permissions.put("/subscriber/services", subscriber);
         permissions.put("/subscriber/refill_balance", subscriber);
     }
 
@@ -53,8 +54,7 @@ public class SecurityFilter implements Filter {
         HttpServletRequest httpReq = (HttpServletRequest) req;
         HttpServletResponse httpResp = (HttpServletResponse) resp;
         String context = httpReq.getContextPath();
-        Helper helper = new Helper();
-        String url = helper.extractPath(httpReq.getRequestURI(), context);
+        String url = Helper.extractPath(httpReq.getRequestURI(), context);
         Set<Role> roles = permissions.get(url);
         if (roles != null) {
             HttpSession session = httpReq.getSession(false);
