@@ -18,13 +18,11 @@ import org.apache.logging.log4j.Logger;
 public class LoginCommand implements Command {
     @Override
     public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
-        HttpSession session = req.getSession(false);
-        if (session != null) {
-            Account sessionAccount = (Account) session.getAttribute("sessionAccount");
-            Forward forward = getForward(session, sessionAccount);
-            if (forward != null) {
-                return forward;
-            }
+        HttpSession session = req.getSession();
+        Account sessionAccount = (Account) session.getAttribute("sessionAccount");
+        Forward forward = getForward(session, sessionAccount);
+        if (forward != null) {
+            return forward;
         }
         String login = req.getParameter("login");
         String password = req.getParameter("password");
@@ -33,7 +31,7 @@ public class LoginCommand implements Command {
             try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
                 AccountService accountService = serviceFactory.getAccountService();
                 Account account = accountService.login(login, password);
-                Forward forward = getForward(session, account);
+                forward = getForward(session, account);
                 if (forward != null) {
                     logger = LogManager.getLogger("User");
                     logger.info("User " + login + " has logged in. IP [" + req.getRemoteAddr() + "]");

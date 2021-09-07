@@ -25,7 +25,7 @@ public class SubscriberRefillBalanceCommand implements Command {
     @Override
     public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
-            HttpSession session = req.getSession(false);
+            HttpSession session = req.getSession();
             SubscriberService subscriberService = serviceFactory.getSubscriberService();
             Account account = (Account) session.getAttribute("sessionAccount");
             Subscriber subscriber = subscriberService.findByAccountId(account.getId());

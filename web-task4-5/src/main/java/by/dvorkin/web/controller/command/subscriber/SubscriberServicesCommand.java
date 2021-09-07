@@ -29,7 +29,7 @@ public class SubscriberServicesCommand implements Command {
     @Override
     public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
-            HttpSession session = req.getSession(false);
+            HttpSession session = req.getSession();
             SubscriberService subscriberService = serviceFactory.getSubscriberService();
             ServiceService serviceService = serviceFactory.getServiceService();
             Account account = (Account) session.getAttribute("sessionAccount");
@@ -39,14 +39,22 @@ public class SubscriberServicesCommand implements Command {
                 SubscriberActionService subscriberActionService = serviceFactory.getSubscriberActionService();
                 Logger logger = LogManager.getLogger("User");
                 if (req.getParameter("on") != null) {
-                    serviceService.switchOn(subscriber.getId(), serviceId);
-                    SubscriberAction subscriberAction = createSubscriberAction(subscriber.getId(), Action.ADD_SERVICE);
-                    subscriberActionService.create(subscriberAction);
-                    logger.info("User #" + subscriber.getId() + " added service # " + serviceId);
+                    Service service = serviceService.readById(serviceId);
+                    int newSubscriberBalance = subscriber.getBalance() - service.getPrice();
+                    if (newSubscriberBalance >= 0 ) {
+                        serviceService.switchOn(subscriber.getId(), serviceId);
+                        subscriber.setBalance(newSubscriberBalance);
+                        subscriberService.update(subscriber);
+                        SubscriberAction subscriberAction = createSubscriberAction(subscriber.getId(), Action.ADD_SERVICE, service.getPrice());
+                        subscriberActionService.create(subscriberAction);
+                        logger.info("User #" + subscriber.getId() + " added service # " + serviceId);
+                    } else {
+                        req.setAttribute("serviceError", "subscriber.serviceError");
+                    }
                 }
                 if (req.getParameter("off") != null) {
                     serviceService.switchOff(subscriber.getId(), serviceId);
-                    SubscriberAction subscriberAction = createSubscriberAction(subscriber.getId(), Action.DELETE_SERVICE);
+                    SubscriberAction subscriberAction = createSubscriberAction(subscriber.getId(), Action.DELETE_SERVICE, 0);
                     subscriberActionService.create(subscriberAction);
                     logger.info("User #" + subscriber.getId() + " deleted service # " + serviceId);
                 }
@@ -87,7 +95,7 @@ public class SubscriberServicesCommand implements Command {
         }
     }
 
-    private SubscriberAction createSubscriberAction(Long subscriberId, Action action) {
+    private SubscriberAction createSubscriberAction(Long subscriberId, Action action, int sum) {
         SubscriberAction subscriberAction = new SubscriberAction();
         subscriberAction.setAction(action);
         subscriberAction.setSubscriberId(subscriberId);

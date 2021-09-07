@@ -21,11 +21,11 @@ public class ChangePasswordCommand implements Command {
 
     @Override
     public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
-        HttpSession session = req.getSession(false);
+        HttpSession session = req.getSession();
         String oldPassword = req.getParameter("oldPassword");
         String newPassword = req.getParameter("newPassword");
         Account account = (Account) session.getAttribute("sessionAccount");
-        if (account != null && isOldPasswordValid(req) & isNewPasswordValid(req) & isConfirmedNewPasswordValid(req)) {
+        if (isOldPasswordValid(req) & isNewPasswordValid(req) & isConfirmedNewPasswordValid(req)) {
             try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
                 AccountService accountService = serviceFactory.getAccountService();
                 accountService.changePassword(oldPassword, newPassword, account);

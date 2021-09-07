@@ -9,10 +9,8 @@ import jakarta.servlet.http.HttpSession;
 public class LogoutCommand implements Command {
     @Override
     public Forward execute(HttpServletRequest req, HttpServletResponse resp) {
-        HttpSession session = req.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
+        HttpSession session = req.getSession();
+        session.invalidate();
         return new Forward("/index.html");
     }
 }

@@ -27,16 +27,14 @@ public class RegistrationCommand implements Command {
 
     @Override
     public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
-        HttpSession session = req.getSession(false);
-        if (session != null) {
-            Account sessionAccount = (Account) session.getAttribute("sessionAccount");
-            if (sessionAccount != null) {
-                switch (sessionAccount.getRole()) {
-                    case ADMINISTRATOR:
-                        return new Forward("/admin/admin.html");
-                    case SUBSCRIBER:
-                        return new Forward("/subscriber/subscriber.html");
-                }
+        HttpSession session = req.getSession();
+        Account sessionAccount = (Account) session.getAttribute("sessionAccount");
+        if (sessionAccount != null) {
+            switch (sessionAccount.getRole()) {
+                case ADMINISTRATOR:
+                    return new Forward("/admin/admin.html");
+                case SUBSCRIBER:
+                    return new Forward("/subscriber/subscriber.html");
             }
         }
         if (isInputValid(req)) {
@@ -45,7 +43,7 @@ public class RegistrationCommand implements Command {
                 Account account = createAccount(req);
                 Subscriber subscriber = createSubscriber(req);
                 accountService.create(account, subscriber);
-                req.getSession(false).setAttribute("sessionAccount", account);
+                session.setAttribute("sessionAccount", account);
                 Logger logger = LogManager.getLogger("User");
                 logger.info("User " + account.getLogin() + " has registered. IP [" + req.getRemoteAddr() + "]");
                 return new Forward("/login.html");

@@ -29,7 +29,7 @@ public class SubscriberTariffChangeCommand implements Command {
     public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
         long DAY_IN_MILLISECONDS = 86400000L;
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
-            HttpSession session = req.getSession(false);
+            HttpSession session = req.getSession();
             TariffService tariffService = serviceFactory.getTariffService();
             SubscriberService subscriberService = serviceFactory.getSubscriberService();
             Account account = (Account) session.getAttribute("sessionAccount");
@@ -59,12 +59,11 @@ public class SubscriberTariffChangeCommand implements Command {
                         req.removeAttribute("confirmation");
                         Logger logger = LogManager.getLogger("User");
                         logger.info("User #" + subscriber.getId() + " changed his tariff to #" + newTariff);
-                        return null;
                     } else {
                         req.removeAttribute("confirmation");
                         req.setAttribute("tariffChangeError", "subscriber.changeTariffError");
-                        return null;
                     }
+                    return null;
                 }
             } else {
                 return null;

@@ -23,6 +23,13 @@
                 <h2 class="text-center no-margin-bottom">
                     <fmt:message key="subscriber.services"/>
                 </h2>
+                <p class="form-message">
+                    <c:if test="${not empty serviceError}">
+                        <span><fmt:message key="${serviceError}"/></span>
+                    </c:if>
+                </p>
+                <p class="msg"><fmt:message key="subscriber.serviceMessageOne"/></p>
+                <p class="msg"><fmt:message key="subscriber.serviceMessageTwo"/></p>
                 <div class="sort-wrapper">
                     <span><fmt:message key="subscriber.serviceSortTitle"/></span>
                     <form action="services.html" method="POST" class="select-form no-margin">

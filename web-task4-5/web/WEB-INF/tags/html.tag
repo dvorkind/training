@@ -24,23 +24,9 @@
 <body>
 <div class="wrapper">
     <header>
-        <c:choose>
-            <c:when test="${sessionAccount.role == 'ADMINISTRATOR'}">
-                <a class="header-link" href="${context}/admin/admin.html">
-                    <fmt:message key="header.phoneStation"/>
-                </a>
-            </c:when>
-            <c:when test="${sessionAccount.role == 'SUBSCRIBER'}">
-                <a class="header-link" href="${context}/subscriber/subscriber.html">
-                    <fmt:message key="header.phoneStation"/>
-                </a>
-            </c:when>
-            <c:otherwise>
-                <a class="header-link" href="${context}/index.html">
-                    <fmt:message key="header.phoneStation"/>
-                </a>
-            </c:otherwise>
-        </c:choose>
+        <a class="header-link" href="${context}/index.html">
+            <fmt:message key="header.phoneStation"/>
+        </a>
         <div class="flex">
             <form action="${context}/language.html" method="POST" class="select-form">
                 <input type="hidden" name="pagePath" value="${pageContext.request.requestURI}">
@@ -52,7 +38,6 @@
                             key="header.russian"/></option>
                 </select>
             </form>
-
             <c:choose>
                 <c:when test="${not empty sessionAccount}">
                     <a href="${context}/logout.html" class="btn">
