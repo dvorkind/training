@@ -13,37 +13,28 @@
 <u:html title="${title} : ${titlePage}">
     <div class="main">
         <form action="refill_balance.html" method="post" class="submit-form reg-form">
-            <c:choose>
-                <c:when test="${empty success}">
-                    <h2 class="text-center">
-                        <fmt:message key="subscriber.balance"/>
-                    </h2>
-                    <p class="msg"><fmt:message key="subscriber.balanceMessage"/></p>
-                    <div class="input-group">
-                        <label>
-                            <fmt:message key="subscriber.balanceRefillSum"/>
-                        </label>
-                        <input type="number" min="0" id="balanceRefillRoubles" name="balanceRefillRoubles"
-                               class="small-input"
-                               value="5">
-                        <label for="balanceRefillRoubles" class="small-label">
-                            <fmt:message key="subscriber.balanceMoneyRoubles"/>
-                        </label>
-                        <input type="number" min="0" max="99" id="balanceRefillKopecks" name="balanceRefillKopecks"
-                               class="small-input"
-                               value="0">
-                        <label for="balanceRefillKopecks" class="small-label">
-                            <fmt:message key="subscriber.balanceMoneyKopecks"/>
-                        </label>
-                    </div>
-                    <input type="hidden" name="confirmation">
-                    <input type="submit" value="<fmt:message key="subscriber.refillBalance" />" class="btn">
-                    <a href="subscriber.html" class="form-link"><fmt:message key="subscriber.refillCancel"/></a>
-                </c:when>
-                <c:otherwise>
-                    <h2><fmt:message key="${success}"/></h2>
-                </c:otherwise>
-            </c:choose>
+            <h2 class="text-center">${titlePage}</h2>
+            <p class="msg"><fmt:message key="subscriber.balanceMessage"/></p>
+            <div class="input-group">
+                <label>
+                    <fmt:message key="subscriber.balanceRefillSum"/>
+                </label>
+                <input type="number" min="0" id="balanceRefillRoubles" name="balanceRefillRoubles"
+                       class="small-input"
+                       value="5">
+                <label for="balanceRefillRoubles" class="small-label">
+                    <fmt:message key="subscriber.balanceMoneyRoubles"/>
+                </label>
+                <input type="number" min="0" max="99" id="balanceRefillKopecks" name="balanceRefillKopecks"
+                       class="small-input"
+                       value="0">
+                <label for="balanceRefillKopecks" class="small-label">
+                    <fmt:message key="subscriber.balanceMoneyKopecks"/>
+                </label>
+            </div>
+            <input type="hidden" name="confirmation">
+            <input type="submit" value="<fmt:message key="subscriber.refillBalance" />" class="btn">
+            <a href="subscriber.html" class="form-link"><fmt:message key="subscriber.refillCancel"/></a>
         </form>
     </div>
 </u:html>

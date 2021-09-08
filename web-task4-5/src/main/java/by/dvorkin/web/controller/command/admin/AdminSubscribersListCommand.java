@@ -1,5 +1,6 @@
 package by.dvorkin.web.controller.command.admin;
 
+import by.dvorkin.web.controller.Helper;
 import by.dvorkin.web.controller.command.Command;
 import by.dvorkin.web.controller.command.Forward;
 import by.dvorkin.web.model.entity.Subscriber;
@@ -12,7 +13,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.util.Comparator;
 import java.util.List;
 
 public class AdminSubscribersListCommand implements Command {
@@ -23,10 +23,10 @@ public class AdminSubscribersListCommand implements Command {
             List<Subscriber> subscribers = subscriberService.getAll();
             String sortBy = req.getParameter("sort");
             if (sortBy != null) {
-                sortTable(sortBy, subscribers);
+                Helper.sortSubscribers(sortBy, subscribers);
                 req.setAttribute("sort", sortBy);
             } else {
-                subscribers.sort(Comparator.comparing(Subscriber::getFirstname));
+                Helper.sortSubscribers("firstNameUp", subscribers);
             }
             req.setAttribute("subscribers", subscribers);
             return null;
@@ -35,34 +35,5 @@ public class AdminSubscribersListCommand implements Command {
         } catch (Exception ignored) {
         }
         return null;
-    }
-
-    private void sortTable(String sortBy, List<Subscriber> subscribers) {
-        switch (sortBy) {
-            case "firstNameUp":
-                subscribers.sort(Comparator.comparing(Subscriber::getFirstname));
-                break;
-            case "firstNameDown":
-                subscribers.sort(Comparator.comparing(Subscriber::getFirstname).reversed());
-                break;
-            case "lastNameUp":
-                subscribers.sort(Comparator.comparing(Subscriber::getLastname));
-                break;
-            case "lastNameDown":
-                subscribers.sort(Comparator.comparing(Subscriber::getLastname).reversed());
-                break;
-            case "balanceUp":
-                subscribers.sort(Comparator.comparing(Subscriber::getBalance));
-                break;
-            case "balanceDown":
-                subscribers.sort(Comparator.comparing(Subscriber::getBalance).reversed());
-                break;
-            case "stateUp":
-                subscribers.sort(Comparator.comparing(Subscriber::isBlocked));
-                break;
-            case "stateDown":
-                subscribers.sort(Comparator.comparing(Subscriber::isBlocked).reversed());
-                break;
-        }
     }
 }

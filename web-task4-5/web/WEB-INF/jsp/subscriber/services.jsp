@@ -20,9 +20,7 @@
                 </h2>
             </c:when>
             <c:otherwise>
-                <h2 class="text-center no-margin-bottom">
-                    <fmt:message key="subscriber.services"/>
-                </h2>
+                <h2 class="text-center no-margin-bottom">${titlePage}</h2>
                 <p class="form-message">
                     <c:if test="${not empty serviceError}">
                         <span><fmt:message key="${serviceError}"/></span>
@@ -65,12 +63,12 @@
                             <td>${service.name}</td>
                             <td class="pre-wrap">${service.description}</td>
                             <td>
-                                <ctg:money-format balance="${service.price}"/>&nbsp<fmt:message
+                                <ctg:money-format balance="${service.price}" locale="${sessionScope.locale}"/>&nbsp<fmt:message
                                     key="subscriber.serviceMoney"/>
                             </td>
                             <td>
                                 <c:choose>
-                                    <c:when test="${subscribersServices.contains(service.id)}">
+                                    <c:when test="${subscribersServices.contains(service)}">
                                         <fmt:message key="subscriber.serviceStatusOn"/>
                                     </c:when>
                                     <c:otherwise>
@@ -82,7 +80,7 @@
                                 <form action="services.html" method="POST">
                                     <input type="hidden" name="id" value="${service.id}">
                                     <c:choose>
-                                        <c:when test="${subscribersServices.contains(service.id)}">
+                                        <c:when test="${subscribersServices.contains(service)}">
                                             <input type="hidden" name="off">
                                             <input type="submit"
                                                    value="<fmt:message key="subscriber.serviceSwitchOff"/>"

@@ -32,7 +32,7 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public List<Long> getSubscribersService(Long subscriber_id) throws ServiceException {
+    public List<Service> getSubscribersService(Long subscriber_id) throws ServiceException {
         try {
             return serviceDao.readSubscribersService(subscriber_id);
         } catch (DaoException e) {

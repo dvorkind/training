@@ -46,6 +46,11 @@ public class SecurityFilter implements Filter {
         permissions.put("/subscriber/tariff", subscriber);
         permissions.put("/subscriber/services", subscriber);
         permissions.put("/subscriber/refill_balance", subscriber);
+        permissions.put("/subscriber/success", subscriber);
+        permissions.put("/subscriber/call", subscriber);
+        permissions.put("/subscriber/sms", subscriber);
+        permissions.put("/subscriber/blocked", subscriber);
+        permissions.put("/subscriber/registration_success", subscriber);
     }
 
     @Override
@@ -53,8 +58,7 @@ public class SecurityFilter implements Filter {
                          FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpReq = (HttpServletRequest) req;
         HttpServletResponse httpResp = (HttpServletResponse) resp;
-        String context = httpReq.getContextPath();
-        String url = Helper.extractPath(httpReq.getRequestURI(), context);
+        String url = Helper.extractPath(httpReq.getRequestURI(),  httpReq.getContextPath());
         Set<Role> roles = permissions.get(url);
         if (roles != null) {
             HttpSession session = httpReq.getSession(false);

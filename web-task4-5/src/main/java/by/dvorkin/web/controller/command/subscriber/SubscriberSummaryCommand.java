@@ -2,9 +2,10 @@ package by.dvorkin.web.controller.command.subscriber;
 
 import by.dvorkin.web.controller.command.Command;
 import by.dvorkin.web.controller.command.Forward;
-import by.dvorkin.web.model.entity.Account;
+import by.dvorkin.web.model.entity.Service;
 import by.dvorkin.web.model.entity.Subscriber;
 import by.dvorkin.web.model.service.ServiceFactory;
+import by.dvorkin.web.model.service.ServiceService;
 import by.dvorkin.web.model.service.SubscriberService;
 import by.dvorkin.web.model.service.TariffService;
 import by.dvorkin.web.model.service.exceptions.FactoryException;
@@ -15,17 +16,21 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import java.util.List;
+
 public class SubscriberSummaryCommand implements Command {
     @Override
     public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
         HttpSession session = req.getSession();
-        Account account = (Account) session.getAttribute("sessionAccount");
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
-            SubscriberService subscriberService = serviceFactory.getSubscriberService();
             TariffService tariffService = serviceFactory.getTariffService();
-            Subscriber subscriber = subscriberService.findByAccountId(account.getId());
-            req.setAttribute("tariffName", tariffService.readById(subscriber.getTariff()).getName());
-            req.setAttribute("subscriber", subscriber);
+            ServiceService serviceService = serviceFactory.getServiceService();
+            SubscriberService subscriberService = serviceFactory.getSubscriberService();
+            Subscriber subscriber = (Subscriber) session.getAttribute("sessionSubscriber");
+            subscriber = subscriberService.readById(subscriber.getId());
+            req.setAttribute("tariff", tariffService.readById(subscriber.getTariff()));
+            List<Service> subscribersServices = serviceService.getSubscribersService(subscriber.getId());
+            req.setAttribute("subscribersServices", subscribersServices);
             // req.setAttribute("subscribers", subscriberService.findAll()); TODO: статистику
             // TODO: восстановление пароля
             return null;

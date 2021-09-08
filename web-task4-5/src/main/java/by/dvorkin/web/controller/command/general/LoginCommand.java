@@ -3,8 +3,10 @@ package by.dvorkin.web.controller.command.general;
 import by.dvorkin.web.controller.command.Command;
 import by.dvorkin.web.controller.command.Forward;
 import by.dvorkin.web.model.entity.Account;
+import by.dvorkin.web.model.entity.Subscriber;
 import by.dvorkin.web.model.service.AccountService;
 import by.dvorkin.web.model.service.ServiceFactory;
+import by.dvorkin.web.model.service.SubscriberService;
 import by.dvorkin.web.model.service.exceptions.FactoryException;
 import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
@@ -20,7 +22,7 @@ public class LoginCommand implements Command {
     public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
         HttpSession session = req.getSession();
         Account sessionAccount = (Account) session.getAttribute("sessionAccount");
-        Forward forward = getForward(session, sessionAccount);
+        Forward forward = getForward(sessionAccount);
         if (forward != null) {
             return forward;
         }
@@ -30,9 +32,13 @@ public class LoginCommand implements Command {
             Logger logger;
             try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
                 AccountService accountService = serviceFactory.getAccountService();
+                SubscriberService subscriberService = serviceFactory.getSubscriberService();
                 Account account = accountService.login(login, password);
-                forward = getForward(session, account);
+                forward = getForward(account);
                 if (forward != null) {
+                    session.setAttribute("sessionAccount", account);
+                    Subscriber subscriber = subscriberService.findByAccountId(account.getId());
+                    session.setAttribute("sessionSubscriber", subscriber);
                     logger = LogManager.getLogger("User");
                     logger.info("User " + login + " has logged in. IP [" + req.getRemoteAddr() + "]");
                     return forward;
@@ -49,9 +55,8 @@ public class LoginCommand implements Command {
         return null;
     }
 
-    private Forward getForward(HttpSession session, Account sessionAccount) {
+    private Forward getForward(Account sessionAccount) {
         if (sessionAccount != null) {
-            session.setAttribute("sessionAccount", sessionAccount);
             switch (sessionAccount.getRole()) {
                 case ADMINISTRATOR:
                     return new Forward("/admin/admin.html");

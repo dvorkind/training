@@ -29,10 +29,10 @@ public class ChangePasswordCommand implements Command {
             try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
                 AccountService accountService = serviceFactory.getAccountService();
                 accountService.changePassword(oldPassword, newPassword, account);
-                req.setAttribute("success", "changePassword.success");
                 Logger logger = LogManager.getLogger("User");
                 logger.info("User " + account.getLogin() + " changed the password. IP [" + req.getRemoteAddr() + "]");
-                return null;
+                session.setAttribute("success", "changePassword.success");
+                return new Forward("/subscriber/success.html");
             } catch (AccountPasswordIncorrectException e) {
                 req.setAttribute("oldPasswordError", "changePassword.errorOldPassword");
                 return null;

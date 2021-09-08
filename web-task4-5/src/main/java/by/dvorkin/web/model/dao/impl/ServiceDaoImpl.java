@@ -107,14 +107,14 @@ public class ServiceDaoImpl implements ServiceDao {
     }
 
     @Override
-    public List<Long> readSubscribersService(Long subscriberId) throws DaoException {
+    public List<Service> readSubscribersService(Long subscriberId) throws DaoException {
         String sql = "SELECT * FROM `service` INNER JOIN `subscriber_service` ON service.id = service_id  WHERE `subscriber_id` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, subscriberId);
             ResultSet resultSet = statement.executeQuery();
-            List<Long> services = new ArrayList<>();
+            List<Service> services = new ArrayList<>();
             while (resultSet.next()) {
-                services.add(resultSet.getLong("service.id"));
+                services.add(createService(resultSet));
             }
             resultSet.close();
             return services;

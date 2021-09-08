@@ -20,9 +20,7 @@
                 </h2>
             </c:when>
             <c:otherwise>
-                <h2 class="text-center no-margin-bottom">
-                    <fmt:message key="admin.subscribers"/>
-                </h2>
+                <h2 class="text-center no-margin-bottom">${titlePage}</h2>
                 <div class="sort-wrapper">
                     <span><fmt:message key="admin.subscriberSortTitle"/></span>
                     <form action="subscribers_all.html" method="POST" class="select-form no-margin">
@@ -72,7 +70,7 @@
                             <td>${subscriber.lastname}</td>
                             <td>${subscriber.phoneNumber}</td>
                             <td>
-                                <ctg:money-format balance="${subscriber.balance}"/>&nbsp
+                                <ctg:money-format balance="${subscriber.balance}" locale="${sessionScope.locale}"/>&nbsp
                                 <fmt:message key="subscriber.money"/>
                             </td>
                             <c:choose>

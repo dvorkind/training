@@ -13,9 +13,7 @@
 <u:html title="${title} : ${titlePage}">
     <div class="main">
         <form action="service_delete.html" method="post" class="submit-form reg-form">
-            <h2 class="text-center">
-                <fmt:message key="admin.serviceDeleteTitle"/> "${serviceName}"
-            </h2>
+            <h2 class="text-center">${titlePage} "${serviceName}"</h2>
             <p class="msg"><fmt:message key="admin.serviceDeleteMessageOne"/></p>
             <p class="msg"><fmt:message key="admin.serviceDeleteMessageTwo"/></p>
             <p class="form-message">

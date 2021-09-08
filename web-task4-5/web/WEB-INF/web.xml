@@ -44,6 +44,15 @@
         <url-pattern>*.html</url-pattern>
     </filter-mapping>
 
+    <filter>
+        <filter-name>SubscriberFilter</filter-name>
+        <filter-class>by.dvorkin.web.controller.filter.SubscriberFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SubscriberFilter</filter-name>
+        <url-pattern>*.html</url-pattern>
+    </filter-mapping>
+
     <context-param>
         <description>JDBC-драйвер</description>
         <param-name>jdbc-driver</param-name>

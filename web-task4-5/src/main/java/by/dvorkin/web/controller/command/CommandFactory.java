@@ -15,8 +15,11 @@ import by.dvorkin.web.controller.command.general.LoginCommand;
 import by.dvorkin.web.controller.command.general.LogoutCommand;
 import by.dvorkin.web.controller.command.general.MainPageCommand;
 import by.dvorkin.web.controller.command.general.RegistrationCommand;
+import by.dvorkin.web.controller.command.subscriber.SubscriberCallCommand;
 import by.dvorkin.web.controller.command.subscriber.SubscriberRefillBalanceCommand;
 import by.dvorkin.web.controller.command.subscriber.SubscriberServicesCommand;
+import by.dvorkin.web.controller.command.subscriber.SubscriberSmsCommand;
+import by.dvorkin.web.controller.command.subscriber.SubscriberSuccessCommand;
 import by.dvorkin.web.controller.command.subscriber.SubscriberSummaryCommand;
 import by.dvorkin.web.controller.command.subscriber.SubscriberTariffChangeCommand;
 import jakarta.servlet.ServletException;
@@ -47,6 +50,10 @@ public class CommandFactory {
         commands.put("/subscriber/tariff",  SubscriberTariffChangeCommand.class);
         commands.put("/subscriber/services",  SubscriberServicesCommand.class);
         commands.put("/subscriber/refill_balance",  SubscriberRefillBalanceCommand.class);
+        commands.put("/subscriber/success",  SubscriberSuccessCommand.class);
+        commands.put("/subscriber/call",  SubscriberCallCommand.class);
+        commands.put("/subscriber/sms",  SubscriberSmsCommand.class);
+
         commands.put("/change_password",  ChangePasswordCommand.class);
     }
 

@@ -13,9 +13,7 @@
 <u:html title="${title} : ${titlePage}">
     <div class="main">
         <form action="tariff_delete.html" method="post" class="submit-form reg-form">
-            <h2 class="text-center">
-                <fmt:message key="admin.tariffDeleteTitle"/> "${tariffName}"
-            </h2>
+            <h2 class="text-center">${titlePage} "${tariffName}"</h2>
             <c:if test="${not empty using}">
                 <p class="msg"><fmt:message key="admin.tariffDeleteMessageOne"/><span class="bold"> ${using}</span></p>
                 <p class="msg"><fmt:message key="admin.tariffDeleteMessageTwo"/></p>

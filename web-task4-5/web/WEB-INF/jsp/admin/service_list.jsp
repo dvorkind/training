@@ -23,9 +23,7 @@
                 </a>
             </c:when>
             <c:otherwise>
-                <h2 class="text-center no-margin-bottom">
-                    <fmt:message key="admin.services"/>
-                </h2>
+                <h2 class="text-center no-margin-bottom">${titlePage}</h2>
                 <a href="service_manage.html" class="btn center-btn no-margin-bottom">
                     <fmt:message key="admin.serviceAdd"/> ➕
                 </a>
@@ -63,7 +61,7 @@
                             <td>${service.name}</td>
                             <td class="pre-wrap">${service.description}</td>
                             <td>
-                                <ctg:money-format balance="${service.price}"/>&nbsp<fmt:message
+                                <ctg:money-format balance="${service.price}" locale="${sessionScope.locale}"/>&nbsp<fmt:message
                                     key="admin.serviceMoney"/>
                             </td>
                             <td class="button-cell">

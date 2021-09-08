@@ -37,7 +37,6 @@ public class CommandManager extends HttpServlet {
             } else {
                 if (forward != null && forward.getUrl() != null) {
                     url = forward.getUrl();
-                    System.out.println(url);
                 }
                 req.getRequestDispatcher("/WEB-INF/jsp" + url + ".jsp").forward(req, resp);
             }

@@ -1,5 +1,6 @@
 package by.dvorkin.web.controller.command.admin;
 
+import by.dvorkin.web.controller.Helper;
 import by.dvorkin.web.controller.command.Command;
 import by.dvorkin.web.controller.command.Forward;
 import by.dvorkin.web.model.entity.Subscriber;
@@ -14,7 +15,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Comparator;
 import java.util.List;
 
 public class AdminSubscribersNewListCommand implements Command {
@@ -25,7 +25,6 @@ public class AdminSubscribersNewListCommand implements Command {
             if (req.getParameter("id") != null) {
                 Subscriber subscriber = subscriberService.readById(Long.parseLong(req.getParameter("id")));
                 subscriber.setRegistered(true);
-                subscriber.setBlocked(false);
                 subscriberService.update(subscriber);
                 Logger logger = LogManager.getLogger("User");
                 logger.info("UserID #" + req.getParameter("id") + " was activated by Administrator");
@@ -33,10 +32,10 @@ public class AdminSubscribersNewListCommand implements Command {
             List<Subscriber> subscribers = subscriberService.getNewSubscribers();
             String sortBy = req.getParameter("sort");
             if (sortBy != null) {
-                sortTable(sortBy, subscribers);
+                Helper.sortSubscribers(sortBy, subscribers);
                 req.setAttribute("sort", sortBy);
             } else {
-                subscribers.sort(Comparator.comparing(Subscriber::getFirstname));
+                Helper.sortSubscribers("firstNameUp", subscribers);
             }
             req.setAttribute("subscribers", subscribers);
             return null;
@@ -45,22 +44,5 @@ public class AdminSubscribersNewListCommand implements Command {
         } catch (Exception ignored) {
         }
         return null;
-    }
-
-    private void sortTable(String sortBy, List<Subscriber> subscribers) {
-        switch (sortBy) {
-            case "firstNameUp":
-                subscribers.sort(Comparator.comparing(Subscriber::getFirstname));
-                break;
-            case "firstNameDown":
-                subscribers.sort(Comparator.comparing(Subscriber::getFirstname).reversed());
-                break;
-            case "lastNameUp":
-                subscribers.sort(Comparator.comparing(Subscriber::getLastname));
-                break;
-            case "lastNameDown":
-                subscribers.sort(Comparator.comparing(Subscriber::getLastname).reversed());
-                break;
-        }
     }
 }

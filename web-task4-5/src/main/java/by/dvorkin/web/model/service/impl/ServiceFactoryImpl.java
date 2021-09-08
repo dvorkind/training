@@ -44,7 +44,6 @@ public class ServiceFactoryImpl implements ServiceFactory {
             accountServiceImpl.setTransaction(getTransaction());
             accountServiceImpl.setAccountDao(getAccountDao());
             accountServiceImpl.setSubscriberDao(getSubscriberDao());
-            accountServiceImpl.setSubscriberActionDao(getSubscriberActionDao());
             accountService = accountServiceImpl;
         }
         return accountService;

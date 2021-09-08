@@ -21,17 +21,19 @@
         </c:when>
         <c:otherwise>
             <div class="main">
-                <h2 class="text-center no-margin-bottom">
-                    <fmt:message key="admin.newSubscribers"/>
-                </h2>
+                <h2 class="text-center no-margin-bottom">${titlePage}</h2>
                 <div class="sort-wrapper">
                     <span><fmt:message key="admin.subscriberSortTitle"/></span>
                     <form action="subscribers_new.html" method="POST" class="select-form no-margin">
                         <select name="sort" onchange="submit()" class="btn btn-transparent">
-                            <option value="firstNameUp" ${sort == 'firstNameUp' ? 'selected' : ''}><fmt:message key="admin.subscriberSortFirstNameUp"/></option>
-                            <option value="firstNameDown" ${sort == 'firstNameDown' ? 'selected' : ''}><fmt:message key="admin.subscriberSortFirstNameDown"/></option>
-                            <option value="lastNameUp" ${sort == 'lastNameUp' ? 'selected' : ''}><fmt:message key="admin.subscriberSortLastNameUp"/></option>
-                            <option value="lastNameDown" ${sort == 'lastNameDown' ? 'selected' : ''}><fmt:message key="admin.subscriberSortLastNameDown"/></option>
+                            <option value="firstNameUp" ${sort == 'firstNameUp' ? 'selected' : ''}><fmt:message
+                                    key="admin.subscriberSortFirstNameUp"/></option>
+                            <option value="firstNameDown" ${sort == 'firstNameDown' ? 'selected' : ''}><fmt:message
+                                    key="admin.subscriberSortFirstNameDown"/></option>
+                            <option value="lastNameUp" ${sort == 'lastNameUp' ? 'selected' : ''}><fmt:message
+                                    key="admin.subscriberSortLastNameUp"/></option>
+                            <option value="lastNameDown" ${sort == 'lastNameDown' ? 'selected' : ''}><fmt:message
+                                    key="admin.subscriberSortLastNameDown"/></option>
                         </select>
                     </form>
                 </div>
@@ -53,7 +55,8 @@
                             <td class="button-cell">
                                 <form action="subscribers_new.html" method="POST">
                                     <input type="hidden" name="id" value="${subscriber.id}">
-                                    <input type="submit" value="<fmt:message key="admin.subscriberActivate"/> ✅" class="btn btn-small">
+                                    <input type="submit" value="<fmt:message key="admin.subscriberActivate"/> ✅"
+                                           class="btn btn-small">
                                 </form>
                             </td>
                         </tr>

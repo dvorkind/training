@@ -8,7 +8,7 @@ import java.util.List;
 public interface ServiceService {
     List<Service> getAll() throws ServiceException;
 
-    List<Long> getSubscribersService(Long subscriber_id) throws ServiceException;
+    List<Service> getSubscribersService(Long subscriber_id) throws ServiceException;
 
     Service readById(Long id) throws ServiceException;
 

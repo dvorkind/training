@@ -4,6 +4,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tld/money.tld" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <c:set var="locale" value="${not empty sessionScope.locale ? sessionScope.locale : 'ru'}" scope="session"/>
@@ -131,14 +132,20 @@
                     </ul>
                 </nav>
             </c:when>
-            <c:otherwise>
-            </c:otherwise>
         </c:choose>
         <jsp:doBody/>
     </main>
 </div>
 <footer>
     <span><fmt:message key="footer.copyright"/></span>
+    <c:if test="${sessionAccount.role == 'SUBSCRIBER'}">
+        <span>
+            <fmt:message key="footer.balance"/>&nbsp
+            <ctg:money-format balance="${sessionSubscriber.balance}" locale="${sessionScope.locale}"/>
+            &nbsp
+            <fmt:message key="subscriber.money"/>
+        </span>
+    </c:if>
 </footer>
 </body>
 </html>

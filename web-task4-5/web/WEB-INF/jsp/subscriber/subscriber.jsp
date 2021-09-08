@@ -11,61 +11,110 @@
 
 <fmt:message var="title" key="subscriber.title"/>
 <fmt:message var="titlePage" key="subscriber.main"/>
+
+<jsp:useBean id="sessionSubscriber" scope="session" class="by.dvorkin.web.model.entity.Subscriber"/>
+<jsp:useBean id="tariff" scope="request" class="by.dvorkin.web.model.entity.Tariff"/>
+
 <u:html title="${title} : ${titlePage}">
-    <c:choose>
-        <c:when test="${subscriber.registered}">
-            <div class="main">
-                <h2 class="text-center">
-                    <fmt:message key="subscriber.hello"/>, ${subscriber.firstname}!
-                </h2>
-                <table>
-                    <tr>
-                        <td><fmt:message key="subscriber.profileFirstname"/>: &nbsp</td>
-                        <td>${subscriber.firstname}</td>
-                    </tr>
-                    <tr>
-                        <td><fmt:message key="subscriber.profileLastname"/>: &nbsp</td>
-                        <td>${subscriber.lastname}</td>
-                    </tr>
-                    <tr>
-                        <td><fmt:message key="subscriber.profilePhoneNumber"/>: &nbsp</td>
-                        <td>${subscriber.phoneNumber}</td>
-                    </tr>
-                    <tr>
-                        <td><fmt:message key="subscriber.profileTariff"/>: &nbsp</td>
-                        <td>${tariffName}</td>
-                    </tr>
-                    <tr>
-                        <td><fmt:message key="subscriber.profileBalance"/>: &nbsp</td>
-                        <td><ctg:money-format balance="${subscriber.balance}"/>&nbsp<fmt:message key="subscriber.money"/></td>
-                    </tr>
-                    <tr>
-                        <td><fmt:message key="subscriber.profileStatus"/>: &nbsp</td>
-                        <td>
-                            <c:choose>
-                                <c:when test="${subscriber.blocked}">
-                                    <fmt:message key="subscriber.profileBlocked"/>
-                                </c:when>
-                                <c:otherwise>
-                                    <fmt:message key="subscriber.profileActive"/>
-                                </c:otherwise>
-                            </c:choose>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </c:when>
-        <c:otherwise>
-            <div class="main">
-                <h2 class="text-center">
-                    <fmt:message key="registration.congratulationSentence1"/>
-                </h2>
-                <p class="msg"><fmt:message key="registration.congratulationSentence2"/></p>
-                <p class="msg"><fmt:message key="registration.congratulationSentence3"/></p>
-                <a href="subscriber.html" class="btn center-btn">
-                    <fmt:message key="subscriber.refresh"/>
-                </a>
-            </div>
-        </c:otherwise>
-    </c:choose>
+    <div class="main">
+        <h2 class="text-center">
+            <fmt:message key="subscriber.hello"/>, ${sessionSubscriber.firstname}!
+        </h2>
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th width="150"><fmt:message key="subscriber.profileFirstname"/></th>
+                <th width="300"><fmt:message key="subscriber.profileLastname"/></th>
+                <th width="150"><fmt:message key="subscriber.profilePhoneNumber"/></th>
+                <th width="150"><fmt:message key="subscriber.profileBalance"/></th>
+                <th width="150"><fmt:message key="subscriber.profileStatus"/></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>${sessionSubscriber.firstname}</td>
+                <td>${sessionSubscriber.lastname}</td>
+                <td>${sessionSubscriber.phoneNumber}</td>
+                <td>
+                    <ctg:money-format balance="${sessionSubscriber.balance}" locale="${sessionScope.locale}"/>
+                    &nbsp<fmt:message key="subscriber.money"/>
+                </td>
+                <td>
+                    <c:choose>
+                        <c:when test="${sessionSubscriber.blocked}">
+                            <fmt:message key="subscriber.profileBlocked"/>
+                        </c:when>
+                        <c:otherwise>
+                            <fmt:message key="subscriber.profileActive"/>
+                        </c:otherwise>
+                    </c:choose>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-center">
+            <fmt:message key="subscriber.profileTariff"/>
+        </h2>
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th width="150"><fmt:message key="admin.tariffName"/></th>
+                <th width="300"><fmt:message key="admin.tariffDescription"/></th>
+                <th width="150"><fmt:message key="admin.tariffSubscriptionFee"/></th>
+                <th width="150"><fmt:message key="admin.tariffCallCost"/></th>
+                <th width="150"><fmt:message key="admin.tariffSmsCost"/></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>${tariff.name}</td>
+                <td class="pre-wrap">${tariff.description}</td>
+                <td>
+                    <ctg:money-format balance="${tariff.subscriptionFee}" locale="${sessionScope.locale}"/>
+                    &nbsp<fmt:message key="admin.tariffMoney"/>
+                </td>
+                <td>
+                    <ctg:money-format balance="${tariff.callCost}" locale="${sessionScope.locale}"/>
+                    &nbsp<fmt:message key="admin.tariffMoney"/>
+                </td>
+                <td>
+                    <ctg:money-format balance="${tariff.smsCost}" locale="${sessionScope.locale}"/>
+                    &nbsp<fmt:message key="admin.tariffMoney"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-center">
+            <fmt:message key="subscriber.activeServices"/>
+        </h2>
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th width="150"><fmt:message key="subscriber.serviceName"/></th>
+                <th width="620"><fmt:message key="subscriber.serviceDescription"/></th>
+                <th width="150"><fmt:message key="subscriber.servicePrice"/></th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="service" items="${subscribersServices}">
+                <tr>
+                    <td>${service.name}</td>
+                    <td class="pre-wrap">${service.description}</td>
+                    <td>
+                        <ctg:money-format balance="${service.price}" locale="${sessionScope.locale}"/>
+                        &nbsp<fmt:message key="subscriber.serviceMoney"/>
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+        <a href="call.html" class="btn center-btn">
+            <fmt:message key="subscriber.call"/>
+        </a>
+        <a href="sms.html" class="btn center-btn">
+            <fmt:message key="subscriber.sms"/>
+        </a>
+    </div>
 </u:html>

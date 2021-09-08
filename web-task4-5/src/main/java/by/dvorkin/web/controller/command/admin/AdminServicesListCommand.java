@@ -1,5 +1,6 @@
 package by.dvorkin.web.controller.command.admin;
 
+import by.dvorkin.web.controller.Helper;
 import by.dvorkin.web.controller.command.Command;
 import by.dvorkin.web.controller.command.Forward;
 import by.dvorkin.web.model.entity.Service;
@@ -12,7 +13,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.util.Comparator;
 import java.util.List;
 
 public class AdminServicesListCommand implements Command {
@@ -23,10 +23,10 @@ public class AdminServicesListCommand implements Command {
             List<Service> services = serviceService.getAll();
             String sortBy = req.getParameter("sort");
             if (sortBy != null) {
-                sortTable(sortBy, services);
+                Helper.sortServices(sortBy, services);
                 req.setAttribute("sort", sortBy);
             } else {
-                services.sort(Comparator.comparing(Service::getName));
+                Helper.sortServices("nameUp", services);
             }
             req.setAttribute("services", services);
             return null;
@@ -35,22 +35,5 @@ public class AdminServicesListCommand implements Command {
         } catch (Exception ignored) {
         }
         return null;
-    }
-
-    private void sortTable(String sortBy, List<Service> services) {
-        switch (sortBy) {
-            case "nameUp":
-                services.sort(Comparator.comparing(Service::getName));
-                break;
-            case "nameDown":
-                services.sort(Comparator.comparing(Service::getName).reversed());
-                break;
-            case "priceUp":
-                services.sort(Comparator.comparing(Service::getPrice));
-                break;
-            case "priceDown":
-                services.sort(Comparator.comparing(Service::getPrice).reversed());
-                break;
-        }
     }
 }

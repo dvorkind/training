@@ -1,11 +1,12 @@
 package by.dvorkin.web.controller.command.subscriber;
 
+import by.dvorkin.web.controller.Helper;
 import by.dvorkin.web.controller.command.Command;
 import by.dvorkin.web.controller.command.Forward;
-import by.dvorkin.web.model.entity.Account;
 import by.dvorkin.web.model.entity.Action;
 import by.dvorkin.web.model.entity.Subscriber;
 import by.dvorkin.web.model.entity.SubscriberAction;
+import by.dvorkin.web.model.entity.Tariff;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.SubscriberActionService;
 import by.dvorkin.web.model.service.SubscriberService;
@@ -21,21 +22,29 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
+import java.util.List;
 
 public class SubscriberTariffChangeCommand implements Command {
-    private final int TARIFF_CHANGE_COST = 100;
-
     @Override
     public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
         long DAY_IN_MILLISECONDS = 86400000L;
+        int TARIFF_CHANGE_COST = 100;
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
             HttpSession session = req.getSession();
             TariffService tariffService = serviceFactory.getTariffService();
             SubscriberService subscriberService = serviceFactory.getSubscriberService();
-            Account account = (Account) session.getAttribute("sessionAccount");
-            Subscriber subscriber = subscriberService.findByAccountId(account.getId());
+            Subscriber subscriber = (Subscriber) session.getAttribute("sessionSubscriber");
+            subscriber = subscriberService.readById(subscriber.getId());
+            List<Tariff> tariffs = tariffService.getAll();
             req.setAttribute("id", subscriber.getTariff());
-            req.setAttribute("tariffs", tariffService.getAll());
+            req.setAttribute("tariffs", tariffs);
+            String sortBy = req.getParameter("sort");
+            if (sortBy != null) {
+                Helper.sortTariffs(sortBy, tariffs);
+                req.setAttribute("sort", sortBy);
+            } else {
+                Helper.sortTariffs("nameUp", tariffs);
+            }
             if (req.getParameter("confirmation") != null) {
                 if (req.getParameter("newTariff") != null) {
                     SubscriberActionService subscriberActionService = serviceFactory.getSubscriberActionService();
@@ -53,12 +62,14 @@ public class SubscriberTariffChangeCommand implements Command {
                     if (subscriber.getBalance() - TARIFF_CHANGE_COST >= 0) {
                         subscriber.setBalance(subscriber.getBalance() - TARIFF_CHANGE_COST);
                         subscriberService.update(subscriber);
-                        SubscriberAction subscriberAction = createSubscriberAction(subscriber.getId());
+                        session.setAttribute("sessionSubscriber", subscriber);
+                        SubscriberAction subscriberAction = Helper.createSubscriberAction(subscriber.getId(),
+                                Action.CHANGE_TARIFF, TARIFF_CHANGE_COST);
                         subscriberActionService.create(subscriberAction);
-                        req.setAttribute("success", "subscriber.changeTariffSuccess");
-                        req.removeAttribute("confirmation");
                         Logger logger = LogManager.getLogger("User");
                         logger.info("User #" + subscriber.getId() + " changed his tariff to #" + newTariff);
+                        session.setAttribute("success", "subscriber.changeTariffSuccess");
+                        return new Forward("/subscriber/success.html");
                     } else {
                         req.removeAttribute("confirmation");
                         req.setAttribute("tariffChangeError", "subscriber.changeTariffError");
@@ -73,14 +84,5 @@ public class SubscriberTariffChangeCommand implements Command {
         } catch (Exception ignored) {
         }
         return null;
-    }
-
-    private SubscriberAction createSubscriberAction(Long subscriberId) {
-        SubscriberAction subscriberAction = new SubscriberAction();
-        subscriberAction.setAction(Action.CHANGE_TARIFF);
-        subscriberAction.setSubscriberId(subscriberId);
-        subscriberAction.setDate(new Date());
-        subscriberAction.setSum(TARIFF_CHANGE_COST);
-        return subscriberAction;
     }
 }
