@@ -10,20 +10,20 @@
 <fmt:setBundle basename="messages"/>
 
 <fmt:message var="title" key="admin.title"/>
-<fmt:message var="titlePage" key="admin.subscribers"/>
+<fmt:message var="titlePage" key="admin.debtors"/>
 <u:html title="${title} : ${titlePage}">
     <div class="main">
         <c:choose>
             <c:when test="${empty subscribers}">
                 <h2 class="text-center no-margin-bottom">
-                    <fmt:message key="admin.subscribersEmpty"/>
+                    <fmt:message key="admin.debtorsEmpty"/>
                 </h2>
             </c:when>
             <c:otherwise>
                 <h2 class="text-center no-margin-bottom">${titlePage}</h2>
                 <div class="sort-wrapper">
                     <span><fmt:message key="admin.subscriberSortTitle"/></span>
-                    <form action="subscribers_all.html" method="POST" class="select-form no-margin">
+                    <form action="debtors.html" method="POST" class="select-form no-margin">
                         <select name="sort" onchange="submit()" class="btn btn-transparent">
                             <option value="firstNameUp" ${sort == 'firstNameUp' ? 'selected' : ''}>
                                 <fmt:message key="admin.subscriberSortFirstNameUp"/>
@@ -82,11 +82,20 @@
                                 </c:otherwise>
                             </c:choose>
                             <td class="button-cell">
-                                <form action="subscriber_edit.html" method="POST">
-                                    <input type="hidden" name="id" value="${subscriber.id}">
-                                    <input type="submit" value="<fmt:message key="admin.subscriberManage"/> 📝"
-                                           class="btn btn-small">
-                                </form>
+                                <c:if test="${not subscriber.blocked}">
+                                    <form action="debtors.html" method="POST">
+                                        <input type="hidden" name="id" value="${subscriber.id}">
+                                        <input type="submit" value="<fmt:message key="admin.subscriberBlock"/> ⛔"
+                                               class="btn btn-small">
+                                    </form>
+                                </c:if>
+                                <c:if test="${subscriber.blocked}">
+                                    <form action="subscriber_edit.html" method="POST">
+                                        <input type="hidden" name="id" value="${subscriber.id}">
+                                        <input type="submit" value="<fmt:message key="admin.subscriberManage"/> 📝"
+                                               class="btn btn-small">
+                                    </form>
+                                </c:if>
                             </td>
                         </tr>
                     </c:forEach>

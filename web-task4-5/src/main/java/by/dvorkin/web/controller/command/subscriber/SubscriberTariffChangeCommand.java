@@ -34,7 +34,6 @@ public class SubscriberTariffChangeCommand implements Command {
             TariffService tariffService = serviceFactory.getTariffService();
             SubscriberService subscriberService = serviceFactory.getSubscriberService();
             Subscriber subscriber = (Subscriber) session.getAttribute("sessionSubscriber");
-            subscriber = subscriberService.readById(subscriber.getId());
             List<Tariff> tariffs = tariffService.getAll();
             req.setAttribute("id", subscriber.getTariff());
             req.setAttribute("tariffs", tariffs);
@@ -62,7 +61,6 @@ public class SubscriberTariffChangeCommand implements Command {
                     if (subscriber.getBalance() - TARIFF_CHANGE_COST >= 0) {
                         subscriber.setBalance(subscriber.getBalance() - TARIFF_CHANGE_COST);
                         subscriberService.update(subscriber);
-                        session.setAttribute("sessionSubscriber", subscriber);
                         SubscriberAction subscriberAction = Helper.createSubscriberAction(subscriber.getId(),
                                 Action.CHANGE_TARIFF, TARIFF_CHANGE_COST);
                         subscriberActionService.create(subscriberAction);

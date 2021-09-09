@@ -5,14 +5,14 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
 
-<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setLocale value="${locale}"/>
 <fmt:setBundle basename="messages"/>
 
 <fmt:message var="title" key="changePassword.title"/>
 <u:html title="${title}">
     <div class="main">
         <form action="change_password.html" method="post" class="reg-form submit-form">
-            <h2><fmt:message key="changePassword.title"/></h2>
+            <h2>${title}</h2>
             <div class="form-inputs">
                 <div class="input-group">
                     <label for="oldPassword"><fmt:message key="changePassword.oldPassword"/></label>

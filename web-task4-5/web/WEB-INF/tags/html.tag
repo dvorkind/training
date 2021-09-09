@@ -7,9 +7,9 @@
 <%@ taglib prefix="ctg" uri="/WEB-INF/tld/money.tld" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<c:set var="locale" value="${not empty sessionScope.locale ? sessionScope.locale : 'ru'}" scope="session"/>
+<c:set var="locale" value="${not empty locale ? locale : 'ru'}" scope="session"/>
 
-<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setLocale value="${locale}"/>
 <fmt:setBundle basename="messages"/>
 
 <c:set var="context" value="${pageContext.request.contextPath}"/>
@@ -33,9 +33,9 @@
                 <input type="hidden" name="pagePath" value="${pageContext.request.requestURI}">
                 <input type="hidden" name="queryString" value="${pageContext.request.queryString}">
                 <select name="locale" onchange="submit()" class="btn">
-                    <option value="en" ${sessionScope.locale == 'en' ? 'selected' : ''}><fmt:message
+                    <option value="en" ${locale == 'en' ? 'selected' : ''}><fmt:message
                             key="header.english"/></option>
-                    <option value="ru" ${sessionScope.locale == 'ru' ? 'selected' : ''}><fmt:message
+                    <option value="ru" ${locale == 'ru' ? 'selected' : ''}><fmt:message
                             key="header.russian"/></option>
                 </select>
             </form>
@@ -141,7 +141,7 @@
     <c:if test="${sessionAccount.role == 'SUBSCRIBER'}">
         <span>
             <fmt:message key="footer.balance"/>&nbsp
-            <ctg:money-format balance="${sessionSubscriber.balance}" locale="${sessionScope.locale}"/>
+            <ctg:money-format balance="${sessionSubscriber.balance}" locale="${locale}"/>
             &nbsp
             <fmt:message key="subscriber.money"/>
         </span>

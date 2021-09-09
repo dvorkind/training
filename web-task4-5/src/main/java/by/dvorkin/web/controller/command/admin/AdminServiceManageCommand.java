@@ -40,7 +40,7 @@ public class AdminServiceManageCommand implements Command {
                     logger.info("ServiceID #" + req.getParameter("id") + " was updated by Administrator");
                     return new Forward("/admin/service_list.html");
                 } else {
-                    service = serviceService.readById(Long.parseLong(req.getParameter("id")));
+                    service = serviceService.getById(Long.parseLong(req.getParameter("id")));
                     setServiceToAttribute(req, service);
                     return null;
                 }

@@ -33,7 +33,7 @@ public class TariffServiceImpl implements TariffService {
     }
 
     @Override
-    public Tariff readById(Long id) throws ServiceException {
+    public Tariff getById(Long id) throws ServiceException {
         try {
             return tariffDao.read(id);
         } catch (DaoException e) {
@@ -114,7 +114,7 @@ public class TariffServiceImpl implements TariffService {
     @Override
     public int getCountUsingTariff(Long id) throws ServiceException {
         try {
-            return tariffDao.getCountUsingTariff(id);
+            return tariffDao.readCountUsingTariff(id);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

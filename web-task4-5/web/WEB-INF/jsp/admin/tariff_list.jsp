@@ -7,14 +7,14 @@
 <%@ taglib prefix="ctg" uri="/WEB-INF/tld/money.tld" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
 
-<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setLocale value="${locale}"/>
 <fmt:setBundle basename="messages"/>
 
 <fmt:message var="title" key="admin.title"/>
 <fmt:message var="titlePage" key="admin.tariffs"/>
 <u:html title="${title} : ${titlePage}">
     <div class="main">
-        <h2 class="text-center">${titlePage}</h2>
+        <h2 class="text-center no-margin-bottom">${titlePage}</h2>
         <a href="tariff_manage.html" class="btn center-btn no-margin-bottom">
             <fmt:message key="admin.tariffAdd"/> ➕
         </a>
@@ -50,14 +50,14 @@
                     <td>${tariff.name}</td>
                     <td class="pre-wrap">${tariff.description}</td>
                     <td>
-                        <ctg:money-format balance="${tariff.subscriptionFee}" locale="${sessionScope.locale}"/>&nbsp<fmt:message
+                        <ctg:money-format balance="${tariff.subscriptionFee}" locale="${locale}"/>&nbsp<fmt:message
                             key="admin.tariffMoney"/>
                     </td>
                     <td>
-                        <ctg:money-format balance="${tariff.callCost}" locale="${sessionScope.locale}"/>&nbsp<fmt:message key="admin.tariffMoney"/>
+                        <ctg:money-format balance="${tariff.callCost}" locale="${locale}"/>&nbsp<fmt:message key="admin.tariffMoney"/>
                     </td>
                     <td>
-                        <ctg:money-format balance="${tariff.smsCost}" locale="${sessionScope.locale}"/>&nbsp<fmt:message key="admin.tariffMoney"/>
+                        <ctg:money-format balance="${tariff.smsCost}" locale="${locale}"/>&nbsp<fmt:message key="admin.tariffMoney"/>
                     </td>
                     <td class="button-cell">
                         <form action="tariff_manage.html" method="POST">

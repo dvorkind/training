@@ -1,7 +1,9 @@
 package by.dvorkin.web.controller.command;
 
+import by.dvorkin.web.controller.command.admin.AdminDebtorsListCommand;
 import by.dvorkin.web.controller.command.admin.AdminServiceDeleteCommand;
 import by.dvorkin.web.controller.command.admin.AdminServiceManageCommand;
+import by.dvorkin.web.controller.command.admin.AdminSubscriberEditCommand;
 import by.dvorkin.web.controller.command.admin.AdminTariffDeleteCommand;
 import by.dvorkin.web.controller.command.admin.AdminTariffManageCommand;
 import by.dvorkin.web.controller.command.admin.AdminServicesListCommand;
@@ -15,6 +17,7 @@ import by.dvorkin.web.controller.command.general.LoginCommand;
 import by.dvorkin.web.controller.command.general.LogoutCommand;
 import by.dvorkin.web.controller.command.general.MainPageCommand;
 import by.dvorkin.web.controller.command.general.RegistrationCommand;
+import by.dvorkin.web.controller.command.general.ResetPasswordCommand;
 import by.dvorkin.web.controller.command.subscriber.SubscriberCallCommand;
 import by.dvorkin.web.controller.command.subscriber.SubscriberRefillBalanceCommand;
 import by.dvorkin.web.controller.command.subscriber.SubscriberServicesCommand;
@@ -35,11 +38,14 @@ public class CommandFactory {
         commands.put("/", MainPageCommand.class);
         commands.put("/login", LoginCommand.class);
         commands.put("/registration", RegistrationCommand.class);
+        commands.put("/reset_password", ResetPasswordCommand.class);
         commands.put("/language", LanguageCommand.class);
         commands.put("/logout", LogoutCommand.class);
         commands.put("/admin/admin",  AdminSummaryCommand.class);
         commands.put("/admin/subscribers_new",  AdminSubscribersNewListCommand.class);
         commands.put("/admin/subscribers_all",  AdminSubscribersListCommand.class);
+        commands.put("/admin/subscriber_edit",  AdminSubscriberEditCommand.class);
+        commands.put("/admin/debtors",  AdminDebtorsListCommand.class);
         commands.put("/admin/tariff_list",  AdminTariffsListCommand.class);
         commands.put("/admin/tariff_manage",  AdminTariffManageCommand.class);
         commands.put("/admin/tariff_delete",  AdminTariffDeleteCommand.class);

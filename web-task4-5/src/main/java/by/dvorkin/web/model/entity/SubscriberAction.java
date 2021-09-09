@@ -2,22 +2,13 @@ package by.dvorkin.web.model.entity;
 
 import java.util.Date;
 
-public class SubscriberAction {
-    private Long id;
+public class SubscriberAction extends Entity {
     private Long subscriberId;
     private Action action;
     private Date date;
     private int sum;
 
     public SubscriberAction() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getSubscriberId() {

@@ -11,7 +11,7 @@ public interface TariffDao extends Dao<Tariff> {
 
     boolean isLastTariff() throws DaoException;
 
-    int getCountUsingTariff(Long id) throws DaoException;
+    int readCountUsingTariff(Long id) throws DaoException;
 
     void switchTariffs(Long sourceId, Long destinationId) throws DaoException;
 }

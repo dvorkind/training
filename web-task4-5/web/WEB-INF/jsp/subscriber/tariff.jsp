@@ -6,7 +6,7 @@
 <%@ taglib prefix="ctg" uri="/WEB-INF/tld/money.tld" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
 
-<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setLocale value="${locale}"/>
 <fmt:setBundle basename="messages"/>
 
 <fmt:message var="title" key="subscriber.title"/>
@@ -74,17 +74,17 @@
                         <td>${tariff.name}</td>
                         <td class="pre-wrap">${tariff.description}</td>
                         <td>
-                            <ctg:money-format balance="${tariff.subscriptionFee}" locale="${sessionScope.locale}"/>&nbsp<fmt:message
+                            <ctg:money-format balance="${tariff.subscriptionFee}" locale="${locale}"/>&nbsp<fmt:message
                                 key="admin.tariffMoney"/>
                         </td>
                         <td>
                             <ctg:money-format balance="${tariff.callCost}"
-                                              locale="${sessionScope.locale}"/>&nbsp<fmt:message
+                                              locale="${locale}"/>&nbsp<fmt:message
                                 key="admin.tariffMoney"/>
                         </td>
                         <td>
                             <ctg:money-format balance="${tariff.smsCost}"
-                                              locale="${sessionScope.locale}"/>&nbsp<fmt:message
+                                              locale="${locale}"/>&nbsp<fmt:message
                                 key="admin.tariffMoney"/>
                         </td>
                         <td class="button-cell">

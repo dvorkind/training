@@ -22,7 +22,7 @@ public class SubscriberServiceImpl implements SubscriberService {
     }
 
     @Override
-    public Subscriber findByAccountId(Long id) throws ServiceException {
+    public Subscriber getByAccountId(Long id) throws ServiceException {
         try {
             return subscriberDao.readByAccountId(id);
         } catch (DaoException e) {
@@ -43,6 +43,15 @@ public class SubscriberServiceImpl implements SubscriberService {
     public List<Subscriber> getNewSubscribers() throws ServiceException {
         try {
             return subscriberDao.readNewSubscribers();
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public List<Subscriber> getDebtors() throws ServiceException {
+        try {
+            return subscriberDao.readDebtors();
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -70,9 +79,18 @@ public class SubscriberServiceImpl implements SubscriberService {
     }
 
     @Override
-    public Subscriber readById(Long id) throws ServiceException {
+    public Subscriber getById(Long id) throws ServiceException {
         try {
             return subscriberDao.read(id);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public Subscriber getByPhoneNumber(String phoneNumber) throws ServiceException {
+        try {
+            return subscriberDao.readByPhoneNumber(phoneNumber);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

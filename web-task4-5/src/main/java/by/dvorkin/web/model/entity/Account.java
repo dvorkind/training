@@ -1,20 +1,11 @@
 package by.dvorkin.web.model.entity;
 
-public class Account {
-    private Long id;
+public class Account extends Entity {
     private String login;
-    private String password;
+    private transient String password;
     private Role role;
 
     public Account() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getLogin() {

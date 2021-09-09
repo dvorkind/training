@@ -28,9 +28,8 @@ public class SubscriberSmsCommand implements Command {
             HttpSession session = req.getSession();
             SubscriberService subscriberService = serviceFactory.getSubscriberService();
             Subscriber subscriber = (Subscriber) session.getAttribute("sessionSubscriber");
-            subscriber = subscriberService.readById(subscriber.getId());
             TariffService tariffService = serviceFactory.getTariffService();
-            Tariff tariff = tariffService.readById(subscriber.getTariff());
+            Tariff tariff = tariffService.getById(subscriber.getTariff());
             req.setAttribute("tariff", tariff);
             if (req.getParameter("confirmation") != null) {
                 if (subscriber.getBalance() < 0) {
@@ -41,7 +40,6 @@ public class SubscriberSmsCommand implements Command {
                 int smsCost = tariff.getSmsCost();
                 subscriber.setBalance(subscriber.getBalance() - smsCost);
                 subscriberService.update(subscriber);
-                session.setAttribute("sessionSubscriber", subscriber);
                 SubscriberAction subscriberAction = Helper.createSubscriberAction(subscriber.getId(),
                         Action.SEND_SMS, smsCost);
                 subscriberActionService.create(subscriberAction);

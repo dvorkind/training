@@ -23,7 +23,7 @@ public class AdminTariffDeleteCommand implements Command {
         }
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
             TariffService tariffService = serviceFactory.getTariffService();
-            Tariff tariff = tariffService.readById(Long.parseLong(req.getParameter("id")));
+            Tariff tariff = tariffService.getById(Long.parseLong(req.getParameter("id")));
             req.setAttribute("tariffName", tariff.getName());
             req.setAttribute("id", tariff.getId());
             int usingTariff = tariffService.getCountUsingTariff(tariff.getId());

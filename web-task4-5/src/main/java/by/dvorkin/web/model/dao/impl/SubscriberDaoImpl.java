@@ -103,6 +103,12 @@ public class SubscriberDaoImpl implements SubscriberDao {
     }
 
     @Override
+    public List<Subscriber> readDebtors() throws DaoException {
+        String sql = "SELECT * FROM `subscriber` WHERE  `balance` < 0 AND `is_deleted` = 0";
+        return getSubscriberList(sql);
+    }
+
+    @Override
     public Subscriber readByPhoneNumber(String phoneNumber) throws DaoException {
         String sql = "SELECT * FROM `subscriber` WHERE `phone_number` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {

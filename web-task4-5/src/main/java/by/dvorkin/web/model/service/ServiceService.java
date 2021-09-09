@@ -10,7 +10,7 @@ public interface ServiceService {
 
     List<Service> getSubscribersService(Long subscriber_id) throws ServiceException;
 
-    Service readById(Long id) throws ServiceException;
+    Service getById(Long id) throws ServiceException;
 
     void save(Service service) throws ServiceException;
 

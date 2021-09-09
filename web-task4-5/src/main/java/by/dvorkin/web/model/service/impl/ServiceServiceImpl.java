@@ -41,7 +41,7 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public Service readById(Long id) throws ServiceException {
+    public Service getById(Long id) throws ServiceException {
         try {
             return serviceDao.read(id);
         } catch (DaoException e) {

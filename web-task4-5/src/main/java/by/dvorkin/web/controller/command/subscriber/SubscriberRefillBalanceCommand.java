@@ -27,13 +27,11 @@ public class SubscriberRefillBalanceCommand implements Command {
                 HttpSession session = req.getSession();
                 SubscriberService subscriberService = serviceFactory.getSubscriberService();
                 Subscriber subscriber = (Subscriber) session.getAttribute("sessionSubscriber");
-                subscriber = subscriberService.readById(subscriber.getId());
                 SubscriberActionService subscriberActionService = serviceFactory.getSubscriberActionService();
                 int balanceRefillSum = Integer.parseInt(req.getParameter("balanceRefillRoubles")) * 100;
                 balanceRefillSum += Integer.parseInt(req.getParameter("balanceRefillKopecks"));
                 subscriber.setBalance(subscriber.getBalance() + balanceRefillSum);
                 subscriberService.update(subscriber);
-                session.setAttribute("sessionSubscriber", subscriber);
                 SubscriberAction subscriberAction = Helper.createSubscriberAction(subscriber.getId(),
                         Action.REFILL_BALANCE, balanceRefillSum);
                 subscriberActionService.create(subscriberAction);

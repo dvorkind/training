@@ -31,23 +31,21 @@ public class SubscriberServicesCommand implements Command {
             ServiceService serviceService = serviceFactory.getServiceService();
             SubscriberService subscriberService = serviceFactory.getSubscriberService();
             Subscriber subscriber = (Subscriber) session.getAttribute("sessionSubscriber");
-            subscriber = subscriberService.readById(subscriber.getId());
             if (req.getParameter("id") != null) {
                 long serviceId = Long.parseLong(req.getParameter("id"));
                 SubscriberActionService subscriberActionService = serviceFactory.getSubscriberActionService();
                 Logger logger = LogManager.getLogger("User");
                 if (req.getParameter("on") != null) {
-                    Service service = serviceService.readById(serviceId);
+                    Service service = serviceService.getById(serviceId);
                     int newSubscriberBalance = subscriber.getBalance() - service.getPrice();
                     if (newSubscriberBalance >= 0) {
                         serviceService.switchOn(subscriber.getId(), serviceId);
                         subscriber.setBalance(newSubscriberBalance);
                         subscriberService.update(subscriber);
-                        session.setAttribute("sessionSubscriber", subscriber);
                         SubscriberAction subscriberAction = Helper.createSubscriberAction(subscriber.getId(),
                                 Action.ADD_SERVICE, service.getPrice());
                         subscriberActionService.create(subscriberAction);
-                        logger.info("User #" + subscriber.getId() + " added service # " + serviceId);
+                        logger.info("User #" + subscriber.getId() + " added service #" + serviceId);
                         session.setAttribute("success", "subscriber.serviceOnSuccess");
                         return new Forward("/subscriber/success.html");
                     } else {
@@ -59,7 +57,7 @@ public class SubscriberServicesCommand implements Command {
                     SubscriberAction subscriberAction = Helper.createSubscriberAction(subscriber.getId(),
                             Action.DELETE_SERVICE, 0);
                     subscriberActionService.create(subscriberAction);
-                    logger.info("User #" + subscriber.getId() + " deleted service # " + serviceId);
+                    logger.info("User #" + subscriber.getId() + " deleted service #" + serviceId);
                     session.setAttribute("success", "subscriber.serviceOffSuccess");
                     return new Forward("/subscriber/success.html");
                 }

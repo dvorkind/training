@@ -37,8 +37,6 @@ public class LoginCommand implements Command {
                 forward = getForward(account);
                 if (forward != null) {
                     session.setAttribute("sessionAccount", account);
-                    Subscriber subscriber = subscriberService.findByAccountId(account.getId());
-                    session.setAttribute("sessionSubscriber", subscriber);
                     logger = LogManager.getLogger("User");
                     logger.info("User " + login + " has logged in. IP [" + req.getRemoteAddr() + "]");
                     return forward;

@@ -1,7 +1,6 @@
 package by.dvorkin.web.model.entity;
 
-public class Subscriber {
-    private Long id;
+public class Subscriber extends Entity {
     private Long accountId;
     private String firstname;
     private String lastname;
@@ -28,14 +27,6 @@ public class Subscriber {
 
     public void setRegistered(boolean registered) {
         this.registered = registered;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getAccountId() {
@@ -86,4 +77,37 @@ public class Subscriber {
         this.blocked = blocked;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Subscriber)) return false;
+
+        Subscriber that = (Subscriber) o;
+
+        if (getBalance() != that.getBalance()) return false;
+        if (isBlocked() != that.isBlocked()) return false;
+        if (isRegistered() != that.isRegistered()) return false;
+        if (getAccountId() != null ? !getAccountId().equals(that.getAccountId()) : that.getAccountId() != null)
+            return false;
+        if (getFirstname() != null ? !getFirstname().equals(that.getFirstname()) : that.getFirstname() != null)
+            return false;
+        if (getLastname() != null ? !getLastname().equals(that.getLastname()) : that.getLastname() != null)
+            return false;
+        if (getPhoneNumber() != null ? !getPhoneNumber().equals(that.getPhoneNumber()) : that.getPhoneNumber() != null)
+            return false;
+        return getTariff() != null ? getTariff().equals(that.getTariff()) : that.getTariff() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getAccountId() != null ? getAccountId().hashCode() : 0;
+        result = 31 * result + (getFirstname() != null ? getFirstname().hashCode() : 0);
+        result = 31 * result + (getLastname() != null ? getLastname().hashCode() : 0);
+        result = 31 * result + (getPhoneNumber() != null ? getPhoneNumber().hashCode() : 0);
+        result = 31 * result + (getTariff() != null ? getTariff().hashCode() : 0);
+        result = 31 * result + getBalance();
+        result = 31 * result + (isBlocked() ? 1 : 0);
+        result = 31 * result + (isRegistered() ? 1 : 0);
+        return result;
+    }
 }

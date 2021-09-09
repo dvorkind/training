@@ -9,6 +9,8 @@ public interface SubscriberDao extends Dao<Subscriber> {
 
     List<Subscriber> readNewSubscribers() throws DaoException;
 
+    List<Subscriber> readDebtors() throws DaoException;
+
     Subscriber readByPhoneNumber(String phoneNumber) throws DaoException;
 
     Subscriber readByAccountId(Long id) throws DaoException;

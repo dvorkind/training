@@ -39,6 +39,24 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public Account getById(Long id) throws ServiceException {
+        try {
+            return accountDao.read(id);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public Account getByLogin(String login) throws ServiceException {
+        try {
+            return accountDao.readByLogin(login);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public void create(Account account, Subscriber subscriber) throws ServiceException {
         try {
             transaction.start();
@@ -72,6 +90,27 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public void update(Account account) throws ServiceException {
+        try {
+            transaction.start();
+            accountDao.update(account);
+            transaction.commit();
+        } catch (DaoException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw new ServiceException(e);
+        } catch (ServiceException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw e;
+        }
+    }
+
+    @Override
     public void changePassword(String oldPassword, String newPassword, Account account) throws ServiceException {
         try {
             transaction.start();
@@ -82,6 +121,29 @@ public class AccountServiceImpl implements AccountService {
                 throw new AccountPasswordIncorrectException(account.getId());
             }
             transaction.commit();
+        } catch (DaoException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw new ServiceException(e);
+        } catch (ServiceException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw e;
+        }
+    }
+
+    @Override
+    public Account resetPassword(Account account) throws ServiceException {
+        try {
+            transaction.start();
+            account.setPassword(accountDao.passwordToSHA("12345"));
+            accountDao.update(account);
+            transaction.commit();
+            return account;
         } catch (DaoException e) {
             try {
                 transaction.rollback();

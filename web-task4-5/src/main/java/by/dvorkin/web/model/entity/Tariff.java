@@ -1,7 +1,6 @@
 package by.dvorkin.web.model.entity;
 
-public class Tariff {
-    private Long id;
+public class Tariff extends Entity {
     private String name;
     private String description;
     private int subscriptionFee;
@@ -49,13 +48,5 @@ public class Tariff {
 
     public void setSmsCost(int smsCost) {
         this.smsCost = smsCost;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }

@@ -139,7 +139,7 @@ public class TariffDaoImpl implements TariffDao {
     }
 
     @Override
-    public int getCountUsingTariff(Long id) throws DaoException {
+    public int readCountUsingTariff(Long id) throws DaoException {
         String sql = "SELECT COUNT(*) AS subscribers FROM `subscriber` WHERE `tariff` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);

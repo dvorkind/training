@@ -5,7 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
 
-<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setLocale value="${locale}"/>
 <fmt:setBundle basename="messages"/>
 <fmt:message var="title" key="login.title"/>
 
@@ -31,6 +31,7 @@
             <div>
                 <input type="submit" value="<fmt:message key="login.signIn" />" class="btn">
                 <a href="registration.html" class="form-link"><fmt:message key="login.signUp"/></a>
+                <a href="reset_password.html" class="form-link"><fmt:message key="login.resetPassword"/></a>
             </div>
         </form>
     </div>

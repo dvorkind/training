@@ -4,11 +4,14 @@ import by.dvorkin.web.controller.Helper;
 import by.dvorkin.web.model.entity.Account;
 import by.dvorkin.web.model.entity.Role;
 import by.dvorkin.web.model.entity.Subscriber;
-import jakarta.servlet.Filter;
+import by.dvorkin.web.model.service.ServiceFactory;
+import by.dvorkin.web.model.service.SubscriberService;
+import by.dvorkin.web.model.service.exceptions.FactoryException;
+import by.dvorkin.web.model.service.exceptions.ServiceException;
+import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -17,9 +20,9 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SubscriberFilter implements Filter {
-    private static Set<String> allowedBlockedSubscriberURI = new HashSet<>();
-    private static Set<String> allowedUnregisteredSubscriberURI = new HashSet<>();
+public class SubscriberFilter extends HttpFilter {
+    private static final Set<String> allowedBlockedSubscriberURI = new HashSet<>();
+    private static final Set<String> allowedUnregisteredSubscriberURI = new HashSet<>();
 
     static {
         allowedBlockedSubscriberURI.add("/subscriber/refill_balance");
@@ -34,28 +37,33 @@ public class SubscriberFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException,
+    protected void doFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException,
             ServletException {
-        HttpServletRequest httpReq = (HttpServletRequest) req;
-        HttpServletResponse httpResp = (HttpServletResponse) resp;
-        String context = httpReq.getContextPath();
-        String url = Helper.extractPath(httpReq.getRequestURI(), context);
-        HttpSession session = httpReq.getSession(false);
+        String context = req.getContextPath();
+        String url = Helper.extractPath(req.getRequestURI(), context);
+        HttpSession session = req.getSession(false);
         if (session != null) {
             Account account = (Account) session.getAttribute("sessionAccount");
             if (account != null && account.getRole() == Role.SUBSCRIBER) {
-                Subscriber subscriber = (Subscriber) session.getAttribute("sessionSubscriber");
-                if (!subscriber.isRegistered()) {
-                    if (!allowedUnregisteredSubscriberURI.contains(url)) {
-                        httpResp.sendRedirect(context + "/subscriber/registration_success.html");
-                        return;
+                try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
+                    SubscriberService subscriberService = serviceFactory.getSubscriberService();
+                    Subscriber subscriber = subscriberService.getByAccountId(account.getId());
+                    session.setAttribute("sessionSubscriber", subscriber);
+                    if (!subscriber.isRegistered()) {
+                        if (!allowedUnregisteredSubscriberURI.contains(url)) {
+                            resp.sendRedirect(context + "/subscriber/registration_success.html");
+                            return;
+                        }
                     }
-                }
-                if (subscriber.isBlocked()) {
-                    if (!allowedBlockedSubscriberURI.contains(url)) {
-                        httpResp.sendRedirect(context + "/subscriber/blocked.html");
-                        return;
-                    }
+                    if (subscriber.isBlocked()) {
+                        if (!allowedBlockedSubscriberURI.contains(url)) {
+                            resp.sendRedirect(context + "/subscriber/blocked.html");
+                            return;
+                        }
+                    }                    
+                } catch (ServiceException | FactoryException e) {
+                    throw new ServletException(e);
+                } catch (Exception ignored) {
                 }
             }
         }

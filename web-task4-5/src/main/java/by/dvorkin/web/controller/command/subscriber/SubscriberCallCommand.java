@@ -28,21 +28,18 @@ public class SubscriberCallCommand implements Command {
             HttpSession session = req.getSession();
             SubscriberService subscriberService = serviceFactory.getSubscriberService();
             Subscriber subscriber = (Subscriber) session.getAttribute("sessionSubscriber");
-            subscriber = subscriberService.readById(subscriber.getId());
             TariffService tariffService = serviceFactory.getTariffService();
-            Tariff tariff = tariffService.readById(subscriber.getTariff());
+            Tariff tariff = tariffService.getById(subscriber.getTariff());
             req.setAttribute("tariff", tariff);
             if (req.getParameter("confirmation") != null) {
                 if (subscriber.getBalance() < 0) {
                     req.setAttribute("callError", "subscriber.callError");
                     return null;
                 }
-
                 SubscriberActionService subscriberActionService = serviceFactory.getSubscriberActionService();
                 int callCost = Integer.parseInt(req.getParameter("callLength")) * tariff.getCallCost();
                 subscriber.setBalance(subscriber.getBalance() - callCost);
                 subscriberService.update(subscriber);
-                session.setAttribute("sessionSubscriber", subscriber);
                 SubscriberAction subscriberAction = Helper.createSubscriberAction(subscriber.getId(),
                         Action.MAKE_CALL, callCost);
                 subscriberActionService.create(subscriberAction);

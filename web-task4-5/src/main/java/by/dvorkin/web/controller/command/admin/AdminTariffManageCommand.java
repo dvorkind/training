@@ -40,7 +40,7 @@ public class AdminTariffManageCommand implements Command {
                     logger.info("TariffID #" + req.getParameter("id") + " was updated by Administrator");
                     return new Forward("/admin/tariff_list.html");
                 } else {
-                    tariff = tariffService.readById(Long.parseLong(req.getParameter("id")));
+                    tariff = tariffService.getById(Long.parseLong(req.getParameter("id")));
                     setTariffToAttribute(req, tariff);
                     return null;
                 }

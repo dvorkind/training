@@ -6,7 +6,7 @@
 <%@ taglib prefix="ctg" uri="/WEB-INF/tld/money.tld" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
 
-<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setLocale value="${locale}"/>
 <fmt:setBundle basename="messages"/>
 
 <fmt:message var="title" key="subscriber.title"/>
@@ -63,7 +63,7 @@
                             <td>${service.name}</td>
                             <td class="pre-wrap">${service.description}</td>
                             <td>
-                                <ctg:money-format balance="${service.price}" locale="${sessionScope.locale}"/>&nbsp<fmt:message
+                                <ctg:money-format balance="${service.price}" locale="${locale}"/>&nbsp<fmt:message
                                     key="subscriber.serviceMoney"/>
                             </td>
                             <td>

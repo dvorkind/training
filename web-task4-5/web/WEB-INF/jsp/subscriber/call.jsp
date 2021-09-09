@@ -6,7 +6,7 @@
 <%@ taglib prefix="ctg" uri="/WEB-INF/tld/money.tld" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
 
-<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setLocale value="${locale}"/>
 <fmt:setBundle basename="messages"/>
 
 <fmt:message var="title" key="subscriber.title"/>
@@ -17,7 +17,7 @@
             <h2 class="text-center">${titlePage}</h2>
             <p class="msg"><fmt:message key="subscriber.callSentenceOne"/></p>
             <p class="msg"><fmt:message key="subscriber.tariffCallCost"/>&nbsp;<ctg:money-format
-                    balance="${tariff.callCost}" locale="${sessionScope.locale}"/>&nbsp<fmt:message
+                    balance="${tariff.callCost}" locale="${locale}"/>&nbsp<fmt:message
                     key="subscriber.tariffMoney"/></p>
             <p class="form-message">
                 <c:if test="${not empty callError}">

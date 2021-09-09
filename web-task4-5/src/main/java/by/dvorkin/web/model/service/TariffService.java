@@ -8,7 +8,7 @@ import java.util.List;
 public interface TariffService {
     List<Tariff> getAll() throws ServiceException;
 
-    Tariff readById(Long id) throws ServiceException;
+    Tariff getById(Long id) throws ServiceException;
 
     void save(Tariff tariff) throws ServiceException;
 

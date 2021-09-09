@@ -22,7 +22,7 @@ public class AdminServiceDeleteCommand implements Command {
         }
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
             ServiceService serviceService = serviceFactory.getServiceService();
-            Service service = serviceService.readById(Long.parseLong(req.getParameter("id")));
+            Service service = serviceService.getById(Long.parseLong(req.getParameter("id")));
             req.setAttribute("serviceName", service.getName());
             req.setAttribute("id", service.getId());
             if (req.getParameter("confirmation") != null) {

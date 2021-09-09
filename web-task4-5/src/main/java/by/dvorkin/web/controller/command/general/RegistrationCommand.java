@@ -49,7 +49,6 @@ public class RegistrationCommand implements Command {
                 Subscriber subscriber = createSubscriber(req);
                 accountService.create(account, subscriber);
                 session.setAttribute("sessionAccount", account);
-                session.setAttribute("sessionSubscriber", subscriber);
                 SubscriberAction subscriberAction = Helper.createSubscriberAction(subscriber.getId(),
                         Action.REGISTRATION, 0);
                 subscriberActionService.create(subscriberAction);

@@ -17,19 +17,19 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
-public class AdminSubscribersNewListCommand implements Command {
+public class AdminDebtorsListCommand implements Command {
     @Override
     public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
             SubscriberService subscriberService = serviceFactory.getSubscriberService();
             if (req.getParameter("id") != null) {
                 Subscriber subscriber = subscriberService.getById(Long.parseLong(req.getParameter("id")));
-                subscriber.setRegistered(true);
+                subscriber.setBlocked(true);
                 subscriberService.update(subscriber);
                 Logger logger = LogManager.getLogger("User");
-                logger.info("UserID #" + req.getParameter("id") + " was activated by Administrator");
+                logger.info("UserID #" + req.getParameter("id") + " was blocked by Administrator");
             }
-            List<Subscriber> subscribers = subscriberService.getNewSubscribers();
+            List<Subscriber> subscribers = subscriberService.getDebtors();
             String sortBy = req.getParameter("sort");
             if (sortBy != null) {
                 Helper.sortSubscribers(sortBy, subscribers);

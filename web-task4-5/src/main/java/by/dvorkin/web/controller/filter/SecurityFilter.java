@@ -3,11 +3,9 @@ package by.dvorkin.web.controller.filter;
 import by.dvorkin.web.controller.Helper;
 import by.dvorkin.web.model.entity.Account;
 import by.dvorkin.web.model.entity.Role;
-import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -19,8 +17,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class SecurityFilter implements Filter {
-    private static Map<String, Set<Role>> permissions = new HashMap<>();
+public class SecurityFilter extends HttpFilter {
+    private static final Map<String, Set<Role>> permissions = new HashMap<>();
 
     static {
         Set<Role> all = new HashSet<>(Arrays.asList(Role.values()));
@@ -35,6 +33,8 @@ public class SecurityFilter implements Filter {
         permissions.put("/admin/admin", admin);
         permissions.put("/admin/subscribers_new", admin);
         permissions.put("/admin/subscribers_all", admin);
+        permissions.put("/admin/subscriber_edit", admin);
+        permissions.put("/admin/debtors", admin);
         permissions.put("/admin/tariff_list", admin);
         permissions.put("/admin/tariff_manage", admin);
         permissions.put("/admin/tariff_delete", admin);
@@ -54,14 +54,12 @@ public class SecurityFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse resp,
-                         FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpReq = (HttpServletRequest) req;
-        HttpServletResponse httpResp = (HttpServletResponse) resp;
-        String url = Helper.extractPath(httpReq.getRequestURI(),  httpReq.getContextPath());
+    protected void doFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException,
+            ServletException {
+        String url = Helper.extractPath(req.getRequestURI(), req.getContextPath());
         Set<Role> roles = permissions.get(url);
         if (roles != null) {
-            HttpSession session = httpReq.getSession(false);
+            HttpSession session = req.getSession(false);
             if (session != null) {
                 Account account = (Account) session.getAttribute("sessionAccount");
                 if (account != null && roles.contains(account.getRole())) {
@@ -73,6 +71,6 @@ public class SecurityFilter implements Filter {
             chain.doFilter(req, resp);
             return;
         }
-        httpResp.sendError(403);
+        resp.sendError(403);
     }
 }

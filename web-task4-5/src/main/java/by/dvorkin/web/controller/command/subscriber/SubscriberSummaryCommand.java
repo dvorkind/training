@@ -6,7 +6,6 @@ import by.dvorkin.web.model.entity.Service;
 import by.dvorkin.web.model.entity.Subscriber;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.ServiceService;
-import by.dvorkin.web.model.service.SubscriberService;
 import by.dvorkin.web.model.service.TariffService;
 import by.dvorkin.web.model.service.exceptions.FactoryException;
 import by.dvorkin.web.model.service.exceptions.ServiceException;
@@ -25,14 +24,11 @@ public class SubscriberSummaryCommand implements Command {
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
             TariffService tariffService = serviceFactory.getTariffService();
             ServiceService serviceService = serviceFactory.getServiceService();
-            SubscriberService subscriberService = serviceFactory.getSubscriberService();
             Subscriber subscriber = (Subscriber) session.getAttribute("sessionSubscriber");
-            subscriber = subscriberService.readById(subscriber.getId());
-            req.setAttribute("tariff", tariffService.readById(subscriber.getTariff()));
+            req.setAttribute("tariff", tariffService.getById(subscriber.getTariff()));
             List<Service> subscribersServices = serviceService.getSubscribersService(subscriber.getId());
             req.setAttribute("subscribersServices", subscribersServices);
-            // req.setAttribute("subscribers", subscriberService.findAll()); TODO: статистику
-            // TODO: восстановление пароля
+            // TODO: статистику
             return null;
         } catch (ServiceException | FactoryException e) {
             throw new ServletException(e);
