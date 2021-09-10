@@ -28,7 +28,7 @@ public class TariffServiceImpl implements TariffService {
         try {
             return tariffDao.readAll();
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         }
     }
 
@@ -37,7 +37,7 @@ public class TariffServiceImpl implements TariffService {
         try {
             return tariffDao.read(id);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         }
     }
 
@@ -76,7 +76,7 @@ public class TariffServiceImpl implements TariffService {
                 transaction.rollback();
             } catch (ServiceException ignored) {
             }
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         } catch (ServiceException e) {
             try {
                 transaction.rollback();
@@ -91,7 +91,7 @@ public class TariffServiceImpl implements TariffService {
         try {
             transaction.start();
             if (tariffDao.isLastTariff()) {
-                throw new TariffLastException(id);
+                throw new TariffLastException(id.toString());
             } else {
                 tariffDao.delete(id);
                 transaction.commit();
@@ -101,7 +101,7 @@ public class TariffServiceImpl implements TariffService {
                 transaction.rollback();
             } catch (ServiceException ignored) {
             }
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         } catch (ServiceException e) {
             try {
                 transaction.rollback();
@@ -116,7 +116,7 @@ public class TariffServiceImpl implements TariffService {
         try {
             return tariffDao.readCountUsingTariff(id);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         }
     }
 
@@ -131,7 +131,7 @@ public class TariffServiceImpl implements TariffService {
                 transaction.rollback();
             } catch (ServiceException ignored) {
             }
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         } catch (ServiceException e) {
             try {
                 transaction.rollback();

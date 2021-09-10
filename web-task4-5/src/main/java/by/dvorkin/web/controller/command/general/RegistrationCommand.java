@@ -20,8 +20,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class RegistrationCommand implements Command {
     private static final String NAME_REGEX = "^[A-Za-zА-Яа-яЁё\\s'-]{1,20}$";
@@ -34,12 +32,7 @@ public class RegistrationCommand implements Command {
         HttpSession session = req.getSession();
         Account sessionAccount = (Account) session.getAttribute("sessionAccount");
         if (sessionAccount != null) {
-            switch (sessionAccount.getRole()) {
-                case ADMINISTRATOR:
-                    return new Forward("/admin/admin.html");
-                case SUBSCRIBER:
-                    return new Forward("/subscriber/subscriber.html");
-            }
+            return new Forward("/login.html");
         }
         if (isInputValid(req)) {
             try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
@@ -52,8 +45,7 @@ public class RegistrationCommand implements Command {
                 SubscriberAction subscriberAction = Helper.createSubscriberAction(subscriber.getId(),
                         Action.REGISTRATION, 0);
                 subscriberActionService.create(subscriberAction);
-                Logger logger = LogManager.getLogger("User");
-                logger.info("User " + account.getLogin() + " has registered. IP [" + req.getRemoteAddr() + "]");
+                Helper.log("User " + account.getLogin() + " has registered. IP [" + req.getRemoteAddr() + "]");
                 return new Forward("/login.html");
             } catch (AccountLoginNotUniqueException e) {
                 req.removeAttribute("loginIsValid");

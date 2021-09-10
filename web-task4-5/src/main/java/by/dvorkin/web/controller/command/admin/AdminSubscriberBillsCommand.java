@@ -3,9 +3,9 @@ package by.dvorkin.web.controller.command.admin;
 import by.dvorkin.web.controller.Helper;
 import by.dvorkin.web.controller.command.Command;
 import by.dvorkin.web.controller.command.Forward;
-import by.dvorkin.web.model.entity.Subscriber;
+import by.dvorkin.web.model.entity.Bill;
+import by.dvorkin.web.model.service.BillService;
 import by.dvorkin.web.model.service.ServiceFactory;
-import by.dvorkin.web.model.service.SubscriberService;
 import by.dvorkin.web.model.service.exceptions.FactoryException;
 import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
@@ -15,26 +15,31 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
 
-public class AdminDebtorsListCommand implements Command {
+public class AdminSubscriberBillsCommand implements Command {
     @Override
     public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+        if (req.getParameter("subscriberId") == null) {
+            return new Forward("/admin/subscribers_all.html");
+        }
+
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
-            SubscriberService subscriberService = serviceFactory.getSubscriberService();
-            if (req.getParameter("id") != null) {
-                Subscriber subscriber = subscriberService.getById(Long.parseLong(req.getParameter("id")));
-                subscriber.setBlocked(true);
-                subscriberService.update(subscriber);
-                Helper.log("UserID #" + req.getParameter("id") + " was blocked by Administrator");
-            }
-            List<Subscriber> subscribers = subscriberService.getDebtors();
+            Long subscriberId = Long.parseLong(req.getParameter("subscriberId"));
+            req.setAttribute("subscriberId", subscriberId);
+
+            BillService billService = serviceFactory.getBillService();
+
+            List<Bill> allBills = billService.getAll(subscriberId);
+            req.setAttribute("allBills", allBills);
+
             String sortBy = req.getParameter("sort");
             if (sortBy != null) {
-                Helper.sortSubscribers(sortBy, subscribers);
+                Helper.sortBills(sortBy, allBills);
                 req.setAttribute("sort", sortBy);
             } else {
-                Helper.sortSubscribers("firstNameUp", subscribers);
+                Helper.sortBills("statusUp", allBills);
+                req.setAttribute("sort", "statusUp");
             }
-            req.setAttribute("subscribers", subscribers);
+
             return null;
         } catch (ServiceException | FactoryException e) {
             throw new ServletException(e);

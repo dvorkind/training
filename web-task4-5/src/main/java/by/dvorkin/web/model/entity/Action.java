@@ -6,6 +6,7 @@ public enum Action {
     ADD_SERVICE("action.addService"),
     DELETE_SERVICE("action.deleteService"),
     REFILL_BALANCE("action.refillBalance"),
+    PAY_BILL("action.payBill"),
     MAKE_CALL("action.makeCall"),
     SEND_SMS("action.sendSms");
 

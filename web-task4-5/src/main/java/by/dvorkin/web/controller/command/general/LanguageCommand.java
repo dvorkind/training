@@ -22,15 +22,11 @@ public class LanguageCommand implements Command {
 
     private String getURI(HttpServletRequest request) {
         String pagePath = request.getParameter("pagePath");
-        String queryString = request.getParameter("queryString");
         Pattern pattern = Pattern.compile(PAGE_PATH_REGEX);
         Matcher matcher = pattern.matcher(pagePath);
         String URI = "/error_404";
         if (matcher.find()) {
-            URI = String.format("/%s.html?%s", matcher.group(2), queryString);
-            if (queryString.equals("")) {
-                URI = String.format("/%s.html", matcher.group(2));
-            }
+            URI = String.format("/%s.html", matcher.group(2));
         }
         return URI;
     }

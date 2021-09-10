@@ -35,10 +35,9 @@ public class SubscriberRefillBalanceCommand implements Command {
                 SubscriberAction subscriberAction = Helper.createSubscriberAction(subscriber.getId(),
                         Action.REFILL_BALANCE, balanceRefillSum);
                 subscriberActionService.create(subscriberAction);
-                Logger logger = LogManager.getLogger("User");
-                logger.info("User #" + subscriber.getId() + " refilled the balance to sum: " + balanceRefillSum);
+                Helper.log("User #" + subscriber.getId() + " refilled the balance to sum: " + balanceRefillSum);
                 session.setAttribute("success", "subscriber.refillBalanceSuccess");
-                return new Forward("/subscriber/success.html");
+                return new Forward("/success.html");
             } catch (ServiceException | FactoryException e) {
                 throw new ServletException(e);
             } catch (Exception ignored) {

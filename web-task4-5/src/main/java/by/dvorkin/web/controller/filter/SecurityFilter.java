@@ -29,11 +29,13 @@ public class SecurityFilter extends HttpFilter {
 
         permissions.put("/logout", all);
         permissions.put("/change_password", all);
+        permissions.put("/success", all);
 
         permissions.put("/admin/admin", admin);
         permissions.put("/admin/subscribers_new", admin);
         permissions.put("/admin/subscribers_all", admin);
         permissions.put("/admin/subscriber_edit", admin);
+        permissions.put("/admin/subscriber_bills", admin);
         permissions.put("/admin/debtors", admin);
         permissions.put("/admin/tariff_list", admin);
         permissions.put("/admin/tariff_manage", admin);
@@ -45,8 +47,8 @@ public class SecurityFilter extends HttpFilter {
         permissions.put("/subscriber/subscriber", subscriber);
         permissions.put("/subscriber/tariff", subscriber);
         permissions.put("/subscriber/services", subscriber);
+        permissions.put("/subscriber/bills", subscriber);
         permissions.put("/subscriber/refill_balance", subscriber);
-        permissions.put("/subscriber/success", subscriber);
         permissions.put("/subscriber/call", subscriber);
         permissions.put("/subscriber/sms", subscriber);
         permissions.put("/subscriber/blocked", subscriber);

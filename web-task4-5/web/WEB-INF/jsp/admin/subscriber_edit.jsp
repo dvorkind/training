@@ -128,5 +128,9 @@
             <input type="hidden" name="resetPassword" value="${subscriber.id}">
             <input type="submit" value="<fmt:message key="admin.subscriberEditResetPassword"/>  🔑" class="btn">
         </form>
+        <form action="subscriber_bills.html" method="POST">
+            <input type="hidden" name="subscriberId" value="${subscriber.id}">
+            <input type="submit" value="<fmt:message key="admin.subscriberEditBills"/>" class="btn">
+        </form>
     </div>
 </u:html>

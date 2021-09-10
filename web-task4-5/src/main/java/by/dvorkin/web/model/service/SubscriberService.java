@@ -16,6 +16,8 @@ public interface SubscriberService {
 
     void update(Subscriber subscriber) throws ServiceException;
 
+    void subtractBalance(Subscriber subscriber, int sum) throws ServiceException;
+
     Subscriber getById(Long id) throws ServiceException;
 
     Subscriber getByPhoneNumber(String phoneNumber) throws ServiceException;

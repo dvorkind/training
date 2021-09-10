@@ -1,5 +1,6 @@
 package by.dvorkin.web.controller.command.admin;
 
+import by.dvorkin.web.controller.Helper;
 import by.dvorkin.web.controller.command.Command;
 import by.dvorkin.web.controller.command.Forward;
 import by.dvorkin.web.model.entity.Tariff;
@@ -22,14 +23,13 @@ public class AdminTariffManageCommand implements Command {
     @Override
     public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
-            Logger logger = LogManager.getLogger("User");
             TariffService tariffService = serviceFactory.getTariffService();
             Tariff tariff;
             if (req.getParameter("id") == null) {
                 if (isInputValid(req)) {
                     tariff = createTariff(req);
                     tariffService.save(tariff);
-                    logger.info("TariffID #" + tariff.getId() + " was added by Administrator");
+                    Helper.log("TariffID #" + tariff.getId() + " was added by Administrator");
                     return new Forward("/admin/tariff_list.html");
                 }
             } else {
@@ -37,7 +37,7 @@ public class AdminTariffManageCommand implements Command {
                     tariff = createTariff(req);
                     tariff.setId(Long.parseLong(req.getParameter("id")));
                     tariffService.save(tariff);
-                    logger.info("TariffID #" + req.getParameter("id") + " was updated by Administrator");
+                    Helper.log("TariffID #" + req.getParameter("id") + " was updated by Administrator");
                     return new Forward("/admin/tariff_list.html");
                 } else {
                     tariff = tariffService.getById(Long.parseLong(req.getParameter("id")));

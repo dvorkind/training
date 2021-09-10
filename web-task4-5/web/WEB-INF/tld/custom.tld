@@ -7,7 +7,7 @@
 
     <tlib-version>2.1</tlib-version>
     <short-name>ctg</short-name>
-    <uri>/WEB-INF/tld/money.tld</uri>
+    <uri>/WEB-INF/tld/custom.tld</uri>
 
     <tag>
         <name>money-format</name>
@@ -17,6 +17,23 @@
             <name>balance</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>locale</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>date-format</name>
+        <tag-class>by.dvorkin.web.model.tag.DateFormatTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>dateTime</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.util.Date</type>
         </attribute>
         <attribute>
             <name>locale</name>

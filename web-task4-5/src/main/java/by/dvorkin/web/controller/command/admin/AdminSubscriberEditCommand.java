@@ -1,5 +1,6 @@
 package by.dvorkin.web.controller.command.admin;
 
+import by.dvorkin.web.controller.Helper;
 import by.dvorkin.web.controller.command.Command;
 import by.dvorkin.web.controller.command.Forward;
 import by.dvorkin.web.model.entity.Account;
@@ -15,8 +16,6 @@ import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
@@ -31,15 +30,13 @@ public class AdminSubscriberEditCommand implements Command {
             return new Forward("/admin/admin.html");
         }
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
-            Logger logger = LogManager.getLogger("User");
             SubscriberService subscriberService = serviceFactory.getSubscriberService();
             Subscriber subscriber = subscriberService.getById(Long.parseLong(req.getParameter("id")));
-
 
             if (req.getParameter("block") != null) {
                 subscriber.setBlocked(!subscriber.isBlocked());
                 subscriberService.update(subscriber);
-                logger.info("UserID #" + subscriber.getId() + " was blocked by Administrator");
+                Helper.log("UserID #" + subscriber.getId() + " was blocked by Administrator");
                 return new Forward("/admin/subscribers_all.html");
             }
 
@@ -48,7 +45,7 @@ public class AdminSubscriberEditCommand implements Command {
 
             if (req.getParameter("resetPassword") != null) {
                 accountService.resetPassword(account);
-                logger.info("User " + account.getLogin() + " password reset by Administrator");
+                Helper.log("User " + account.getLogin() + " password reset by Administrator");
                 return new Forward("/admin/subscribers_all.html");
             }
 
@@ -86,7 +83,7 @@ public class AdminSubscriberEditCommand implements Command {
                 subscriber.setTariff(Long.parseLong(req.getParameter("newTariff")));
                 subscriberService.update(subscriber);
 
-                logger.info("UserID #" + subscriber.getId() + " was updated by Administrator");
+                Helper.log("UserID #" + subscriber.getId() + " was updated by Administrator");
                 return new Forward("/admin/subscribers_all.html");
             }
         } catch (ServiceException | FactoryException e) {

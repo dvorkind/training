@@ -1,5 +1,6 @@
 package by.dvorkin.web.controller.command.general;
 
+import by.dvorkin.web.controller.Helper;
 import by.dvorkin.web.controller.command.Command;
 import by.dvorkin.web.controller.command.Forward;
 import by.dvorkin.web.model.entity.Account;
@@ -13,8 +14,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class ChangePasswordCommand implements Command {
     private static final String PASSWORD_REGEX = "^[A-Za-z0-9~!@#$%^&*()-_=+'/|.]{5,20}$";
@@ -29,19 +28,17 @@ public class ChangePasswordCommand implements Command {
             try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
                 AccountService accountService = serviceFactory.getAccountService();
                 accountService.changePassword(oldPassword, newPassword, account);
-                Logger logger = LogManager.getLogger("User");
-                logger.info("User " + account.getLogin() + " changed the password. IP [" + req.getRemoteAddr() + "]");
+                Helper.log("User " + account.getLogin() + " changed the password. IP [" + req.getRemoteAddr() + "]");
                 session.setAttribute("success", "changePassword.success");
-                return new Forward("/subscriber/success.html");
+                return new Forward("/success.html");
             } catch (AccountPasswordIncorrectException e) {
+                req.removeAttribute("oldPasswordIsValid");
                 req.setAttribute("oldPasswordError", "changePassword.errorOldPassword");
                 return null;
             } catch (ServiceException | FactoryException e) {
                 throw new ServletException(e);
             } catch (Exception ignored) {
             }
-        } else {
-            return null;
         }
         return null;
     }

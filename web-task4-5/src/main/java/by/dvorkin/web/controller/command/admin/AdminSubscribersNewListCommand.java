@@ -26,8 +26,7 @@ public class AdminSubscribersNewListCommand implements Command {
                 Subscriber subscriber = subscriberService.getById(Long.parseLong(req.getParameter("id")));
                 subscriber.setRegistered(true);
                 subscriberService.update(subscriber);
-                Logger logger = LogManager.getLogger("User");
-                logger.info("UserID #" + req.getParameter("id") + " was activated by Administrator");
+                Helper.log("UserID #" + req.getParameter("id") + " was activated by Administrator");
             }
             List<Subscriber> subscribers = subscriberService.getNewSubscribers();
             String sortBy = req.getParameter("sort");

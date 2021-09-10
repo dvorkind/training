@@ -8,6 +8,7 @@ import by.dvorkin.web.model.entity.Subscriber;
 import by.dvorkin.web.model.service.AccountService;
 import by.dvorkin.web.model.service.Transaction;
 import by.dvorkin.web.model.service.exceptions.AccountLoginNotUniqueException;
+import by.dvorkin.web.model.service.exceptions.AccountNotExistException;
 import by.dvorkin.web.model.service.exceptions.AccountPasswordIncorrectException;
 import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.exceptions.SubscriberPhoneNotUniqueException;
@@ -34,7 +35,7 @@ public class AccountServiceImpl implements AccountService {
         try {
             return accountDao.readByLoginAndPassword(login, password);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         }
     }
 
@@ -43,16 +44,21 @@ public class AccountServiceImpl implements AccountService {
         try {
             return accountDao.read(id);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         }
     }
 
     @Override
     public Account getByLogin(String login) throws ServiceException {
         try {
-            return accountDao.readByLogin(login);
+            Account account = accountDao.readByLogin(login);
+            if (account != null) {
+                return account;
+            } else {
+                throw new AccountNotExistException(login);
+            }
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         }
     }
 
@@ -79,7 +85,7 @@ public class AccountServiceImpl implements AccountService {
                 transaction.rollback();
             } catch (ServiceException ignored) {
             }
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         } catch (ServiceException e) {
             try {
                 transaction.rollback();
@@ -100,7 +106,7 @@ public class AccountServiceImpl implements AccountService {
                 transaction.rollback();
             } catch (ServiceException ignored) {
             }
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         } catch (ServiceException e) {
             try {
                 transaction.rollback();
@@ -118,7 +124,7 @@ public class AccountServiceImpl implements AccountService {
                 account.setPassword(accountDao.passwordToSHA(newPassword));
                 accountDao.update(account);
             } else {
-                throw new AccountPasswordIncorrectException(account.getId());
+                throw new AccountPasswordIncorrectException(oldPassword);
             }
             transaction.commit();
         } catch (DaoException e) {
@@ -126,7 +132,7 @@ public class AccountServiceImpl implements AccountService {
                 transaction.rollback();
             } catch (ServiceException ignored) {
             }
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         } catch (ServiceException e) {
             try {
                 transaction.rollback();
@@ -149,7 +155,7 @@ public class AccountServiceImpl implements AccountService {
                 transaction.rollback();
             } catch (ServiceException ignored) {
             }
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         } catch (ServiceException e) {
             try {
                 transaction.rollback();

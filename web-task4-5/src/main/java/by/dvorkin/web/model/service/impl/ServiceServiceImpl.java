@@ -27,7 +27,7 @@ public class ServiceServiceImpl implements ServiceService {
         try {
             return serviceDao.readAll();
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         }
     }
 
@@ -36,7 +36,7 @@ public class ServiceServiceImpl implements ServiceService {
         try {
             return serviceDao.readSubscribersService(subscriber_id);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         }
     }
 
@@ -45,7 +45,7 @@ public class ServiceServiceImpl implements ServiceService {
         try {
             return serviceDao.read(id);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         }
     }
 
@@ -85,7 +85,7 @@ public class ServiceServiceImpl implements ServiceService {
                 transaction.rollback();
             } catch (ServiceException ignored) {
             }
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         } catch (ServiceException e) {
             try {
                 transaction.rollback();
@@ -106,7 +106,7 @@ public class ServiceServiceImpl implements ServiceService {
                 transaction.rollback();
             } catch (ServiceException ignored) {
             }
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         } catch (ServiceException e) {
             try {
                 transaction.rollback();
@@ -127,7 +127,7 @@ public class ServiceServiceImpl implements ServiceService {
                 transaction.rollback();
             } catch (ServiceException ignored) {
             }
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         } catch (ServiceException e) {
             try {
                 transaction.rollback();
@@ -148,7 +148,7 @@ public class ServiceServiceImpl implements ServiceService {
                 transaction.rollback();
             } catch (ServiceException ignored) {
             }
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         } catch (ServiceException e) {
             try {
                 transaction.rollback();

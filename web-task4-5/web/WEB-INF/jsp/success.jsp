@@ -8,7 +8,7 @@
 <fmt:setLocale value="${locale}"/>
 <fmt:setBundle basename="messages"/>
 
-<fmt:message var="title" key="subscriber.title"/>
+<fmt:message var="title" key="header.phoneStation"/>
 <u:html title="${title}">
     <div class="main">
         <form class="submit-form reg-form">
@@ -17,7 +17,7 @@
                     <h2><fmt:message key="${success}"/></h2>
                 </c:when>
                 <c:otherwise>
-                    <c:redirect url="subscriber.html"/>
+                    <c:redirect url="login.html"/>
                 </c:otherwise>
             </c:choose>
         </form>

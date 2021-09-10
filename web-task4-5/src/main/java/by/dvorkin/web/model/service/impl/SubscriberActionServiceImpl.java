@@ -32,7 +32,7 @@ public class SubscriberActionServiceImpl implements SubscriberActionService {
                 transaction.rollback();
             } catch (ServiceException ignored) {
             }
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         }
     }
 
@@ -41,7 +41,7 @@ public class SubscriberActionServiceImpl implements SubscriberActionService {
         try {
             return subscriberActionDao.readLastChangeTariff(subscriberId);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         }
     }
 }

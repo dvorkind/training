@@ -1,5 +1,6 @@
 package by.dvorkin.web.controller.command.admin;
 
+import by.dvorkin.web.controller.Helper;
 import by.dvorkin.web.controller.command.Command;
 import by.dvorkin.web.controller.command.Forward;
 import by.dvorkin.web.model.entity.Service;
@@ -22,14 +23,13 @@ public class AdminServiceManageCommand implements Command {
     @Override
     public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
-            Logger logger = LogManager.getLogger("User");
             ServiceService serviceService = serviceFactory.getServiceService();
             Service service;
             if (req.getParameter("id") == null) {
                 if (isInputValid(req)) {
                     service = createService(req);
                     serviceService.save(service);
-                    logger.info("ServiceID #" + service.getId() + " was added by Administrator");
+                    Helper.log("ServiceID #" + service.getId() + " was added by Administrator");
                     return new Forward("/admin/service_list.html");
                 }
             } else {
@@ -37,7 +37,7 @@ public class AdminServiceManageCommand implements Command {
                     service = createService(req);
                     service.setId(Long.parseLong(req.getParameter("id")));
                     serviceService.save(service);
-                    logger.info("ServiceID #" + req.getParameter("id") + " was updated by Administrator");
+                    Helper.log("ServiceID #" + req.getParameter("id") + " was updated by Administrator");
                     return new Forward("/admin/service_list.html");
                 } else {
                     service = serviceService.getById(Long.parseLong(req.getParameter("id")));

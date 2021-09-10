@@ -1,5 +1,6 @@
 package by.dvorkin.web.controller.command.admin;
 
+import by.dvorkin.web.controller.Helper;
 import by.dvorkin.web.controller.command.Command;
 import by.dvorkin.web.controller.command.Forward;
 import by.dvorkin.web.model.entity.Tariff;
@@ -36,8 +37,7 @@ public class AdminTariffDeleteCommand implements Command {
                     tariffService.switchTariffs(tariff.getId(), Long.parseLong(req.getParameter("newTariff")));
                 }
                 tariffService.safetyDelete(tariff.getId());
-                Logger logger = LogManager.getLogger("User");
-                logger.info("TariffID #" + req.getParameter("id") + " was deleted by Administrator");
+                Helper.log("TariffID #" + req.getParameter("id") + " was deleted by Administrator");
                 return new Forward("/admin/tariff_list.html");
             } else {
                 return null;

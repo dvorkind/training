@@ -6,6 +6,8 @@ import by.dvorkin.web.model.entity.Subscriber;
 import by.dvorkin.web.model.service.SubscriberService;
 import by.dvorkin.web.model.service.Transaction;
 import by.dvorkin.web.model.service.exceptions.ServiceException;
+import by.dvorkin.web.model.service.exceptions.SubscriberNotEnoughMoneyException;
+import by.dvorkin.web.model.service.exceptions.SubscriberNotExistException;
 
 import java.util.List;
 
@@ -26,7 +28,7 @@ public class SubscriberServiceImpl implements SubscriberService {
         try {
             return subscriberDao.readByAccountId(id);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         }
     }
 
@@ -35,7 +37,7 @@ public class SubscriberServiceImpl implements SubscriberService {
         try {
             return subscriberDao.readAll();
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         }
     }
 
@@ -44,7 +46,7 @@ public class SubscriberServiceImpl implements SubscriberService {
         try {
             return subscriberDao.readNewSubscribers();
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         }
     }
 
@@ -53,7 +55,7 @@ public class SubscriberServiceImpl implements SubscriberService {
         try {
             return subscriberDao.readDebtors();
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         }
     }
 
@@ -68,7 +70,33 @@ public class SubscriberServiceImpl implements SubscriberService {
                 transaction.rollback();
             } catch (ServiceException ignored) {
             }
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
+        } catch (ServiceException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw e;
+        }
+    }
+
+    @Override
+    public void subtractBalance(Subscriber subscriber, int sum) throws ServiceException {
+        try {
+            transaction.start();
+            if (subscriber.getBalance() >= 0) {
+                subscriber.setBalance(subscriber.getBalance() - sum);
+                subscriberDao.update(subscriber);
+            } else {
+                throw new SubscriberNotEnoughMoneyException(String.valueOf(sum));
+            }
+            transaction.commit();
+        } catch (DaoException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw new ServiceException(e.getMessage());
         } catch (ServiceException e) {
             try {
                 transaction.rollback();
@@ -83,16 +111,21 @@ public class SubscriberServiceImpl implements SubscriberService {
         try {
             return subscriberDao.read(id);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         }
     }
 
     @Override
     public Subscriber getByPhoneNumber(String phoneNumber) throws ServiceException {
         try {
-            return subscriberDao.readByPhoneNumber(phoneNumber);
+            Subscriber subscriber = subscriberDao.readByPhoneNumber(phoneNumber);
+            if (subscriber != null) {
+                return subscriber;
+            } else {
+                throw new SubscriberNotExistException(phoneNumber);
+            }
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         }
     }
 }
