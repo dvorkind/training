@@ -10,7 +10,7 @@
 <fmt:setBundle basename="messages"/>
 
 <fmt:message var="title" key="subscriber.title"/>
-<fmt:message var="titlePage" key="subscriber.bills"/>
+<fmt:message var="titlePage" key="subscriber.billsTitle"/>
 <u:html title="${title} : ${titlePage}">
     <div class="main">
         <c:choose>
@@ -21,13 +21,8 @@
             </c:when>
             <c:otherwise>
                 <h2 class="text-center no-margin-bottom">${titlePage}</h2>
-                <p class="form-message">
-                    <c:if test="${not empty billError}">
-                        <span><fmt:message key="${billError}"/></span>
-                    </c:if>
-                </p>
-                <p class="msg"><fmt:message key="subscriber.billPayMessageOne"/></p>
-                <p class="msg"><fmt:message key="subscriber.billPayMessageTwo"/></p>
+                <p class="msg"><fmt:message key="subscriber.billsMessageOne"/></p>
+                <p class="msg"><fmt:message key="subscriber.billsMessageTwo"/></p>
                 <div class="sort-wrapper">
                     <span><fmt:message key="subscriber.billsSortTitle"/></span>
                     <form action="bills.html" method="POST" class="select-form no-margin">

@@ -6,8 +6,11 @@ import by.dvorkin.web.model.entity.SubscriberAction;
 import by.dvorkin.web.model.service.SubscriberActionService;
 import by.dvorkin.web.model.service.Transaction;
 import by.dvorkin.web.model.service.exceptions.ServiceException;
+import by.dvorkin.web.model.service.exceptions.SubscriberActionNotFoundException;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class SubscriberActionServiceImpl implements SubscriberActionService {
     private SubscriberActionDao subscriberActionDao;
@@ -32,6 +35,24 @@ public class SubscriberActionServiceImpl implements SubscriberActionService {
                 transaction.rollback();
             } catch (ServiceException ignored) {
             }
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<SubscriberAction> getActionsBetweenDates(Long subscriberId, Date dateBefore, Date dateAfter) throws ServiceException {
+        try {
+            List<SubscriberAction> actions;
+            if (dateAfter.after(dateBefore)) {
+                actions = subscriberActionDao.readBetweenDates(subscriberId, dateBefore, dateAfter);
+            } else {
+                actions = subscriberActionDao.readBetweenDates(subscriberId, dateAfter, dateBefore);
+            }
+            if (actions.size() == 0) {
+                throw new SubscriberActionNotFoundException(String.valueOf(subscriberId));
+            }
+            return actions;
+        } catch (DaoException e) {
             throw new ServiceException(e.getMessage());
         }
     }

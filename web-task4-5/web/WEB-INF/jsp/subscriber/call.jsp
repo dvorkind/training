@@ -16,14 +16,9 @@
         <form action="call.html" method="post" class="submit-form reg-form">
             <h2 class="text-center">${titlePage}</h2>
             <p class="msg"><fmt:message key="subscriber.callSentenceOne"/></p>
-            <p class="msg"><fmt:message key="subscriber.tariffCallCost"/>&nbsp;<ctg:money-format
+            <p class="msg"><fmt:message key="subscriber.callTariffCost"/>&nbsp;<ctg:money-format
                     balance="${tariff.callCost}" locale="${locale}"/>&nbsp<fmt:message
-                    key="subscriber.tariffMoney"/></p>
-            <p class="form-message">
-                <c:if test="${not empty callError}">
-                    <span><fmt:message key="${callError}"/></span>
-                </c:if>
-            </p>
+                    key="subscriber.callTariffMoney"/></p>
             <div class="input-group">
                 <label>
                     <fmt:message key="subscriber.callLength"/>
@@ -36,7 +31,7 @@
                 </label>
             </div>
             <input type="hidden" name="confirmation">
-            <input type="submit" value="<fmt:message key="subscriber.call" />" class="btn">
+            <input type="submit" value="<fmt:message key="subscriber.callButton" />" class="btn">
             <a href="subscriber.html" class="form-link"><fmt:message key="subscriber.callCancel"/></a>
         </form>
     </div>

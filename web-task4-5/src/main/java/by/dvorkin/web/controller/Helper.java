@@ -1,16 +1,13 @@
 package by.dvorkin.web.controller;
 
-import by.dvorkin.web.model.entity.Action;
 import by.dvorkin.web.model.entity.Bill;
 import by.dvorkin.web.model.entity.Service;
 import by.dvorkin.web.model.entity.Subscriber;
-import by.dvorkin.web.model.entity.SubscriberAction;
 import by.dvorkin.web.model.entity.Tariff;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 public class Helper {
@@ -26,17 +23,8 @@ public class Helper {
         return url;
     }
 
-    public static void log (String logMessage) {
+    public static void log(String logMessage) {
         logger.info(logMessage);
-    }
-
-    public static SubscriberAction createSubscriberAction(Long subscriberId, Action action, int sum) {
-        SubscriberAction subscriberAction = new SubscriberAction();
-        subscriberAction.setAction(action);
-        subscriberAction.setSubscriberId(subscriberId);
-        subscriberAction.setDate(new Date());
-        subscriberAction.setSum(sum);
-        return subscriberAction;
     }
 
     public static void sortServices(String sortBy, List<Service> services) {

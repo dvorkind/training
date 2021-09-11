@@ -16,16 +16,11 @@
         <form action="sms.html" method="post" class="submit-form reg-form">
             <h2 class="text-center">${titlePage}</h2>
             <p class="msg"><fmt:message key="subscriber.smsSentenceOne"/></p>
-            <p class="msg"><fmt:message key="subscriber.tariffSmsCost"/>&nbsp;<ctg:money-format
+            <p class="msg"><fmt:message key="subscriber.smsTariffCost"/>&nbsp;<ctg:money-format
                     balance="${tariff.smsCost}" locale="${locale}"/>&nbsp<fmt:message
-                    key="subscriber.tariffSmsMoney"/></p>
-            <p class="form-message">
-                <c:if test="${not empty smsError}">
-                    <span><fmt:message key="${smsError}"/></span>
-                </c:if>
-            </p>
+                    key="subscriber.smsTariffMoney"/></p>
             <input type="hidden" name="confirmation">
-            <input type="submit" value="<fmt:message key="subscriber.sms" />" class="btn">
+            <input type="submit" value="<fmt:message key="subscriber.smsButton" />" class="btn">
             <a href="subscriber.html" class="form-link"><fmt:message key="subscriber.smsCancel"/></a>
         </form>
     </div>

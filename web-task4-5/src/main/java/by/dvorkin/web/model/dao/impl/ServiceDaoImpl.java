@@ -125,7 +125,7 @@ public class ServiceDaoImpl implements ServiceDao {
 
     @Override
     public Service readByName(String serviceName) throws DaoException {
-        String sql = "SELECT * FROM `service` WHERE BINARY `name` = ?";
+        String sql = "SELECT * FROM `service` WHERE `is_deleted` = 0 AND BINARY `name` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, serviceName);
             ResultSet resultSet = statement.executeQuery();

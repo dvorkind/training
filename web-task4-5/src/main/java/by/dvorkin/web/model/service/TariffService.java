@@ -12,9 +12,7 @@ public interface TariffService {
 
     void save(Tariff tariff) throws ServiceException;
 
-    void safetyDelete(Long id) throws ServiceException;
+    void safetyDelete(Long id, Long newTariffId) throws ServiceException;
 
     int getCountUsingTariff(Long id) throws ServiceException;
-
-    void switchTariffs(Long sourceId, Long destinationId) throws ServiceException;
 }

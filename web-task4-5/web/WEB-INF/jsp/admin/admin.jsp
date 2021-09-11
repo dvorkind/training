@@ -10,11 +10,11 @@
 <fmt:setBundle basename="messages"/>
 
 <fmt:message var="title" key="admin.title"/>
-<fmt:message var="titlePage" key="admin.main"/>
+<fmt:message var="titlePage" key="admin.mainTitle"/>
 <u:html title="${title} : ${titlePage}">
     <div class="main">
         <h2 class="text-center">
-            <fmt:message key="admin.subscribers"/>
+            <fmt:message key="admin.subscribersNewTitle"/>
         </h2>
     </div>
 </u:html>

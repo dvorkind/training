@@ -10,7 +10,7 @@
 <fmt:setBundle basename="messages"/>
 
 <fmt:message var="title" key="subscriber.title"/>
-<fmt:message var="titlePage" key="subscriber.services"/>
+<fmt:message var="titlePage" key="subscriber.servicesTitle"/>
 <u:html title="${title} : ${titlePage}">
     <div class="main">
         <c:choose>
@@ -21,28 +21,23 @@
             </c:when>
             <c:otherwise>
                 <h2 class="text-center no-margin-bottom">${titlePage}</h2>
-                <p class="form-message">
-                    <c:if test="${not empty serviceError}">
-                        <span><fmt:message key="${serviceError}"/></span>
-                    </c:if>
-                </p>
-                <p class="msg"><fmt:message key="subscriber.serviceMessageOne"/></p>
-                <p class="msg"><fmt:message key="subscriber.serviceMessageTwo"/></p>
+                <p class="msg"><fmt:message key="subscriber.servicesMessageOne"/></p>
+                <p class="msg"><fmt:message key="subscriber.servicesMessageTwo"/></p>
                 <div class="sort-wrapper">
-                    <span><fmt:message key="subscriber.serviceSortTitle"/></span>
+                    <span><fmt:message key="subscriber.servicesSortTitle"/></span>
                     <form action="services.html" method="POST" class="select-form no-margin">
                         <select name="sort" onchange="submit()" class="btn btn-transparent">
                             <option value="nameUp" ${sort == 'nameUp' ? 'selected' : ''}>
-                                <fmt:message key="subscriber.serviceSortNameUp"/>
+                                <fmt:message key="subscriber.servicesSortNameUp"/>
                             </option>
                             <option value="nameDown" ${sort == 'nameDown' ? 'selected' : ''}>
-                                <fmt:message key="subscriber.serviceSortNameDown"/>
+                                <fmt:message key="subscriber.servicesSortNameDown"/>
                             </option>
                             <option value="priceUp" ${sort == 'priceUp' ? 'selected' : ''}>
-                                <fmt:message key="subscriber.serviceSortPriceUp"/>
+                                <fmt:message key="subscriber.servicesSortPriceUp"/>
                             </option>
                             <option value="priceDown" ${sort == 'priceDown' ? 'selected' : ''}>
-                                <fmt:message key="subscriber.serviceSortPriceDown"/>
+                                <fmt:message key="subscriber.servicesSortPriceDown"/>
                             </option>
                         </select>
                     </form>
@@ -50,10 +45,10 @@
                 <table class="data-table">
                     <thead>
                     <tr>
-                        <th width="150"><fmt:message key="subscriber.serviceName"/></th>
-                        <th width="450"><fmt:message key="subscriber.serviceDescription"/></th>
-                        <th width="150"><fmt:message key="subscriber.servicePrice"/></th>
-                        <th width="150"><fmt:message key="subscriber.serviceStatus"/></th>
+                        <th width="150"><fmt:message key="subscriber.servicesName"/></th>
+                        <th width="450"><fmt:message key="subscriber.servicesDescription"/></th>
+                        <th width="150"><fmt:message key="subscriber.servicesPrice"/></th>
+                        <th width="150"><fmt:message key="subscriber.servicesStatus"/></th>
                         <th></th>
                     </tr>
                     </thead>
@@ -64,15 +59,15 @@
                             <td class="pre-wrap">${service.description}</td>
                             <td>
                                 <ctg:money-format balance="${service.price}" locale="${locale}"/>&nbsp<fmt:message
-                                    key="subscriber.serviceMoney"/>
+                                    key="subscriber.servicesMoney"/>
                             </td>
                             <td>
                                 <c:choose>
                                     <c:when test="${subscribersServices.contains(service)}">
-                                        <fmt:message key="subscriber.serviceStatusOn"/>
+                                        <fmt:message key="subscriber.servicesStatusOn"/>
                                     </c:when>
                                     <c:otherwise>
-                                        <fmt:message key="subscriber.serviceStatusOff"/>
+                                        <fmt:message key="subscriber.servicesStatusOff"/>
                                     </c:otherwise>
                                 </c:choose>
                             </td>
@@ -83,13 +78,13 @@
                                         <c:when test="${subscribersServices.contains(service)}">
                                             <input type="hidden" name="off">
                                             <input type="submit"
-                                                   value="<fmt:message key="subscriber.serviceSwitchOff"/>"
+                                                   value="<fmt:message key="subscriber.servicesSwitchOff"/>"
                                                    class="btn btn-small btn-in-cell">
                                         </c:when>
                                         <c:otherwise>
                                             <input type="hidden" name="on">
                                             <input type="submit"
-                                                   value="<fmt:message key="subscriber.serviceSwitchOn"/>"
+                                                   value="<fmt:message key="subscriber.servicesSwitchOn"/>"
                                                    class="btn btn-small btn-in-cell">
                                         </c:otherwise>
                                     </c:choose>

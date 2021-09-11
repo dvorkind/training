@@ -23,11 +23,11 @@ public class ChangePasswordCommand implements Command {
         HttpSession session = req.getSession();
         String oldPassword = req.getParameter("oldPassword");
         String newPassword = req.getParameter("newPassword");
-        Account account = (Account) session.getAttribute("sessionAccount");
         if (isOldPasswordValid(req) & isNewPasswordValid(req) & isConfirmedNewPasswordValid(req)) {
             try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
                 AccountService accountService = serviceFactory.getAccountService();
-                accountService.changePassword(oldPassword, newPassword, account);
+                Account account = (Account) session.getAttribute("sessionAccount");
+                accountService.changePassword(oldPassword, newPassword, account.getId());
                 Helper.log("User " + account.getLogin() + " changed the password. IP [" + req.getRemoteAddr() + "]");
                 session.setAttribute("success", "changePassword.success");
                 return new Forward("/success.html");

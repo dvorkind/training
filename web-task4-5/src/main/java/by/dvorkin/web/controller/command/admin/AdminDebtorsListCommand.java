@@ -12,6 +12,7 @@ import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
 
@@ -21,10 +22,11 @@ public class AdminDebtorsListCommand implements Command {
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
             SubscriberService subscriberService = serviceFactory.getSubscriberService();
             if (req.getParameter("id") != null) {
-                Subscriber subscriber = subscriberService.getById(Long.parseLong(req.getParameter("id")));
-                subscriber.setBlocked(true);
-                subscriberService.update(subscriber);
+                HttpSession session = req.getSession();
+                subscriberService.setBlock(Long.parseLong(req.getParameter("id")));
                 Helper.log("UserID #" + req.getParameter("id") + " was blocked by Administrator");
+                session.setAttribute("success", "admin.debtorsBlockSuccess");
+                return new Forward("/success.html");
             }
             List<Subscriber> subscribers = subscriberService.getDebtors();
             String sortBy = req.getParameter("sort");

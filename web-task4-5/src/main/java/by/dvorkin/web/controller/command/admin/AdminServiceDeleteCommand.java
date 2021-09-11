@@ -12,6 +12,7 @@ import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 public class AdminServiceDeleteCommand implements Command {
     @Override
@@ -27,9 +28,9 @@ public class AdminServiceDeleteCommand implements Command {
             if (req.getParameter("confirmation") != null) {
                 serviceService.delete(service.getId());
                 Helper.log("ServiceID #" + req.getParameter("id") + " was deleted by Administrator");
-                return new Forward("/admin/service_list.html");
-            } else {
-                return null;
+                HttpSession session = req.getSession();
+                session.setAttribute("success", "admin.serviceDeleteSuccess");
+                return new Forward("/success.html");
             }
         } catch (ServiceException | FactoryException e) {
             throw new ServletException(e);

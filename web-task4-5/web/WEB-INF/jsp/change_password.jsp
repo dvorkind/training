@@ -39,8 +39,9 @@
                     </c:if>
                 </p>
                 <div class="input-group">
-                    <label for="confirmedNewPassword"><fmt:message
-                            key="changePassword.confirmNewPassword"/></label>
+                    <label for="confirmedNewPassword">
+                        <fmt:message key="changePassword.confirmNewPassword"/>
+                    </label>
                     <input type="password" id="confirmedNewPassword" name="confirmedNewPassword"
                            value=${confirmedNewPassword}>
                     <c:if test="${confirmedNewPasswordIsValid}">
@@ -54,7 +55,7 @@
                 </p>
             </div>
             <div>
-                <input type="submit" value="<fmt:message key="changePassword.button" />" class="btn">
+                <input type="submit" value="<fmt:message key="changePassword.button"/>" class="btn">
                 <a href="login.html" class="form-link"><fmt:message key="changePassword.cancel"/></a>
             </div>
         </form>

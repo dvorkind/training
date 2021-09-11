@@ -11,36 +11,52 @@
 <fmt:setBundle basename="messages"/>
 
 <fmt:message var="title" key="admin.title"/>
-<fmt:message var="titlePage" key="admin.tariffs"/>
+<fmt:message var="titlePage" key="admin.tariffList"/>
 <u:html title="${title} : ${titlePage}">
     <div class="main">
         <h2 class="text-center no-margin-bottom">${titlePage}</h2>
         <a href="tariff_manage.html" class="btn center-btn no-margin-bottom">
-            <fmt:message key="admin.tariffAdd"/> ➕
+            <fmt:message key="admin.tariffListAdd"/> ➕
         </a>
         <div class="sort-wrapper">
-            <span><fmt:message key="admin.tariffSortTitle"/></span>
+            <span><fmt:message key="admin.tariffListSortTitle"/></span>
             <form action="tariff_list.html" method="POST" class="select-form no-margin">
                 <select name="sort" onchange="submit()" class="btn btn-transparent">
-                    <option value="nameUp" ${sort == 'nameUp' ? 'selected' : ''}><fmt:message key="admin.tariffSortNameUp"/></option>
-                    <option value="nameDown" ${sort == 'nameDown' ? 'selected' : ''}><fmt:message key="admin.tariffSortNameDown"/></option>
-                    <option value="subscriptionFeeUp" ${sort == 'subscriptionFeeUp' ? 'selected' : ''}><fmt:message key="admin.tariffSortSubscriptionFeeUp"/></option>
-                    <option value="subscriptionFeeDown" ${sort == 'subscriptionFeeDown' ? 'selected' : ''}><fmt:message key="admin.tariffSortSubscriptionFeeDown"/></option>
-                    <option value="callCostUp" ${sort == 'callCostUp' ? 'selected' : ''}><fmt:message key="admin.tariffSortCallCostUp"/></option>
-                    <option value="callCostDown" ${sort == 'callCostDown' ? 'selected' : ''}><fmt:message key="admin.tariffSortCallCostDown"/></option>
-                    <option value="smsCostUp" ${sort == 'smsCostUp' ? 'selected' : ''}><fmt:message key="admin.tariffSortSmsCostUp"/></option>
-                    <option value="smsCostDown" ${sort == 'smsCostDown' ? 'selected' : ''}><fmt:message key="admin.tariffSortSmsCostDown"/></option>
+                    <option value="nameUp" ${sort == 'nameUp' ? 'selected' : ''}>
+                        <fmt:message key="admin.tariffListSortNameUp"/>
+                    </option>
+                    <option value="nameDown" ${sort == 'nameDown' ? 'selected' : ''}>
+                        <fmt:message key="admin.tariffListSortNameDown"/>
+                    </option>
+                    <option value="subscriptionFeeUp" ${sort == 'subscriptionFeeUp' ? 'selected' : ''}>
+                        <fmt:message key="admin.tariffListSortSubscriptionFeeUp"/>
+                    </option>
+                    <option value="subscriptionFeeDown" ${sort == 'subscriptionFeeDown' ? 'selected' : ''}>
+                        <fmt:message key="admin.tariffListSortSubscriptionFeeDown"/>
+                    </option>
+                    <option value="callCostUp" ${sort == 'callCostUp' ? 'selected' : ''}>
+                        <fmt:message key="admin.tariffListSortCallCostUp"/>
+                    </option>
+                    <option value="callCostDown" ${sort == 'callCostDown' ? 'selected' : ''}>
+                        <fmt:message key="admin.tariffListSortCallCostDown"/>
+                    </option>
+                    <option value="smsCostUp" ${sort == 'smsCostUp' ? 'selected' : ''}>
+                        <fmt:message key="admin.tariffListSortSmsCostUp"/>
+                    </option>
+                    <option value="smsCostDown" ${sort == 'smsCostDown' ? 'selected' : ''}>
+                        <fmt:message key="admin.tariffListSortSmsCostDown"/>
+                    </option>
                 </select>
             </form>
         </div>
         <table class="data-table">
             <thead>
             <tr>
-                <th width="150"><fmt:message key="admin.tariffName"/></th>
-                <th width="300"><fmt:message key="admin.tariffDescription"/></th>
-                <th width="150"><fmt:message key="admin.tariffSubscriptionFee"/></th>
-                <th width="150"><fmt:message key="admin.tariffCallCost"/></th>
-                <th width="150"><fmt:message key="admin.tariffSmsCost"/></th>
+                <th width="150"><fmt:message key="admin.tariffListName"/></th>
+                <th width="300"><fmt:message key="admin.tariffListDescription"/></th>
+                <th width="150"><fmt:message key="admin.tariffListSubscriptionFee"/></th>
+                <th width="150"><fmt:message key="admin.tariffListCallCost"/></th>
+                <th width="150"><fmt:message key="admin.tariffListSmsCost"/></th>
                 <th></th>
             </tr>
             </thead>
@@ -50,25 +66,27 @@
                     <td>${tariff.name}</td>
                     <td class="pre-wrap">${tariff.description}</td>
                     <td>
-                        <ctg:money-format balance="${tariff.subscriptionFee}" locale="${locale}"/>&nbsp<fmt:message
-                            key="admin.tariffMoney"/>
+                        <ctg:money-format balance="${tariff.subscriptionFee}" locale="${locale}"/>
+                        &nbsp<fmt:message key="admin.tariffListMoney"/>
                     </td>
                     <td>
-                        <ctg:money-format balance="${tariff.callCost}" locale="${locale}"/>&nbsp<fmt:message key="admin.tariffMoney"/>
+                        <ctg:money-format balance="${tariff.callCost}" locale="${locale}"/>
+                        &nbsp<fmt:message key="admin.tariffListMoney"/>
                     </td>
                     <td>
-                        <ctg:money-format balance="${tariff.smsCost}" locale="${locale}"/>&nbsp<fmt:message key="admin.tariffMoney"/>
+                        <ctg:money-format balance="${tariff.smsCost}" locale="${locale}"/>
+                        &nbsp<fmt:message key="admin.tariffListMoney"/>
                     </td>
                     <td class="button-cell">
                         <form action="tariff_manage.html" method="POST">
                             <input type="hidden" name="id" value="${tariff.id}">
-                            <input type="submit" value="<fmt:message key="admin.tariffEdit"/> 📝"
+                            <input type="submit" value="<fmt:message key="admin.tariffListEdit"/> 📝"
                                    class="btn btn-small btn-in-cell">
                         </form>
                         <form action="tariff_delete.html" method="POST">
                             <input type="hidden" name="id" value="${tariff.id}">
                             <c:if test="${fn:length(tariffs) != 1}">
-                                <input type="submit" value="<fmt:message key="admin.tariffDelete"/> ❌"
+                                <input type="submit" value="<fmt:message key="admin.tariffListDelete"/> ❌"
                                        class="btn btn-small btn-in-cell">
                             </c:if>
                         </form>

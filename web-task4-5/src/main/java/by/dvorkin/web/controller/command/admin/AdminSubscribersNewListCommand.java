@@ -12,8 +12,7 @@ import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
 
@@ -23,10 +22,11 @@ public class AdminSubscribersNewListCommand implements Command {
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
             SubscriberService subscriberService = serviceFactory.getSubscriberService();
             if (req.getParameter("id") != null) {
-                Subscriber subscriber = subscriberService.getById(Long.parseLong(req.getParameter("id")));
-                subscriber.setRegistered(true);
-                subscriberService.update(subscriber);
+                HttpSession session = req.getSession();
+                subscriberService.activate(Long.parseLong(req.getParameter("id")));
                 Helper.log("UserID #" + req.getParameter("id") + " was activated by Administrator");
+                session.setAttribute("success", "admin.subscribersNewActivateSuccess");
+                return new Forward("/success.html");
             }
             List<Subscriber> subscribers = subscriberService.getNewSubscribers();
             String sortBy = req.getParameter("sort");

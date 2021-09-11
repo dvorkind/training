@@ -10,44 +10,44 @@
 <fmt:setBundle basename="messages"/>
 
 <fmt:message var="title" key="admin.title"/>
-<fmt:message var="titlePage" key="admin.subscribers"/>
+<fmt:message var="titlePage" key="admin.subscribersAllTitle"/>
 <u:html title="${title} : ${titlePage}">
     <div class="main">
         <c:choose>
             <c:when test="${empty subscribers}">
                 <h2 class="text-center no-margin-bottom">
-                    <fmt:message key="admin.subscribersEmpty"/>
+                    <fmt:message key="admin.subscribersAllEmpty"/>
                 </h2>
             </c:when>
             <c:otherwise>
                 <h2 class="text-center no-margin-bottom">${titlePage}</h2>
                 <div class="sort-wrapper">
-                    <span><fmt:message key="admin.subscriberSortTitle"/></span>
+                    <span><fmt:message key="admin.subscribersAllSortTitle"/></span>
                     <form action="subscribers_all.html" method="POST" class="select-form no-margin">
                         <select name="sort" onchange="submit()" class="btn btn-transparent">
                             <option value="firstNameUp" ${sort == 'firstNameUp' ? 'selected' : ''}>
-                                <fmt:message key="admin.subscriberSortFirstNameUp"/>
+                                <fmt:message key="admin.subscribersAllSortFirstNameUp"/>
                             </option>
                             <option value="firstNameDown" ${sort == 'firstNameDown' ? 'selected' : ''}>
-                                <fmt:message key="admin.subscriberSortFirstNameDown"/>
+                                <fmt:message key="admin.subscribersAllSortFirstNameDown"/>
                             </option>
                             <option value="lastNameUp" ${sort == 'lastNameUp' ? 'selected' : ''}>
-                                <fmt:message key="admin.subscriberSortLastNameUp"/>
+                                <fmt:message key="admin.subscribersAllSortLastNameUp"/>
                             </option>
                             <option value="lastNameDown" ${sort == 'lastNameDown' ? 'selected' : ''}>
-                                <fmt:message key="admin.subscriberSortLastNameDown"/>
+                                <fmt:message key="admin.subscribersAllSortLastNameDown"/>
                             </option>
                             <option value="balanceUp" ${sort == 'balanceUp' ? 'selected' : ''}>
-                                <fmt:message key="admin.subscriberSortBalanceUp"/>
+                                <fmt:message key="admin.subscribersAllSortBalanceUp"/>
                             </option>
                             <option value="balanceDown" ${sort == 'balanceDown' ? 'selected' : ''}>
-                                <fmt:message key="admin.subscriberSortBalanceDown"/>
+                                <fmt:message key="admin.subscribersAllSortBalanceDown"/>
                             </option>
                             <option value="stateUp" ${sort == 'stateUp' ? 'selected' : ''}>
-                                <fmt:message key="admin.subscriberSortStateUp"/>
+                                <fmt:message key="admin.subscribersAllSortStateUp"/>
                             </option>
                             <option value="stateDown" ${sort == 'stateDown' ? 'selected' : ''}>
-                                <fmt:message key="admin.subscriberSortStateDown"/>
+                                <fmt:message key="admin.subscribersAllSortStateDown"/>
                             </option>
                         </select>
                     </form>
@@ -55,11 +55,11 @@
                 <table class="data-table">
                     <thead>
                     <tr>
-                        <th width="150"><fmt:message key="admin.subscriberFirstname"/></th>
-                        <th width="150"><fmt:message key="admin.subscriberLastname"/></th>
-                        <th width="150"><fmt:message key="admin.subscriberPhoneNumber"/></th>
-                        <th width="150"><fmt:message key="admin.subscriberBalance"/></th>
-                        <th width="150"><fmt:message key="admin.subscriberState"/></th>
+                        <th width="150"><fmt:message key="admin.subscribersAllFirstname"/></th>
+                        <th width="150"><fmt:message key="admin.subscribersAllLastname"/></th>
+                        <th width="150"><fmt:message key="admin.subscribersAllPhoneNumber"/></th>
+                        <th width="150"><fmt:message key="admin.subscribersAllBalance"/></th>
+                        <th width="150"><fmt:message key="admin.subscribersAllState"/></th>
                         <th></th>
                     </tr>
                     </thead>
@@ -71,20 +71,20 @@
                             <td>${subscriber.phoneNumber}</td>
                             <td>
                                 <ctg:money-format balance="${subscriber.balance}" locale="${locale}"/>&nbsp
-                                <fmt:message key="subscriber.money"/>
+                                <fmt:message key="admin.subscribersAllMoney"/>
                             </td>
                             <c:choose>
                                 <c:when test="${subscriber.blocked}">
-                                    <td><fmt:message key="admin.subscriberStateBlocked"/></td>
+                                    <td><fmt:message key="admin.subscribersAllStateBlocked"/></td>
                                 </c:when>
                                 <c:otherwise>
-                                    <td><fmt:message key="admin.subscriberStateActive"/></td>
+                                    <td><fmt:message key="admin.subscribersAllStateActive"/></td>
                                 </c:otherwise>
                             </c:choose>
                             <td class="button-cell">
                                 <form action="subscriber_edit.html" method="POST">
                                     <input type="hidden" name="id" value="${subscriber.id}">
-                                    <input type="submit" value="<fmt:message key="admin.subscriberManage"/> 📝"
+                                    <input type="submit" value="<fmt:message key="admin.subscribersAllManage"/> 📝"
                                            class="btn btn-small">
                                 </form>
                             </td>

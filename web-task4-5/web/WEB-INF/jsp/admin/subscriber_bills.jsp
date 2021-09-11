@@ -10,7 +10,7 @@
 <fmt:setBundle basename="messages"/>
 
 <fmt:message var="title" key="admin.title"/>
-<fmt:message var="titlePage" key="admin.bills"/>
+<fmt:message var="titlePage" key="admin.billsTitle"/>
 <u:html title="${title} : ${titlePage}">
     <div class="main">
         <c:choose>

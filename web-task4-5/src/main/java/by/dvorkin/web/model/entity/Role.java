@@ -1,20 +1,5 @@
 package by.dvorkin.web.model.entity;
 
 public enum Role {
-    ADMINISTRATOR("role.admin"),
-    SUBSCRIBER("role.subscriber");
-
-    private String name;
-
-    Role(String name) {
-        this.name = name;
-    }
-
-    public Long getId() {
-        return (long) ordinal();
-    }
-
-    public String getName() {
-        return name;
-    }
+    ADMINISTRATOR, SUBSCRIBER
 }

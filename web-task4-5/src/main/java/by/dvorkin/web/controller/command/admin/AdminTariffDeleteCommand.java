@@ -13,8 +13,7 @@ import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import jakarta.servlet.http.HttpSession;
 
 public class AdminTariffDeleteCommand implements Command {
     @Override
@@ -22,6 +21,7 @@ public class AdminTariffDeleteCommand implements Command {
         if (req.getParameter("id") == null) {
             return new Forward("/admin/tariff_list.html");
         }
+        HttpSession session = req.getSession();
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
             TariffService tariffService = serviceFactory.getTariffService();
             Tariff tariff = tariffService.getById(Long.parseLong(req.getParameter("id")));
@@ -33,19 +33,18 @@ public class AdminTariffDeleteCommand implements Command {
                 req.setAttribute("tariffs", tariffService.getAll());
             }
             if (req.getParameter("confirmation") != null) {
+                long newTariffId = 0L;
                 if (req.getParameter("newTariff") != null) {
-                    tariffService.switchTariffs(tariff.getId(), Long.parseLong(req.getParameter("newTariff")));
+                    newTariffId = Long.parseLong(req.getParameter("newTariff"));
                 }
-                tariffService.safetyDelete(tariff.getId());
+                tariffService.safetyDelete(tariff.getId(), newTariffId);
                 Helper.log("TariffID #" + req.getParameter("id") + " was deleted by Administrator");
-                return new Forward("/admin/tariff_list.html");
-            } else {
-                return null;
+                session.setAttribute("success", "admin.tariffDeleteSuccess");
+                return new Forward("/success.html");
             }
         } catch (TariffLastException e) {
-            req.removeAttribute("confirmation");
-            req.setAttribute("tariffDeleteError", "admin.tariffDeleteError");
-            return null;
+            session.setAttribute("fail", "admin.tariffDeleteError");
+            return new Forward("/fail.html");
         } catch (ServiceException | FactoryException e) {
             throw new ServletException(e);
         } catch (Exception ignored) {

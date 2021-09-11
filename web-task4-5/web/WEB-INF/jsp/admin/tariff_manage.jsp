@@ -11,10 +11,10 @@
 <fmt:message var="title" key="admin.title"/>
 <c:choose>
     <c:when test="${not empty id}">
-        <fmt:message var="titlePage" key="admin.tariffEditTitle"/>
+        <fmt:message var="titlePage" key="admin.tariffManageEditTitle"/>
     </c:when>
     <c:otherwise>
-        <fmt:message var="titlePage" key="admin.tariffAddTitle"/>
+        <fmt:message var="titlePage" key="admin.tariffManageAddTitle"/>
     </c:otherwise>
 </c:choose>
 
@@ -24,7 +24,7 @@
             <h2>${titlePage}</h2>
             <div class="form-inputs">
                 <div class="input-group">
-                    <label for="tariffName"><fmt:message key="admin.tariffName"/></label>
+                    <label for="tariffName"><fmt:message key="admin.tariffManageName"/></label>
                     <input type="text" id="tariffName" name="tariffName" value="${tariffName}">
                     <c:if test="${tariffNameIsValid}">
                         <span class="validation-indicator"> &#10004 </span>
@@ -36,8 +36,9 @@
                     </c:if>
                 </p>
                 <div class="input-group">
-                    <label for="tariffDescription"><fmt:message key="admin.tariffDescription"/></label>
-                    <textarea id="tariffDescription" name="tariffDescription" maxlength="200">${tariffDescription}</textarea>
+                    <label for="tariffDescription"><fmt:message key="admin.tariffManageDescription"/></label>
+                    <textarea id="tariffDescription" name="tariffDescription"
+                              maxlength="200">${tariffDescription}</textarea>
                     <c:if test="${tariffDescriptionIsValid}">
                         <span class="validation-indicator"> &#10004 </span>
                     </c:if>
@@ -48,13 +49,19 @@
                     </c:if>
                 </p>
                 <div class="input-group">
-                    <label><fmt:message key="admin.tariffSubscriptionFee"/></label>
-                    <input type="number" min="0" id="tariffSubscriptionFeeRoubles" name="tariffSubscriptionFeeRoubles" class="small-input"
+                    <label><fmt:message key="admin.tariffManageSubscriptionFee"/></label>
+                    <input type="number" min="0" id="tariffSubscriptionFeeRoubles" name="tariffSubscriptionFeeRoubles"
+                           class="small-input"
                            value="${tariffSubscriptionFeeRoubles == null ? 5 : tariffSubscriptionFeeRoubles}">
-                    <label for="tariffSubscriptionFeeRoubles" class="small-label"><fmt:message key="admin.tariffMoney"/></label>
-                    <input type="number" min="0" max="99" id="tariffSubscriptionFeeKopecks" name="tariffSubscriptionFeeKopecks" class="small-input"
+                    <label for="tariffSubscriptionFeeRoubles" class="small-label">
+                        <fmt:message key="admin.tariffManageMoney"/>
+                    </label>
+                    <input type="number" min="0" max="99" id="tariffSubscriptionFeeKopecks"
+                           name="tariffSubscriptionFeeKopecks" class="small-input"
                            value="${tariffSubscriptionFeeKopecks == null ? 0 : tariffSubscriptionFeeKopecks}">
-                    <label for="tariffSubscriptionFeeKopecks" class="small-label"><fmt:message key="admin.tariffMoneyKopecks"/></label>
+                    <label for="tariffSubscriptionFeeKopecks" class="small-label">
+                        <fmt:message key="admin.tariffManageMoneyKopecks"/>
+                    </label>
                     <c:if test="${tariffSubscriptionFeeIsValid}">
                         <span class="validation-indicator"> &#10004 </span>
                     </c:if>
@@ -65,13 +72,17 @@
                     </c:if>
                 </p>
                 <div class="input-group">
-                    <label><fmt:message key="admin.tariffCallCost"/></label>
-                    <input type="number" min="0" id="tariffCallCostRoubles" name="tariffCallCostRoubles" class="small-input"
-                           value="${tariffCallCostRoubles == null ? 0 : tariffCallCostRoubles}">
-                    <label for="tariffSubscriptionFeeRoubles" class="small-label"><fmt:message key="admin.tariffMoney"/></label>
-                    <input type="number" min="0" max="99" id="tariffCallCostKopecks" name="tariffCallCostKopecks" class="small-input"
-                           value="${tariffCallCostKopecks == null ? 10 : tariffCallCostKopecks}">
-                    <label for="tariffCallCostKopecks" class="small-label"><fmt:message key="admin.tariffMoneyKopecks"/></label>
+                    <label><fmt:message key="admin.tariffManageCallCost"/></label>
+                    <input type="number" min="0" id="tariffCallCostRoubles" name="tariffCallCostRoubles"
+                           class="small-input" value="${tariffCallCostRoubles == null ? 0 : tariffCallCostRoubles}">
+                    <label for="tariffSubscriptionFeeRoubles" class="small-label">
+                        <fmt:message key="admin.tariffManageMoney"/>
+                    </label>
+                    <input type="number" min="0" max="99" id="tariffCallCostKopecks" name="tariffCallCostKopecks"
+                           class="small-input" value="${tariffCallCostKopecks == null ? 10 : tariffCallCostKopecks}">
+                    <label for="tariffCallCostKopecks" class="small-label">
+                        <fmt:message key="admin.tariffManageMoneyKopecks"/>
+                    </label>
                     <c:if test="${tariffCallCostIsValid}">
                         <span class="validation-indicator"> &#10004 </span>
                     </c:if>
@@ -82,13 +93,17 @@
                     </c:if>
                 </p>
                 <div class="input-group">
-                    <label><fmt:message key="admin.tariffSmsCost"/></label>
-                    <input type="number" min="0" id="tariffSmsCostRoubles" name="tariffSmsCostRoubles" class="small-input"
-                           value="${tariffSmsCostRoubles == null ? 0 : tariffSmsCostRoubles}">
-                    <label for="tariffSmsCostRoubles" class="small-label"><fmt:message key="admin.tariffMoney"/></label>
-                    <input type="number" min="0" max="99" id="tariffSmsCostKopecks" name="tariffSmsCostKopecks" class="small-input"
-                           value="${tariffSmsCostKopecks == null ? 10 : tariffSmsCostKopecks}">
-                    <label for="tariffSmsCostKopecks" class="small-label"><fmt:message key="admin.tariffMoneyKopecks"/></label>
+                    <label><fmt:message key="admin.tariffManageSmsCost"/></label>
+                    <input type="number" min="0" id="tariffSmsCostRoubles" name="tariffSmsCostRoubles"
+                           class="small-input" value="${tariffSmsCostRoubles == null ? 0 : tariffSmsCostRoubles}">
+                    <label for="tariffSmsCostRoubles" class="small-label">
+                        <fmt:message key="admin.tariffManageMoney"/>
+                    </label>
+                    <input type="number" min="0" max="99" id="tariffSmsCostKopecks" name="tariffSmsCostKopecks"
+                           class="small-input" value="${tariffSmsCostKopecks == null ? 10 : tariffSmsCostKopecks}">
+                    <label for="tariffSmsCostKopecks" class="small-label">
+                        <fmt:message key="admin.tariffManageMoneyKopecks"/>
+                    </label>
                     <c:if test="${tariffSmsCostIsValid}">
                         <span class="validation-indicator"> &#10004 </span>
                     </c:if>
@@ -103,13 +118,13 @@
                 <c:choose>
                     <c:when test="${not empty id}">
                         <input type="hidden" name="id" value="${id}">
-                        <input type="submit" value="<fmt:message key="admin.tariffEditButton" />" class="btn">
+                        <input type="submit" value="<fmt:message key="admin.tariffManageEditButton" />" class="btn">
                     </c:when>
                     <c:otherwise>
-                        <input type="submit" value="<fmt:message key="admin.tariffAddButton" />" class="btn">
+                        <input type="submit" value="<fmt:message key="admin.tariffManageAddButton" />" class="btn">
                     </c:otherwise>
                 </c:choose>
-                <a href="tariff_list.html" class="form-link"><fmt:message key="admin.tariffCancel"/></a>
+                <a href="tariff_list.html" class="form-link"><fmt:message key="admin.tariffManageCancel"/></a>
             </div>
         </form>
     </div>

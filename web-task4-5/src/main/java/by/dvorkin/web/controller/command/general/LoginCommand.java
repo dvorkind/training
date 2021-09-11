@@ -6,6 +6,7 @@ import by.dvorkin.web.controller.command.Forward;
 import by.dvorkin.web.model.entity.Account;
 import by.dvorkin.web.model.service.AccountService;
 import by.dvorkin.web.model.service.ServiceFactory;
+import by.dvorkin.web.model.service.exceptions.AccountNotExistException;
 import by.dvorkin.web.model.service.exceptions.FactoryException;
 import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
@@ -30,14 +31,13 @@ public class LoginCommand implements Command {
                 AccountService accountService = serviceFactory.getAccountService();
                 Account account = accountService.login(login, password);
                 forward = getForward(account);
-                if (forward != null) {
-                    session.setAttribute("sessionAccount", account);
-                    Helper.log("User " + login + " has logged in. IP [" + req.getRemoteAddr() + "]");
-                    return forward;
-                } else {
-                    req.setAttribute("login", login);
-                    req.setAttribute("error", "login.messageIncorrectPassword");
-                }
+                session.setAttribute("sessionAccount", account);
+                Helper.log("User " + login + " has logged in. IP [" + req.getRemoteAddr() + "]");
+                return forward;
+            } catch (AccountNotExistException e) {
+                req.setAttribute("login", login);
+                req.setAttribute("error", "login.messageIncorrectPassword");
+                return null;
             } catch (ServiceException | FactoryException e) {
                 throw new ServletException(e);
             } catch (Exception ignored) {

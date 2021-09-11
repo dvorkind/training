@@ -87,14 +87,17 @@ public class TariffServiceImpl implements TariffService {
     }
 
     @Override
-    public void safetyDelete(Long id) throws ServiceException {
+    public void safetyDelete(Long id, Long newTariffId) throws ServiceException {
         try {
             transaction.start();
-            if (tariffDao.isLastTariff()) {
-                throw new TariffLastException(id.toString());
-            } else {
+            if (!tariffDao.isLastTariff()) {
+                if (newTariffId !=0 ) {
+                    switchTariffs(id, newTariffId);
+                }
                 tariffDao.delete(id);
                 transaction.commit();
+            } else {
+                throw new TariffLastException(id.toString());
             }
         } catch (DaoException e) {
             try {
@@ -120,24 +123,11 @@ public class TariffServiceImpl implements TariffService {
         }
     }
 
-    @Override
-    public void switchTariffs(Long sourceId, Long destinationId) throws ServiceException {
+    private void switchTariffs(Long sourceId, Long destinationId) throws ServiceException {
         try {
-            transaction.start();
-            tariffDao.switchTariffs(sourceId, destinationId);
-            transaction.commit();
+              tariffDao.switchTariffs(sourceId, destinationId);
         } catch (DaoException e) {
-            try {
-                transaction.rollback();
-            } catch (ServiceException ignored) {
-            }
             throw new ServiceException(e.getMessage());
-        } catch (ServiceException e) {
-            try {
-                transaction.rollback();
-            } catch (ServiceException ignored) {
-            }
-            throw e;
         }
     }
 }

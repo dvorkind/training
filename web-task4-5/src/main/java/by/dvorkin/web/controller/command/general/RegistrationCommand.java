@@ -4,13 +4,10 @@ import by.dvorkin.web.controller.Helper;
 import by.dvorkin.web.controller.command.Command;
 import by.dvorkin.web.controller.command.Forward;
 import by.dvorkin.web.model.entity.Account;
-import by.dvorkin.web.model.entity.Action;
 import by.dvorkin.web.model.entity.Role;
 import by.dvorkin.web.model.entity.Subscriber;
-import by.dvorkin.web.model.entity.SubscriberAction;
 import by.dvorkin.web.model.service.AccountService;
 import by.dvorkin.web.model.service.ServiceFactory;
-import by.dvorkin.web.model.service.SubscriberActionService;
 import by.dvorkin.web.model.service.exceptions.AccountLoginNotUniqueException;
 import by.dvorkin.web.model.service.exceptions.FactoryException;
 import by.dvorkin.web.model.service.exceptions.ServiceException;
@@ -37,14 +34,10 @@ public class RegistrationCommand implements Command {
         if (isInputValid(req)) {
             try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
                 AccountService accountService = serviceFactory.getAccountService();
-                SubscriberActionService subscriberActionService = serviceFactory.getSubscriberActionService();
                 Account account = createAccount(req);
                 Subscriber subscriber = createSubscriber(req);
                 accountService.create(account, subscriber);
                 session.setAttribute("sessionAccount", account);
-                SubscriberAction subscriberAction = Helper.createSubscriberAction(subscriber.getId(),
-                        Action.REGISTRATION, 0);
-                subscriberActionService.create(subscriberAction);
                 Helper.log("User " + account.getLogin() + " has registered. IP [" + req.getRemoteAddr() + "]");
                 return new Forward("/login.html");
             } catch (AccountLoginNotUniqueException e) {

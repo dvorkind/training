@@ -11,10 +11,10 @@
 <fmt:message var="title" key="admin.title"/>
 <c:choose>
     <c:when test="${not empty id}">
-        <fmt:message var="titlePage" key="admin.serviceEditTitle"/>
+        <fmt:message var="titlePage" key="admin.serviceManageEditTitle"/>
     </c:when>
     <c:otherwise>
-        <fmt:message var="titlePage" key="admin.serviceAddTitle"/>
+        <fmt:message var="titlePage" key="admin.serviceManageAddTitle"/>
     </c:otherwise>
 </c:choose>
 
@@ -24,7 +24,7 @@
             <h2>${titlePage}</h2>
             <div class="form-inputs">
                 <div class="input-group">
-                    <label for="serviceName"><fmt:message key="admin.serviceName"/></label>
+                    <label for="serviceName"><fmt:message key="admin.serviceManageName"/></label>
                     <input type="text" id="serviceName" name="serviceName" value="${serviceName}">
                     <c:if test="${serviceNameIsValid}">
                         <span class="validation-indicator"> &#10004 </span>
@@ -36,7 +36,7 @@
                     </c:if>
                 </p>
                 <div class="input-group">
-                    <label for="serviceDescription"><fmt:message key="admin.serviceDescription"/></label>
+                    <label for="serviceDescription"><fmt:message key="admin.serviceManageDescription"/></label>
                     <textarea id="serviceDescription" name="serviceDescription"
                               maxlength="200">${serviceDescription}</textarea>
                     <c:if test="${serviceDescriptionIsValid}">
@@ -49,17 +49,17 @@
                     </c:if>
                 </p>
                 <div class="input-group">
-                    <label><fmt:message key="admin.servicePrice"/></label>
+                    <label><fmt:message key="admin.serviceManagePrice"/></label>
                     <input type="number" min="0" id="servicePriceRoubles" name="servicePriceRoubles"
                            class="small-input"
                            value="${servicePriceRoubles == null ? 5 : servicePriceRoubles}">
                     <label for="servicePriceRoubles" class="small-label"><fmt:message
-                            key="admin.serviceMoney"/></label>
+                            key="admin.serviceManageMoney"/></label>
                     <input type="number" min="0" max="99" id="servicePriceKopecks"
                            name="servicePriceKopecks" class="small-input"
                            value="${servicePriceKopecks == null ? 0 : servicePriceKopecks}">
                     <label for="servicePriceKopecks" class="small-label"><fmt:message
-                            key="admin.serviceMoneyKopecks"/></label>
+                            key="admin.serviceManageMoneyKopecks"/></label>
                     <c:if test="${servicePriceIsValid}">
                         <span class="validation-indicator"> &#10004 </span>
                     </c:if>
@@ -74,13 +74,13 @@
                 <c:choose>
                     <c:when test="${not empty id}">
                         <input type="hidden" name="id" value="${id}">
-                        <input type="submit" value="<fmt:message key="admin.serviceEditButton" />" class="btn">
+                        <input type="submit" value="<fmt:message key="admin.serviceManageEditButton" />" class="btn">
                     </c:when>
                     <c:otherwise>
-                        <input type="submit" value="<fmt:message key="admin.serviceAddButton" />" class="btn">
+                        <input type="submit" value="<fmt:message key="admin.serviceManageAddButton" />" class="btn">
                     </c:otherwise>
                 </c:choose>
-                <a href="service_list.html" class="form-link"><fmt:message key="admin.serviceCancel"/></a>
+                <a href="service_list.html" class="form-link"><fmt:message key="admin.serviceManageCancel"/></a>
             </div>
         </form>
     </div>

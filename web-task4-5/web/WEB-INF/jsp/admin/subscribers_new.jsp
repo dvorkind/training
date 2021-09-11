@@ -9,13 +9,13 @@
 <fmt:setBundle basename="messages"/>
 
 <fmt:message var="title" key="admin.title"/>
-<fmt:message var="titlePage" key="admin.newSubscribers"/>
+<fmt:message var="titlePage" key="admin.subscribersNewTitle"/>
 <u:html title="${title} : ${titlePage}">
     <c:choose>
         <c:when test="${empty subscribers}">
             <div class="main">
                 <h2 class="text-center no-margin-bottom">
-                    <fmt:message key="admin.newSubscribersEmpty"/>
+                    <fmt:message key="admin.subscribersNewEmpty"/>
                 </h2>
             </div>
         </c:when>
@@ -23,26 +23,26 @@
             <div class="main">
                 <h2 class="text-center no-margin-bottom">${titlePage}</h2>
                 <div class="sort-wrapper">
-                    <span><fmt:message key="admin.subscriberSortTitle"/></span>
+                    <span><fmt:message key="admin.subscribersNewSortTitle"/></span>
                     <form action="subscribers_new.html" method="POST" class="select-form no-margin">
                         <select name="sort" onchange="submit()" class="btn btn-transparent">
                             <option value="firstNameUp" ${sort == 'firstNameUp' ? 'selected' : ''}><fmt:message
-                                    key="admin.subscriberSortFirstNameUp"/></option>
+                                    key="admin.subscribersNewSortFirstNameUp"/></option>
                             <option value="firstNameDown" ${sort == 'firstNameDown' ? 'selected' : ''}><fmt:message
-                                    key="admin.subscriberSortFirstNameDown"/></option>
+                                    key="admin.subscribersNewSortFirstNameDown"/></option>
                             <option value="lastNameUp" ${sort == 'lastNameUp' ? 'selected' : ''}><fmt:message
-                                    key="admin.subscriberSortLastNameUp"/></option>
+                                    key="admin.subscribersNewSortLastNameUp"/></option>
                             <option value="lastNameDown" ${sort == 'lastNameDown' ? 'selected' : ''}><fmt:message
-                                    key="admin.subscriberSortLastNameDown"/></option>
+                                    key="admin.subscribersNewSortLastNameDown"/></option>
                         </select>
                     </form>
                 </div>
                 <table class="data-table">
                     <thead>
                     <tr>
-                        <th width="150"><fmt:message key="admin.subscriberFirstname"/></th>
-                        <th width="150"><fmt:message key="admin.subscriberLastname"/></th>
-                        <th width="150"><fmt:message key="admin.subscriberPhoneNumber"/></th>
+                        <th width="150"><fmt:message key="admin.subscribersNewFirstname"/></th>
+                        <th width="150"><fmt:message key="admin.subscribersNewLastname"/></th>
+                        <th width="150"><fmt:message key="admin.subscribersNewPhoneNumber"/></th>
                         <th></th>
                     </tr>
                     </thead>
@@ -55,7 +55,7 @@
                             <td class="button-cell">
                                 <form action="subscribers_new.html" method="POST">
                                     <input type="hidden" name="id" value="${subscriber.id}">
-                                    <input type="submit" value="<fmt:message key="admin.subscriberActivate"/> ✅"
+                                    <input type="submit" value="<fmt:message key="admin.subscribersNewActivate"/> ✅"
                                            class="btn btn-small">
                                 </form>
                             </td>

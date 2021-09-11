@@ -2,8 +2,12 @@ package by.dvorkin.web.model.service.impl;
 
 import by.dvorkin.web.model.dao.BillDao;
 import by.dvorkin.web.model.dao.DaoException;
+import by.dvorkin.web.model.dao.SubscriberActionDao;
+import by.dvorkin.web.model.dao.SubscriberDao;
+import by.dvorkin.web.model.entity.Action;
 import by.dvorkin.web.model.entity.Bill;
 import by.dvorkin.web.model.entity.Subscriber;
+import by.dvorkin.web.model.entity.SubscriberAction;
 import by.dvorkin.web.model.service.BillService;
 import by.dvorkin.web.model.service.Transaction;
 import by.dvorkin.web.model.service.exceptions.ServiceException;
@@ -14,14 +18,24 @@ import java.util.List;
 
 public class BillServiceImpl implements BillService {
     private BillDao billDao;
+    private SubscriberDao subscriberDao;
+    private SubscriberActionDao subscriberActionDao;
     private Transaction transaction;
 
     public void setTransaction(Transaction transaction) {
         this.transaction = transaction;
     }
 
-    public void setBilDao(BillDao billDao) {
+    public void setBillDao(BillDao billDao) {
         this.billDao = billDao;
+    }
+
+    public void setSubscriberActionDao(SubscriberActionDao subscriberActionDao) {
+        this.subscriberActionDao = subscriberActionDao;
+    }
+
+    public void setSubscriberDao(SubscriberDao subscriberDao) {
+        this.subscriberDao = subscriberDao;
     }
 
     @Override
@@ -100,7 +114,7 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public int payBill(Long id, Subscriber subscriber) throws ServiceException {
+    public void payBill(Long id, Subscriber subscriber) throws ServiceException {
         try {
             transaction.start();
             Bill bill = billDao.read(id);
@@ -108,15 +122,16 @@ public class BillServiceImpl implements BillService {
                 bill.setPaid(true);
                 billDao.update(bill);
                 subscriber.setBalance(subscriber.getBalance() - bill.getSum());
-                if (billDao.readAllUnpaid(subscriber.getId()) != null) {
+                if (billDao.readAllUnpaid(subscriber.getId()).size() == 0 && subscriber.getBalance() >= 0) {
                     subscriber.setBlocked(false);
                 }
-
+                subscriberDao.update(subscriber);
+                SubscriberAction subscriberAction = createSubscriberAction(subscriber.getId(), bill.getSum());
+                subscriberActionDao.update(subscriberAction);
             } else {
                 throw new SubscriberNotEnoughMoneyException(String.valueOf(bill.getSum()));
             }
             transaction.commit();
-            return bill.getSum();
         } catch (DaoException e) {
             try {
                 transaction.rollback();
@@ -130,5 +145,14 @@ public class BillServiceImpl implements BillService {
             }
             throw e;
         }
+    }
+
+    private SubscriberAction createSubscriberAction(Long subscriberId, int sum) {
+        SubscriberAction subscriberAction = new SubscriberAction();
+        subscriberAction.setAction(Action.PAY_BILL);
+        subscriberAction.setSubscriberId(subscriberId);
+        subscriberAction.setDate(new Date());
+        subscriberAction.setSum(sum);
+        return subscriberAction;
     }
 }

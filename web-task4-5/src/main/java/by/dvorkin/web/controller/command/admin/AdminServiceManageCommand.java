@@ -13,8 +13,7 @@ import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import jakarta.servlet.http.HttpSession;
 
 public class AdminServiceManageCommand implements Command {
     private static final String NAME_REGEX = "^[A-Za-zА-Яа-яЁё0-9\\s'-]{5,20}$";
@@ -25,12 +24,14 @@ public class AdminServiceManageCommand implements Command {
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
             ServiceService serviceService = serviceFactory.getServiceService();
             Service service;
+            HttpSession session = req.getSession();
             if (req.getParameter("id") == null) {
                 if (isInputValid(req)) {
                     service = createService(req);
                     serviceService.save(service);
                     Helper.log("ServiceID #" + service.getId() + " was added by Administrator");
-                    return new Forward("/admin/service_list.html");
+                    session.setAttribute("success", "admin.serviceManageAddSuccess");
+                    return new Forward("/success.html");
                 }
             } else {
                 if (isInputValid(req)) {
@@ -38,7 +39,8 @@ public class AdminServiceManageCommand implements Command {
                     service.setId(Long.parseLong(req.getParameter("id")));
                     serviceService.save(service);
                     Helper.log("ServiceID #" + req.getParameter("id") + " was updated by Administrator");
-                    return new Forward("/admin/service_list.html");
+                    session.setAttribute("success", "admin.serviceManageEditSuccess");
+                    return new Forward("/success.html");
                 } else {
                     service = serviceService.getById(Long.parseLong(req.getParameter("id")));
                     setServiceToAttribute(req, service);
@@ -48,7 +50,7 @@ public class AdminServiceManageCommand implements Command {
         } catch (ServiceNameNotUniqueException e) {
             req.setAttribute("id", req.getParameter("id"));
             req.removeAttribute("serviceNameIsValid");
-            req.setAttribute("serviceNameError", "admin.errorExistServiceError");
+            req.setAttribute("serviceNameError", "admin.serviceManageErrorExists");
             return null;
         } catch (ServiceException | FactoryException e) {
             throw new ServletException(e);
@@ -86,11 +88,11 @@ public class AdminServiceManageCommand implements Command {
             return false;
         } else {
             if (serviceName.trim().equals("")) {
-                req.setAttribute("serviceNameError", "admin.serviceErrorEmpty");
+                req.setAttribute("serviceNameError", "admin.serviceManageErrorEmpty");
                 return false;
             }
             if (!serviceName.matches(NAME_REGEX)) {
-                req.setAttribute("serviceNameError", "admin.serviceErrorName");
+                req.setAttribute("serviceNameError", "admin.serviceManageErrorName");
                 return false;
             }
         }
@@ -105,11 +107,11 @@ public class AdminServiceManageCommand implements Command {
             return false;
         } else {
             if (serviceDescription.trim().equals("")) {
-                req.setAttribute("serviceDescriptionError", "admin.serviceErrorEmpty");
+                req.setAttribute("serviceDescriptionError", "admin.serviceManageErrorEmpty");
                 return false;
             }
             if (!serviceDescription.matches(SUBSCRIPTION_REGEX)) {
-                req.setAttribute("serviceDescriptionError", "admin.serviceErrorDescription");
+                req.setAttribute("serviceDescriptionError", "admin.serviceManageErrorDescription");
                 return false;
             }
         }
@@ -126,7 +128,7 @@ public class AdminServiceManageCommand implements Command {
             return false;
         } else {
             if (servicePriceRoubles.trim().equals("") || servicePriceKopecks.trim().equals("")) {
-                req.setAttribute("servicePriceError", "admin.serviceErrorEmpty");
+                req.setAttribute("servicePriceError", "admin.serviceManageErrorEmpty");
                 return false;
             }
         }

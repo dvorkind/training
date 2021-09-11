@@ -13,8 +13,7 @@ import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import jakarta.servlet.http.HttpSession;
 
 public class AdminTariffManageCommand implements Command {
     private static final String NAME_REGEX = "^[A-Za-zА-Яа-яЁё0-9\\s'-]{5,20}$";
@@ -25,12 +24,14 @@ public class AdminTariffManageCommand implements Command {
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
             TariffService tariffService = serviceFactory.getTariffService();
             Tariff tariff;
+            HttpSession session = req.getSession();
             if (req.getParameter("id") == null) {
                 if (isInputValid(req)) {
                     tariff = createTariff(req);
                     tariffService.save(tariff);
                     Helper.log("TariffID #" + tariff.getId() + " was added by Administrator");
-                    return new Forward("/admin/tariff_list.html");
+                    session.setAttribute("success", "admin.tariffManageAddSuccess");
+                    return new Forward("/success.html");
                 }
             } else {
                 if (isInputValid(req)) {
@@ -38,7 +39,8 @@ public class AdminTariffManageCommand implements Command {
                     tariff.setId(Long.parseLong(req.getParameter("id")));
                     tariffService.save(tariff);
                     Helper.log("TariffID #" + req.getParameter("id") + " was updated by Administrator");
-                    return new Forward("/admin/tariff_list.html");
+                    session.setAttribute("success", "admin.tariffManageEditSuccess");
+                    return new Forward("/success.html");
                 } else {
                     tariff = tariffService.getById(Long.parseLong(req.getParameter("id")));
                     setTariffToAttribute(req, tariff);
@@ -48,7 +50,7 @@ public class AdminTariffManageCommand implements Command {
         } catch (TariffNameNotUniqueException e) {
             req.setAttribute("id", req.getParameter("id"));
             req.removeAttribute("tariffNameIsValid");
-            req.setAttribute("tariffNameError", "admin.errorExistTariffError");
+            req.setAttribute("tariffNameError", "admin.tariffManageErrorExist");
             return null;
         } catch (ServiceException | FactoryException e) {
             throw new ServletException(e);
@@ -96,11 +98,11 @@ public class AdminTariffManageCommand implements Command {
             return false;
         } else {
             if (tariffName.trim().equals("")) {
-                req.setAttribute("tariffNameError", "admin.tariffErrorEmpty");
+                req.setAttribute("tariffNameError", "admin.tariffManageErrorEmpty");
                 return false;
             }
             if (!tariffName.matches(NAME_REGEX)) {
-                req.setAttribute("tariffNameError", "admin.tariffErrorName");
+                req.setAttribute("tariffNameError", "admin.tariffManageErrorName");
                 return false;
             }
         }
@@ -115,11 +117,11 @@ public class AdminTariffManageCommand implements Command {
             return false;
         } else {
             if (tariffDescription.trim().equals("")) {
-                req.setAttribute("tariffDescriptionError", "admin.tariffErrorEmpty");
+                req.setAttribute("tariffDescriptionError", "admin.tariffManageErrorEmpty");
                 return false;
             }
             if (!tariffDescription.matches(SUBSCRIPTION_REGEX)) {
-                req.setAttribute("tariffDescriptionError", "admin.tariffErrorDescription");
+                req.setAttribute("tariffDescriptionError", "admin.tariffManageErrorDescription");
                 return false;
             }
         }
@@ -136,7 +138,7 @@ public class AdminTariffManageCommand implements Command {
             return false;
         } else {
             if (tariffSubscriptionFeeRoubles.trim().equals("") || tariffSubscriptionFeeKopecks.trim().equals("")) {
-                req.setAttribute("tariffSubscriptionFeeError", "admin.tariffErrorEmpty");
+                req.setAttribute("tariffSubscriptionFeeError", "admin.tariffManageErrorEmpty");
                 return false;
             }
         }
@@ -153,7 +155,7 @@ public class AdminTariffManageCommand implements Command {
             return false;
         } else {
             if (tariffCallCostRoubles.trim().equals("") || tariffCallCostKopecks.trim().equals("")) {
-                req.setAttribute("tariffCallCostError", "admin.tariffErrorEmpty");
+                req.setAttribute("tariffCallCostError", "admin.tariffManageErrorEmpty");
                 return false;
             }
         }
@@ -170,7 +172,7 @@ public class AdminTariffManageCommand implements Command {
             return false;
         } else {
             if (tariffSmsCostRoubles.trim().equals("") || tariffSmsCostKopecks.trim().equals("")) {
-                req.setAttribute("tariffSmsCostError", "admin.tariffErrorEmpty");
+                req.setAttribute("tariffSmsCostError", "admin.tariffManageErrorEmpty");
                 return false;
             }
         }

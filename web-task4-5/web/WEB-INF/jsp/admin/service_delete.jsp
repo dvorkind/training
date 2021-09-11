@@ -23,8 +23,8 @@
             </p>
             <input type="hidden" name="id" value="${id}">
             <input type="hidden" name="confirmation">
-            <input type="submit" value="<fmt:message key="admin.serviceDelete" />" class="btn">
-            <a href="service_list.html" class="form-link"><fmt:message key="admin.serviceCancel"/></a>
+            <input type="submit" value="<fmt:message key="admin.serviceDeleteButton" />" class="btn">
+            <a href="service_list.html" class="form-link"><fmt:message key="admin.serviceDeleteCancel"/></a>
         </form>
     </div>
 </u:html>

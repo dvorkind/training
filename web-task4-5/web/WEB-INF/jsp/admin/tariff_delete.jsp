@@ -27,15 +27,10 @@
             </c:if>
             <p class="msg"><fmt:message key="admin.tariffDeleteMessageThree"/></p>
             <p class="msg"><fmt:message key="admin.tariffDeleteMessageFour"/></p>
-            <p class="form-message">
-                <c:if test="${not empty tariffDeleteError}">
-                    <span><fmt:message key="${tariffDeleteError}"/></span>
-                </c:if>
-            </p>
             <input type="hidden" name="id" value="${id}">
             <input type="hidden" name="confirmation">
-            <input type="submit" value="<fmt:message key="admin.tariffDelete" />" class="btn">
-            <a href="tariff_list.html" class="form-link"><fmt:message key="admin.tariffCancel"/></a>
+            <input type="submit" value="<fmt:message key="admin.tariffDeleteButton" />" class="btn">
+            <a href="tariff_list.html" class="form-link"><fmt:message key="admin.tariffDeleteCancel"/></a>
         </form>
     </div>
 </u:html>

@@ -10,38 +10,38 @@
 <fmt:setBundle basename="messages"/>
 
 <fmt:message var="title" key="admin.title"/>
-<fmt:message var="titlePage" key="admin.services"/>
+<fmt:message var="titlePage" key="admin.serviceListTitle"/>
 <u:html title="${title} : ${titlePage}">
     <div class="main">
         <c:choose>
             <c:when test="${empty services}">
                 <h2 class="text-center no-margin-bottom">
-                    <fmt:message key="admin.servicesEmpty"/>
+                    <fmt:message key="admin.serviceListEmpty"/>
                 </h2>
                 <a href="service_manage.html" class="btn center-btn no-margin-bottom">
-                    <fmt:message key="admin.serviceAdd"/> ➕
+                    <fmt:message key="admin.serviceListAdd"/> ➕
                 </a>
             </c:when>
             <c:otherwise>
                 <h2 class="text-center no-margin-bottom">${titlePage}</h2>
                 <a href="service_manage.html" class="btn center-btn no-margin-bottom">
-                    <fmt:message key="admin.serviceAdd"/> ➕
+                    <fmt:message key="admin.serviceListAdd"/> ➕
                 </a>
                 <div class="sort-wrapper">
-                    <span><fmt:message key="admin.serviceSortTitle"/></span>
+                    <span><fmt:message key="admin.serviceListSortTitle"/></span>
                     <form action="service_list.html" method="POST" class="select-form no-margin">
                         <select name="sort" onchange="submit()" class="btn btn-transparent">
                             <option value="nameUp" ${sort == 'nameUp' ? 'selected' : ''}>
-                                <fmt:message key="admin.serviceSortNameUp"/>
+                                <fmt:message key="admin.serviceListSortNameUp"/>
                             </option>
                             <option value="nameDown" ${sort == 'nameDown' ? 'selected' : ''}>
-                                <fmt:message key="admin.serviceSortNameDown"/>
+                                <fmt:message key="admin.serviceListSortNameDown"/>
                             </option>
                             <option value="priceUp" ${sort == 'priceUp' ? 'selected' : ''}>
-                                <fmt:message key="admin.serviceSortPriceUp"/>
+                                <fmt:message key="admin.serviceListSortPriceUp"/>
                             </option>
                             <option value="priceDown" ${sort == 'priceDown' ? 'selected' : ''}>
-                                <fmt:message key="admin.serviceSortPriceDown"/>
+                                <fmt:message key="admin.serviceListSortPriceDown"/>
                             </option>
                         </select>
                     </form>
@@ -49,9 +49,9 @@
                 <table class="data-table">
                     <thead>
                     <tr>
-                        <th width="150"><fmt:message key="admin.serviceName"/></th>
-                        <th width="600"><fmt:message key="admin.serviceDescription"/></th>
-                        <th width="150"><fmt:message key="admin.servicePrice"/></th>
+                        <th width="150"><fmt:message key="admin.serviceListName"/></th>
+                        <th width="600"><fmt:message key="admin.serviceListDescription"/></th>
+                        <th width="150"><fmt:message key="admin.serviceListPrice"/></th>
                         <th></th>
                     </tr>
                     </thead>
@@ -62,17 +62,17 @@
                             <td class="pre-wrap">${service.description}</td>
                             <td>
                                 <ctg:money-format balance="${service.price}" locale="${locale}"/>&nbsp<fmt:message
-                                    key="admin.serviceMoney"/>
+                                    key="admin.serviceListMoney"/>
                             </td>
                             <td class="button-cell">
                                 <form action="service_manage.html" method="POST">
                                     <input type="hidden" name="id" value="${service.id}">
-                                    <input type="submit" value="<fmt:message key="admin.serviceEdit"/> 📝"
+                                    <input type="submit" value="<fmt:message key="admin.serviceListEdit"/> 📝"
                                            class="btn btn-small btn-in-cell">
                                 </form>
                                 <form action="service_delete.html" method="POST">
                                     <input type="hidden" name="id" value="${service.id}">
-                                    <input type="submit" value="<fmt:message key="admin.serviceDelete"/> ❌"
+                                    <input type="submit" value="<fmt:message key="admin.serviceListDelete"/> ❌"
                                            class="btn btn-small btn-in-cell">
                                 </form>
                             </td>

@@ -103,7 +103,7 @@ CREATE TABLE IF NOT EXISTS `subscriber_action`
     `id`            INT        NOT NULL AUTO_INCREMENT,
     `subscriber_id` INT(10)    NOT NULL,
     `action`        TINYINT(1) NOT NULL,
-    `date`          DATETIME   NOT NULL,
+    `date`          TIMESTAMP   NOT NULL,
     `sum`           INT(10)    NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`subscriber_id`)

@@ -32,9 +32,9 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public List<Service> getSubscribersService(Long subscriber_id) throws ServiceException {
+    public List<Service> getSubscribersService(Long subscriberId) throws ServiceException {
         try {
-            return serviceDao.readSubscribersService(subscriber_id);
+            return serviceDao.readSubscribersService(subscriberId);
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage());
         }
@@ -100,48 +100,6 @@ public class ServiceServiceImpl implements ServiceService {
         try {
             transaction.start();
             serviceDao.delete(id);
-            transaction.commit();
-        } catch (DaoException e) {
-            try {
-                transaction.rollback();
-            } catch (ServiceException ignored) {
-            }
-            throw new ServiceException(e.getMessage());
-        } catch (ServiceException e) {
-            try {
-                transaction.rollback();
-            } catch (ServiceException ignored) {
-            }
-            throw e;
-        }
-    }
-
-    @Override
-    public void switchOn(Long subscriber_id, Long service_id) throws ServiceException {
-        try {
-            transaction.start();
-            serviceDao.switchOn(subscriber_id, service_id);
-            transaction.commit();
-        } catch (DaoException e) {
-            try {
-                transaction.rollback();
-            } catch (ServiceException ignored) {
-            }
-            throw new ServiceException(e.getMessage());
-        } catch (ServiceException e) {
-            try {
-                transaction.rollback();
-            } catch (ServiceException ignored) {
-            }
-            throw e;
-        }
-    }
-
-    @Override
-    public void switchOff(Long subscriber_id, Long service_id) throws ServiceException {
-        try {
-            transaction.start();
-            serviceDao.switchOff(subscriber_id, service_id);
             transaction.commit();
         } catch (DaoException e) {
             try {

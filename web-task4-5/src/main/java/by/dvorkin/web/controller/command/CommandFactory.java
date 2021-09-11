@@ -13,6 +13,7 @@ import by.dvorkin.web.controller.command.admin.AdminSubscribersNewListCommand;
 import by.dvorkin.web.controller.command.admin.AdminTariffsListCommand;
 import by.dvorkin.web.controller.command.admin.AdminSubscribersListCommand;
 import by.dvorkin.web.controller.command.general.ChangePasswordCommand;
+import by.dvorkin.web.controller.command.general.FailCommand;
 import by.dvorkin.web.controller.command.general.LanguageCommand;
 import by.dvorkin.web.controller.command.general.LoginCommand;
 import by.dvorkin.web.controller.command.general.LogoutCommand;
@@ -25,6 +26,7 @@ import by.dvorkin.web.controller.command.subscriber.SubscriberRefillBalanceComma
 import by.dvorkin.web.controller.command.subscriber.SubscriberServicesCommand;
 import by.dvorkin.web.controller.command.subscriber.SubscriberSmsCommand;
 import by.dvorkin.web.controller.command.general.SuccessCommand;
+import by.dvorkin.web.controller.command.subscriber.SubscriberStatementCommand;
 import by.dvorkin.web.controller.command.subscriber.SubscriberSummaryCommand;
 import by.dvorkin.web.controller.command.subscriber.SubscriberTariffChangeCommand;
 import jakarta.servlet.ServletException;
@@ -45,6 +47,7 @@ public class CommandFactory {
         commands.put("/logout", LogoutCommand.class);
         commands.put("/change_password",  ChangePasswordCommand.class);
         commands.put("/success",  SuccessCommand.class);
+        commands.put("/fail",  FailCommand.class);
 
         commands.put("/admin/admin",  AdminSummaryCommand.class);
         commands.put("/admin/subscribers_new",  AdminSubscribersNewListCommand.class);
@@ -66,6 +69,7 @@ public class CommandFactory {
         commands.put("/subscriber/refill_balance",  SubscriberRefillBalanceCommand.class);
         commands.put("/subscriber/call",  SubscriberCallCommand.class);
         commands.put("/subscriber/sms",  SubscriberSmsCommand.class);
+        commands.put("/subscriber/statement",  SubscriberStatementCommand.class);
     }
 
     public static Command getCommand(String url) throws ServletException {

@@ -22,5 +22,5 @@ public interface BillService {
 
     List<Bill> getAllUnpaid(Long subscriberId) throws ServiceException;
 
-    int payBill(Long id, Subscriber subscriber) throws ServiceException;
+    void payBill(Long id, Subscriber subscriber) throws ServiceException;
 }

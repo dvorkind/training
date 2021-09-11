@@ -106,7 +106,7 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public Tariff readByName(String tariffName) throws DaoException {
-        String sql = "SELECT * FROM `tariff` WHERE BINARY `name` = ?";
+        String sql = "SELECT * FROM `tariff` WHERE `is_deleted` = 0 AND BINARY `name` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, tariffName);
             ResultSet resultSet = statement.executeQuery();

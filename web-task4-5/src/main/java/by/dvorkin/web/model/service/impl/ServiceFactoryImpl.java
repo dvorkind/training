@@ -4,14 +4,14 @@ import by.dvorkin.web.model.dao.AccountDao;
 import by.dvorkin.web.model.dao.BillDao;
 import by.dvorkin.web.model.dao.ServiceDao;
 import by.dvorkin.web.model.dao.SubscriberActionDao;
-import by.dvorkin.web.model.dao.TariffDao;
 import by.dvorkin.web.model.dao.SubscriberDao;
+import by.dvorkin.web.model.dao.TariffDao;
 import by.dvorkin.web.model.dao.impl.AccountDaoImpl;
 import by.dvorkin.web.model.dao.impl.BillDaoImpl;
 import by.dvorkin.web.model.dao.impl.ServiceDaoImpl;
 import by.dvorkin.web.model.dao.impl.SubscriberActionDaoImpl;
-import by.dvorkin.web.model.dao.impl.TariffDaoImpl;
 import by.dvorkin.web.model.dao.impl.SubscriberDaoImpl;
+import by.dvorkin.web.model.dao.impl.TariffDaoImpl;
 import by.dvorkin.web.model.pool.ConnectionPool;
 import by.dvorkin.web.model.pool.ConnectionPoolException;
 import by.dvorkin.web.model.service.AccountService;
@@ -19,9 +19,9 @@ import by.dvorkin.web.model.service.BillService;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.ServiceService;
 import by.dvorkin.web.model.service.SubscriberActionService;
+import by.dvorkin.web.model.service.SubscriberService;
 import by.dvorkin.web.model.service.TariffService;
 import by.dvorkin.web.model.service.Transaction;
-import by.dvorkin.web.model.service.SubscriberService;
 import by.dvorkin.web.model.service.exceptions.FactoryException;
 
 import java.sql.Connection;
@@ -49,6 +49,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
             accountServiceImpl.setTransaction(getTransaction());
             accountServiceImpl.setAccountDao(getAccountDao());
             accountServiceImpl.setSubscriberDao(getSubscriberDao());
+            accountServiceImpl.setSubscriberActionDao(getSubscriberActionDao());
             accountService = accountServiceImpl;
         }
         return accountService;
@@ -60,6 +61,9 @@ public class ServiceFactoryImpl implements ServiceFactory {
             SubscriberServiceImpl subscriberServiceImpl = new SubscriberServiceImpl();
             subscriberServiceImpl.setTransaction(getTransaction());
             subscriberServiceImpl.setSubscriberDao(getSubscriberDao());
+            subscriberServiceImpl.setSubscriberActionDao(getSubscriberActionDao());
+            subscriberServiceImpl.setServiceDao(getServiceDao());
+            subscriberServiceImpl.setBillDao(getBillDao());
             subscriberService = subscriberServiceImpl;
         }
         return subscriberService;
@@ -103,7 +107,9 @@ public class ServiceFactoryImpl implements ServiceFactory {
         if (billService == null) {
             BillServiceImpl billServiceImpl = new BillServiceImpl();
             billServiceImpl.setTransaction(getTransaction());
-            billServiceImpl.setBilDao(getBillDao());
+            billServiceImpl.setBillDao(getBillDao());
+            billServiceImpl.setSubscriberDao(getSubscriberDao());
+            billServiceImpl.setSubscriberActionDao(getSubscriberActionDao());
             billService = billServiceImpl;
         }
         return billService;

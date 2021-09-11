@@ -15,7 +15,7 @@ public interface AccountService {
 
     void update(Account account) throws ServiceException;
 
-    void changePassword(String oldPassword, String newPassword, Account account) throws ServiceException;
+    void changePassword(String oldPassword, String newPassword, Long id) throws ServiceException;
 
     Account resetPassword(Account account) throws ServiceException;
 }
