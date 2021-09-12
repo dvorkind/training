@@ -16,14 +16,9 @@
             <h2 class="text-center">${titlePage} "${serviceName}"</h2>
             <p class="msg"><fmt:message key="admin.serviceDeleteMessageOne"/></p>
             <p class="msg"><fmt:message key="admin.serviceDeleteMessageTwo"/></p>
-            <p class="form-message">
-                <c:if test="${not empty serviceDeleteError}">
-                    <span><fmt:message key="${serviceDeleteError}"/></span>
-                </c:if>
-            </p>
             <input type="hidden" name="id" value="${id}">
             <input type="hidden" name="confirmation">
-            <input type="submit" value="<fmt:message key="admin.serviceDeleteButton" />" class="btn">
+            <input type="submit" value="<fmt:message key="admin.serviceDeleteButton" />" class="btn center-btn">
             <a href="service_list.html" class="form-link"><fmt:message key="admin.serviceDeleteCancel"/></a>
         </form>
     </div>

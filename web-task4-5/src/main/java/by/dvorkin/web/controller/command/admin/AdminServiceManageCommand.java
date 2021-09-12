@@ -6,8 +6,6 @@ import by.dvorkin.web.controller.command.Forward;
 import by.dvorkin.web.model.entity.Service;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.ServiceService;
-import by.dvorkin.web.model.service.exceptions.FactoryException;
-import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.exceptions.ServiceNameNotUniqueException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
@@ -52,9 +50,8 @@ public class AdminServiceManageCommand implements Command {
             req.removeAttribute("serviceNameIsValid");
             req.setAttribute("serviceNameError", "admin.serviceManageErrorExists");
             return null;
-        } catch (ServiceException | FactoryException e) {
+        } catch (Exception e) {
             throw new ServletException(e);
-        } catch (Exception ignored) {
         }
         return null;
     }

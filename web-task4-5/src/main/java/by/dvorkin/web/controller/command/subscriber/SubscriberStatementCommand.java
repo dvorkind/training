@@ -1,14 +1,12 @@
 package by.dvorkin.web.controller.command.subscriber;
 
+import by.dvorkin.web.controller.Helper;
 import by.dvorkin.web.controller.command.Command;
 import by.dvorkin.web.controller.command.Forward;
-import by.dvorkin.web.model.entity.Bill;
 import by.dvorkin.web.model.entity.Subscriber;
 import by.dvorkin.web.model.entity.SubscriberAction;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.SubscriberActionService;
-import by.dvorkin.web.model.service.exceptions.FactoryException;
-import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.exceptions.SubscriberActionNotFoundException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
@@ -16,9 +14,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import java.text.SimpleDateFormat;
-import java.util.Comparator;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class SubscriberStatementCommand implements Command {
@@ -30,28 +27,37 @@ public class SubscriberStatementCommand implements Command {
             String beforeDate = req.getParameter("before");
             String afterDate = req.getParameter("after");
             if (req.getParameter("show") != null && !beforeDate.equals("") && !afterDate.equals("")) {
-                Date dateBefore = new SimpleDateFormat("yyyy-MM-dd").parse(beforeDate);
-                Date dateAfter = new SimpleDateFormat("yyyy-MM-dd").parse(afterDate);
+                LocalDateTime dateBefore = LocalDate.parse(beforeDate).atStartOfDay();
+                LocalDateTime dateAfter = LocalDate.parse(afterDate).atStartOfDay();
                 req.setAttribute("before", beforeDate);
                 req.setAttribute("after", afterDate);
                 Subscriber subscriber = (Subscriber) session.getAttribute("sessionSubscriber");
                 List<SubscriberAction> actionList = subscriberActionService.getActionsBetweenDates(subscriber.getId()
                         , dateBefore, dateAfter);
-                actionList.sort(Comparator.comparing(SubscriberAction::getDate));
-                req.setAttribute("before", new SimpleDateFormat("yyyy-MM-dd").format(dateBefore));
-                req.setAttribute("after", new SimpleDateFormat("yyyy-MM-dd").format(dateAfter));
+
+                String sortBy = req.getParameter("sort");
+                if (sortBy != null) {
+                    Helper.sortActions(sortBy, actionList);
+                    req.setAttribute("sort", sortBy);
+                } else {
+                    Helper.sortActions("dateUp", actionList);
+                    req.setAttribute("sort", "dateUp");
+                }
+
+                int total = actionList.stream().mapToInt(SubscriberAction::getSum).sum();
+                req.setAttribute("total", total);
                 req.setAttribute("actions", actionList);
                 return null;
             }
-            req.setAttribute("before", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-            req.setAttribute("after", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+
+            LocalDateTime nowDate = LocalDateTime.now();
+            req.setAttribute("before", nowDate.withDayOfMonth(1).toLocalDate());
+            req.setAttribute("after", nowDate.toLocalDate());
         } catch (SubscriberActionNotFoundException e) {
             req.setAttribute("error", "subscriber.statementError");
             return null;
-        } catch (ServiceException | FactoryException e) {
-            throw new ServletException(e);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ServletException(e);
         }
         return null;
     }

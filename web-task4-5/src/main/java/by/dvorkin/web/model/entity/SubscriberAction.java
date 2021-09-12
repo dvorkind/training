@@ -1,11 +1,11 @@
 package by.dvorkin.web.model.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class SubscriberAction extends Entity {
     private Long subscriberId;
     private Action action;
-    private Date date;
+    private LocalDateTime date;
     private int sum;
 
     public SubscriberAction() {
@@ -27,11 +27,11 @@ public class SubscriberAction extends Entity {
         this.action = action;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

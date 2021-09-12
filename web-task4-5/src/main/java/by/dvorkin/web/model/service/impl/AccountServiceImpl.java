@@ -16,7 +16,7 @@ import by.dvorkin.web.model.service.exceptions.AccountPasswordIncorrectException
 import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.exceptions.SubscriberPhoneNotUniqueException;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class AccountServiceImpl implements AccountService {
     private AccountDao accountDao;
@@ -187,7 +187,7 @@ public class AccountServiceImpl implements AccountService {
         SubscriberAction subscriberAction = new SubscriberAction();
         subscriberAction.setAction(Action.REGISTRATION);
         subscriberAction.setSubscriberId(subscriberId);
-        subscriberAction.setDate(new Date());
+        subscriberAction.setDate(LocalDateTime.now());
         subscriberAction.setSum(0);
         return subscriberAction;
     }

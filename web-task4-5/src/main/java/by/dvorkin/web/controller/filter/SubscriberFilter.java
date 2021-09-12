@@ -29,6 +29,7 @@ public class SubscriberFilter extends HttpFilter {
         allowedBlockedSubscriberURI.add("/subscriber/bills");
         allowedBlockedSubscriberURI.add("/subscriber/blocked");
         allowedBlockedSubscriberURI.add("/success");
+        allowedBlockedSubscriberURI.add("/fail");
         allowedBlockedSubscriberURI.add("/logout");
         allowedBlockedSubscriberURI.add("/language");
 

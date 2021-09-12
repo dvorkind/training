@@ -15,14 +15,13 @@
     <div class="main">
         <c:choose>
             <c:when test="${empty allServices}">
-                <h2 class="text-center no-margin-bottom">
+                <h2 class="text-center">
                     <fmt:message key="subscriber.servicesEmpty"/>
                 </h2>
             </c:when>
             <c:otherwise>
-                <h2 class="text-center no-margin-bottom">${titlePage}</h2>
-                <p class="msg"><fmt:message key="subscriber.servicesMessageOne"/></p>
-                <p class="msg"><fmt:message key="subscriber.servicesMessageTwo"/></p>
+                <h2 class="text-center">${titlePage}</h2>
+                <p class="msg"><fmt:message key="subscriber.servicesMessage"/></p>
                 <div class="sort-wrapper">
                     <span><fmt:message key="subscriber.servicesSortTitle"/></span>
                     <form action="services.html" method="POST" class="select-form no-margin">

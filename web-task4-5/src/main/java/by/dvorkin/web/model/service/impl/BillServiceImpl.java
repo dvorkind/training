@@ -13,7 +13,7 @@ import by.dvorkin.web.model.service.Transaction;
 import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.exceptions.SubscriberNotEnoughMoneyException;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class BillServiceImpl implements BillService {
@@ -78,9 +78,14 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public Date getLastBill(Long subscriberId) throws ServiceException {
+    public LocalDateTime getLastBill(Long subscriberId) throws ServiceException {
         try {
-            return billDao.readLastBill(subscriberId);
+            LocalDateTime localDateTime = billDao.readLastBill(subscriberId);
+            if (localDateTime == null) {
+                return subscriberActionDao.readSubscriberRegistrationDate(subscriberId);
+            } else {
+                return localDateTime;
+            }
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage());
         }
@@ -126,8 +131,8 @@ public class BillServiceImpl implements BillService {
                     subscriber.setBlocked(false);
                 }
                 subscriberDao.update(subscriber);
-                SubscriberAction subscriberAction = createSubscriberAction(subscriber.getId(), bill.getSum());
-                subscriberActionDao.update(subscriberAction);
+                SubscriberAction subscriberAction = createSubscriberAction(subscriber.getId(), -bill.getSum());
+                subscriberActionDao.create(subscriberAction);
             } else {
                 throw new SubscriberNotEnoughMoneyException(String.valueOf(bill.getSum()));
             }
@@ -151,7 +156,7 @@ public class BillServiceImpl implements BillService {
         SubscriberAction subscriberAction = new SubscriberAction();
         subscriberAction.setAction(Action.PAY_BILL);
         subscriberAction.setSubscriberId(subscriberId);
-        subscriberAction.setDate(new Date());
+        subscriberAction.setDate(LocalDateTime.now());
         subscriberAction.setSum(sum);
         return subscriberAction;
     }

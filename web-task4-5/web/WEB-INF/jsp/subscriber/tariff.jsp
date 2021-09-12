@@ -21,23 +21,7 @@
                 </h2>
             </c:when>
             <c:otherwise>
-                <form action="tariff.html" method="post" class="submit-form reg-form">
-                    <h2 class="text-center">${titlePage}</h2>
-                    <p class="msg"><fmt:message key="subscriber.changeTariffMessageOne"/></p>
-                    <select name="newTariff" class="btn center-btn">
-                        <c:forEach var="tariff" items="${tariffs}">
-                            <c:if test="${tariff.id != id}">
-                                <option value="${tariff.id}">${tariff.name}</option>
-                            </c:if>
-                        </c:forEach>
-                    </select>
-                    <p class="msg"><fmt:message key="subscriber.changeTariffMessageTwo"/></p>
-                    <p class="msg"><fmt:message key="subscriber.changeTariffMessageThree"/></p>
-                    <input type="hidden" name="id" value="${id}">
-                    <input type="hidden" name="confirmation">
-                    <input type="submit" value="<fmt:message key="subscriber.changeTariffButton" />" class="btn">
-                    <a href="subscriber.html" class="form-link"><fmt:message key="subscriber.changeTariffCancel"/></a>
-                </form>
+                <h2 class="text-center">${titlePage}</h2>
                 <div class="sort-wrapper">
                     <span><fmt:message key="subscriber.changeTariffSortTitle"/></span>
                     <form action="tariff.html" method="POST" class="select-form no-margin">
@@ -82,32 +66,37 @@
                     </thead>
                     <tbody>
                     <c:forEach var="tariff" items="${tariffs}">
-                        <c:if test="${tariff.id != id}">
-                            <tr>
-                                <td>${tariff.name}</td>
-                                <td class="pre-wrap">${tariff.description}</td>
-                                <td>
-                                    <ctg:money-format balance="${tariff.subscriptionFee}" locale="${locale}"/>
-                                    &nbsp<fmt:message key="subscriber.changeTariffMoney"/>
-                                </td>
-                                <td>
-                                    <ctg:money-format balance="${tariff.callCost}" locale="${locale}"/>
-                                    &nbsp<fmt:message key="subscriber.changeTariffMoney"/>
-                                </td>
-                                <td>
-                                    <ctg:money-format balance="${tariff.smsCost}" locale="${locale}"/>
-                                    &nbsp<fmt:message key="subscriber.changeTariffMoney"/>
-                                </td>
-                                <td class="button-cell">
-                                    <form action="tariff.html" method="POST">
-                                        <input type="hidden" name="newTariff" value="${tariff.id}">
-                                        <input type="hidden" name="confirmation">
+                        <tr>
+                            <td>${tariff.name}</td>
+                            <td class="pre-wrap">${tariff.description}</td>
+                            <td>
+                                <ctg:money-format balance="${tariff.subscriptionFee}" locale="${locale}"/>
+                                &nbsp<fmt:message key="subscriber.changeTariffMoney"/>
+                            </td>
+                            <td>
+                                <ctg:money-format balance="${tariff.callCost}" locale="${locale}"/>
+                                &nbsp<fmt:message key="subscriber.changeTariffMoney"/>
+                            </td>
+                            <td>
+                                <ctg:money-format balance="${tariff.smsCost}" locale="${locale}"/>
+                                &nbsp<fmt:message key="subscriber.changeTariffMoney"/>
+                            </td>
+                            <td class="button-cell">
+                                <form action="tariff.html" method="POST">
+                                    <input type="hidden" name="newTariff" value="${tariff.id}">
+                                    <input type="hidden" name="confirmation">
+                                    <c:if test="${tariff.id != id}">
                                         <input type="submit" value="<fmt:message key="subscriber.changeTariffChoose"/>"
                                                class="btn btn-small btn-in-cell">
-                                    </form>
-                                </td>
-                            </tr>
-                        </c:if>
+                                    </c:if>
+                                    <c:if test="${tariff.id == id}">
+                                        <input type="submit" value="<fmt:message key="subscriber.changeTariffChoose"/>"
+                                               class="btn btn-small btn-in-cell" disabled>
+                                    </c:if>
+
+                                </form>
+                            </td>
+                        </tr>
                     </c:forEach>
                     </tbody>
                 </table>

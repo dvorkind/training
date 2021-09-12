@@ -34,4 +34,6 @@ public interface SubscriberService {
     void setBlock(Long id) throws ServiceException;
 
     void activate(Long id) throws ServiceException;
+
+    Boolean invoiceBill(Long id) throws ServiceException;
 }

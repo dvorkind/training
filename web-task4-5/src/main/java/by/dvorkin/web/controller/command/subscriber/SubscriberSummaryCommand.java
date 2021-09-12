@@ -7,8 +7,6 @@ import by.dvorkin.web.model.entity.Subscriber;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.ServiceService;
 import by.dvorkin.web.model.service.TariffService;
-import by.dvorkin.web.model.service.exceptions.FactoryException;
-import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,11 +26,8 @@ public class SubscriberSummaryCommand implements Command {
             req.setAttribute("tariff", tariffService.getById(subscriber.getTariff()));
             List<Service> subscribersServices = serviceService.getSubscribersService(subscriber.getId());
             req.setAttribute("subscribersServices", subscribersServices);
-            // TODO: статистику
-            return null;
-        } catch (ServiceException | FactoryException e) {
+        } catch (Exception e) {
             throw new ServletException(e);
-        } catch (Exception ignored) {
         }
         return null;
     }

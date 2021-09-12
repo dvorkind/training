@@ -15,33 +15,38 @@
     <div class="main">
         <c:choose>
             <c:when test="${empty allBills}">
-                <h2 class="text-center no-margin-bottom">
+                <h2 class="text-center">
                     <fmt:message key="admin.billsEmpty"/>
                 </h2>
                 <p class="msg"><fmt:message key="admin.billsMessageOne"/></p>
                 <p class="msg"><fmt:message key="admin.billsMessageTwo"/></p>
-                <form action="bills.html" method="POST">
+                <p class="form-message center-message">
+                    <c:if test="${not empty error}">
+                        <span><fmt:message key="${error}"/></span>
+                    </c:if>
+                </p>
+                <form action="subscriber_bills.html" method="POST">
                     <input type="hidden" name="subscriberId" value="${subscriberId}">
                     <input type="hidden" name="new">
                     <input type="submit" value="<fmt:message key="admin.billsNew"/> ➕"
-                           class="btn btn-small btn-in-cell">
+                           class="btn center-btn width-auto no-margin-bottom">
                 </form>
             </c:when>
             <c:otherwise>
-                <h2 class="text-center no-margin-bottom">${titlePage}</h2>
+                <h2 class="text-center">${titlePage}</h2>
                 <p class="msg"><fmt:message key="admin.billsMessageOne"/></p>
                 <p class="msg"><fmt:message key="admin.billsMessageTwo"/></p>
-                <form action="bills.html" method="POST">
+                <p class="form-message center-message">
+                    <c:if test="${not empty error}">
+                        <span><fmt:message key="${error}"/></span>
+                    </c:if>
+                </p>
+                <form action="subscriber_bills.html" method="POST">
                     <input type="hidden" name="subscriberId" value="${subscriberId}">
                     <input type="hidden" name="new">
                     <input type="submit" value="<fmt:message key="admin.billsNew"/> ➕"
-                           class="btn btn-small btn-in-cell">
+                           class="btn center-btn width-auto no-margin-bottom">
                 </form>
-                <p class="form-message">
-                    <c:if test="${not empty billError}">
-                        <span><fmt:message key="${billError}"/></span>
-                    </c:if>
-                </p>
                 <div class="sort-wrapper">
                     <span><fmt:message key="admin.billsSortTitle"/></span>
                     <form action="subscriber_bills.html" method="POST" class="select-form no-margin">
@@ -96,9 +101,9 @@
                                 </c:choose>
                             </td>
                             <td class="button-cell">
-                                <form action="bills.html" method="POST">
-                                    <input type="hidden" name="id" value="${bill.id}">
-                                    <input type="hidden" name="delete">
+                                <form action="subscriber_bills.html" method="POST">
+                                    <input type="hidden" name="billId" value="${bill.id}">
+                                    <input type="hidden" name="subscriberId" value="${subscriberId}">
                                     <input type="submit" value="<fmt:message key="admin.billsDelete"/>"
                                            class="btn btn-small btn-in-cell">
                                 </form>

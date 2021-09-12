@@ -33,7 +33,7 @@
             <name>dateTime</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>java.util.Date</type>
+            <type>java.time.LocalDateTime</type>
         </attribute>
         <attribute>
             <name>locale</name>

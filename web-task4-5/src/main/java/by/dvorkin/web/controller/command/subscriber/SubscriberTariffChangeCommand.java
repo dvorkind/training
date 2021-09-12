@@ -8,8 +8,6 @@ import by.dvorkin.web.model.entity.Tariff;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.SubscriberService;
 import by.dvorkin.web.model.service.TariffService;
-import by.dvorkin.web.model.service.exceptions.FactoryException;
-import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.exceptions.SubscriberCanNotChangeTariffException;
 import by.dvorkin.web.model.service.exceptions.SubscriberNotEnoughMoneyException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
@@ -52,9 +50,8 @@ public class SubscriberTariffChangeCommand implements Command {
         } catch (SubscriberNotEnoughMoneyException e) {
             session.setAttribute("fail", "subscriber.changeTariffError");
             return new Forward("/fail.html");
-        } catch (ServiceException | FactoryException e) {
+        } catch (Exception e) {
             throw new ServletException(e);
-        } catch (Exception ignored) {
         }
         return null;
     }

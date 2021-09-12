@@ -4,8 +4,6 @@ import by.dvorkin.web.controller.command.Command;
 import by.dvorkin.web.controller.command.Forward;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.SubscriberService;
-import by.dvorkin.web.model.service.exceptions.FactoryException;
-import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,10 +15,8 @@ public class AdminSummaryCommand implements Command {
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
             SubscriberService subscriberService = serviceFactory.getSubscriberService();
             //TODO: статистику
-            return null;
-        } catch (ServiceException | FactoryException e) {
+        } catch (Exception e) {
             throw new ServletException(e);
-        } catch (Exception ignored) {
         }
         return null;
     }

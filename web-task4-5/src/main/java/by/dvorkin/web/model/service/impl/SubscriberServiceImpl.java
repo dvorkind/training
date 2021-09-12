@@ -5,7 +5,9 @@ import by.dvorkin.web.model.dao.DaoException;
 import by.dvorkin.web.model.dao.ServiceDao;
 import by.dvorkin.web.model.dao.SubscriberActionDao;
 import by.dvorkin.web.model.dao.SubscriberDao;
+import by.dvorkin.web.model.dao.TariffDao;
 import by.dvorkin.web.model.entity.Action;
+import by.dvorkin.web.model.entity.Bill;
 import by.dvorkin.web.model.entity.Service;
 import by.dvorkin.web.model.entity.Subscriber;
 import by.dvorkin.web.model.entity.SubscriberAction;
@@ -16,15 +18,17 @@ import by.dvorkin.web.model.service.exceptions.SubscriberCanNotChangeTariffExcep
 import by.dvorkin.web.model.service.exceptions.SubscriberNotEnoughMoneyException;
 import by.dvorkin.web.model.service.exceptions.SubscriberNotExistException;
 
-import java.util.Date;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class SubscriberServiceImpl implements SubscriberService {
-    private static final long DAY_IN_MILLISECONDS = 86400000L;
     private static final int TARIFF_CHANGE_COST = 100;
     private SubscriberDao subscriberDao;
     private SubscriberActionDao subscriberActionDao;
     private ServiceDao serviceDao;
+    private TariffDao tariffDao;
     private BillDao billDao;
     private Transaction transaction;
 
@@ -42,6 +46,10 @@ public class SubscriberServiceImpl implements SubscriberService {
 
     public void setServiceDao(ServiceDao serviceDao) {
         this.serviceDao = serviceDao;
+    }
+
+    public void setTariffDao(TariffDao tariffDao) {
+        this.tariffDao = tariffDao;
     }
 
     public void setBillDao(BillDao billDao) {
@@ -111,7 +119,7 @@ public class SubscriberServiceImpl implements SubscriberService {
             if (subscriber.getBalance() >= 0) {
                 subscriber.setBalance(subscriber.getBalance() - sum);
                 subscriberDao.update(subscriber);
-                SubscriberAction subscriberAction = createSubscriberAction(subscriber.getId(), action, sum);
+                SubscriberAction subscriberAction = createSubscriberAction(subscriber.getId(), action, -sum);
                 subscriberActionDao.create(subscriberAction);
             } else {
                 throw new SubscriberNotEnoughMoneyException(String.valueOf(sum));
@@ -224,14 +232,19 @@ public class SubscriberServiceImpl implements SubscriberService {
     public void changeTariff(Subscriber subscriber, Long tariffId) throws ServiceException {
         try {
             transaction.start();
-            Date dateNow = new Date();
-            Date dateLast = subscriberActionDao.readLastChangeTariff(subscriber.getId());
-            if (dateLast.getTime() > dateNow.getTime() || (dateNow.getTime() - dateLast.getTime()) > DAY_IN_MILLISECONDS) {
+            LocalDateTime dateNow = LocalDateTime.now();
+            LocalDateTime dateLast = subscriberActionDao.readLastChangeTariff(subscriber.getId());
+            if (dateLast == null) {
+                dateLast = subscriberActionDao.readSubscriberRegistrationDate(subscriber.getId());
+            }
+            Duration duration1 = Duration.between(dateLast, dateNow);
+            Duration duration2 = Duration.ofHours(24);
+            if (duration1.compareTo(duration2) > 0) {
                 subscriber.setTariff(tariffId);
                 subtractBalance(subscriber, TARIFF_CHANGE_COST, Action.CHANGE_TARIFF);
             } else {
                 throw new SubscriberCanNotChangeTariffException(String.format("%1$td.%1$tm.%1$tY %1$tH:%1$tM:%1$tS",
-                        new Date(dateLast.getTime() + DAY_IN_MILLISECONDS)));
+                        dateLast.plusDays(1)));
             }
             transaction.commit();
         } catch (DaoException e) {
@@ -263,12 +276,60 @@ public class SubscriberServiceImpl implements SubscriberService {
         update(subscriber);
     }
 
+    @Override
+    public Boolean invoiceBill(Long id) throws ServiceException {
+        try {
+            transaction.start();
+            LocalDateTime lastDate = billDao.readLastBill(id);
+            if (lastDate == null){
+                lastDate = subscriberActionDao.readSubscriberRegistrationDate(id);
+            }
+            LocalDateTime nowDate = LocalDateTime.now();
+            int daysAfterLastBill = (int) ChronoUnit.DAYS.between(lastDate, nowDate);
+            if (daysAfterLastBill > 0) {
+                List<Service> servicesList = serviceDao.readSubscribersService(id);
+                Subscriber subscriber = subscriberDao.read(id);
+                int sumServicesFee = servicesList.stream().mapToInt(Service::getPrice).sum();
+                int sumTariff = tariffDao.read(subscriber.getTariff()).getSubscriptionFee();
+                int dailyFee = (sumServicesFee + sumTariff) / 30;
+                int billSum = dailyFee * daysAfterLastBill;
+                billDao.create(createBill(id, billSum));
+            } else {
+                transaction.rollback();
+                return false;
+            }
+            transaction.commit();
+            return true;
+        } catch (DaoException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw new ServiceException(e.getMessage());
+        } catch (ServiceException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw e;
+        }
+    }
+
     private SubscriberAction createSubscriberAction(Long subscriberId, Action action, int sum) {
         SubscriberAction subscriberAction = new SubscriberAction();
         subscriberAction.setAction(action);
         subscriberAction.setSubscriberId(subscriberId);
-        subscriberAction.setDate(new Date());
+        subscriberAction.setDate(LocalDateTime.now());
         subscriberAction.setSum(sum);
         return subscriberAction;
+    }
+
+    private Bill createBill(Long subscriberId, int sum) {
+        Bill bill = new Bill();
+        bill.setSubscriberId(subscriberId);
+        bill.setInvoiceDate(LocalDateTime.now());
+        bill.setSum(sum);
+        bill.setPaid(false);
+        return bill;
     }
 }

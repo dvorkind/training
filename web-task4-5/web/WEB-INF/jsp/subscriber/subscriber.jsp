@@ -17,71 +17,52 @@
         <h2 class="text-center">
             <fmt:message key="subscriber.mainHello"/>, ${sessionSubscriber.firstname}!
         </h2>
-        <table class="data-table">
-            <thead>
-            <tr>
-                <th width="150"><fmt:message key="subscriber.mainFirstname"/></th>
-                <th width="300"><fmt:message key="subscriber.mainLastname"/></th>
-                <th width="150"><fmt:message key="subscriber.mainPhoneNumber"/></th>
-                <th width="150"><fmt:message key="subscriber.mainBalance"/></th>
-                <th width="150"><fmt:message key="subscriber.mainStatus"/></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>${sessionSubscriber.firstname}</td>
-                <td>${sessionSubscriber.lastname}</td>
-                <td>${sessionSubscriber.phoneNumber}</td>
-                <td>
-                    <ctg:money-format balance="${sessionSubscriber.balance}" locale="${locale}"/>
-                    &nbsp<fmt:message key="subscriber.mainMoney"/>
-                </td>
-                <td>
-                    <c:choose>
-                        <c:when test="${sessionSubscriber.blocked}">
-                            <fmt:message key="subscriber.mainBlocked"/>
-                        </c:when>
-                        <c:otherwise>
-                            <fmt:message key="subscriber.mainActive"/>
-                        </c:otherwise>
-                    </c:choose>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="summary">
+            <table>
+                <tr>
+                    <td><fmt:message key="subscriber.mainFirstname"/></td>
+                    <td>${sessionSubscriber.firstname}</td>
+                </tr>
+                <tr>
+                    <td><fmt:message key="subscriber.mainLastname"/></td>
+                    <td>${sessionSubscriber.lastname}</td>
+                </tr>
+                <tr>
+                    <td><fmt:message key="subscriber.mainPhoneNumber"/></td>
+                    <td>${sessionSubscriber.phoneNumber}</td>
+                </tr>
+                <tr>
+                    <td><fmt:message key="subscriber.mainTariff"/></td>
+                    <td>${tariff.name}</td>
+                </tr>
+                <tr>
+                    <td><fmt:message key="subscriber.mainBalance"/></td>
+                    <td><ctg:money-format balance="${sessionSubscriber.balance}" locale="${locale}"/>&nbsp<fmt:message key="subscriber.mainMoney"/></td>
+                </tr>
+                <tr>
+                    <td><fmt:message key="subscriber.mainStatus"/></td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${subscriber.blocked}">
+                                <fmt:message key="subscriber.mainBlocked"/>
+                            </c:when>
+                            <c:otherwise>
+                                <fmt:message key="subscriber.mainActive"/>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                </tr>
+            </table>
+            <div class="user-actions">
+                <a href="call.html" class="btn">
+                    <fmt:message key="subscriber.mainCallButton"/>
+                </a>
+                <a href="sms.html" class="btn">
+                    <fmt:message key="subscriber.mainSmsButton"/>
+                </a>
+            </div>
+        </div>
 
-        <h2 class="text-center">
-            <fmt:message key="subscriber.mainTariff"/>
-        </h2>
-        <table class="data-table">
-            <thead>
-            <tr>
-                <th width="150"><fmt:message key="subscriber.mainTariffName"/></th>
-                <th width="300"><fmt:message key="subscriber.mainTariffDescription"/></th>
-                <th width="150"><fmt:message key="subscriber.mainTariffSubscriptionFee"/></th>
-                <th width="150"><fmt:message key="subscriber.mainTariffCallCost"/></th>
-                <th width="150"><fmt:message key="subscriber.mainTariffSmsCost"/></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>${tariff.name}</td>
-                <td class="pre-wrap">${tariff.description}</td>
-                <td>
-                    <ctg:money-format balance="${tariff.subscriptionFee}" locale="${locale}"/>
-                    &nbsp<fmt:message key="subscriber.mainTariffMoney"/>
-                </td>
-                <td>
-                    <ctg:money-format balance="${tariff.callCost}" locale="${locale}"/>
-                    &nbsp<fmt:message key="subscriber.mainTariffMoney"/>
-                </td>
-                <td>
-                    <ctg:money-format balance="${tariff.smsCost}" locale="${locale}"/>
-                    &nbsp<fmt:message key="subscriber.mainTariffMoney"/>
-                </td>
-            </tr>
-            </tbody>
-        </table>
         <c:if test="${not empty subscribersServices}">
             <h2 class="text-center">
                 <fmt:message key="subscriber.mainActiveServices"/>
@@ -108,11 +89,5 @@
                 </tbody>
             </table>
         </c:if>
-        <a href="call.html" class="btn center-btn">
-            <fmt:message key="subscriber.mainCallButton"/>
-        </a>
-        <a href="sms.html" class="btn center-btn">
-            <fmt:message key="subscriber.mainSmsButton"/>
-        </a>
     </div>
 </u:html>

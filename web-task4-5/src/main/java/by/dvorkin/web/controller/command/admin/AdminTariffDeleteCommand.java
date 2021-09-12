@@ -6,8 +6,6 @@ import by.dvorkin.web.controller.command.Forward;
 import by.dvorkin.web.model.entity.Tariff;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.TariffService;
-import by.dvorkin.web.model.service.exceptions.FactoryException;
-import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.exceptions.TariffLastException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
@@ -45,9 +43,8 @@ public class AdminTariffDeleteCommand implements Command {
         } catch (TariffLastException e) {
             session.setAttribute("fail", "admin.tariffDeleteError");
             return new Forward("/fail.html");
-        } catch (ServiceException | FactoryException e) {
+        } catch (Exception e) {
             throw new ServletException(e);
-        } catch (Exception ignored) {
         }
         return null;
     }

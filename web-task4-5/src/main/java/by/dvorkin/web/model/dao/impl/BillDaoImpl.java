@@ -10,8 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class BillDaoImpl implements BillDao {
@@ -24,10 +24,11 @@ public class BillDaoImpl implements BillDao {
 
     @Override
     public Long create(Bill bill) throws DaoException {
-        String sql = "INSERT INTO `bill` (`subscriber_id`, `invoice_date`, `sum`, `is_paid`, `is_deleted`) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO `bill` (`subscriber_id`, `invoice_date`, `sum`, `is_paid`, `is_deleted`) VALUES (?," +
+                " ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setLong(1, bill.getSubscriberId());
-            statement.setTimestamp(2, new Timestamp(bill.getInvoiceDate().getTime()));
+            statement.setTimestamp(2, Timestamp.valueOf(bill.getInvoiceDate()));
             statement.setInt(3, bill.getSum());
             statement.setBoolean(4, bill.isPaid());
             statement.setInt(5, 0);
@@ -84,15 +85,16 @@ public class BillDaoImpl implements BillDao {
     }
 
     @Override
-    public Date readLastBill(Long subscriberId) throws DaoException {
-        String sql = "SELECT * FROM `bill` WHERE `invoice_date` IN (SELECT max(date) FROM `bill` " + "WHERE " +
-                "`is_deleted` = 0 AND `subscriber_id` = ?)";
+    public LocalDateTime readLastBill(Long subscriberId) throws DaoException {
+        String sql =
+                "SELECT * FROM `bill` WHERE `invoice_date` IN (SELECT max(invoice_date) FROM `bill` " + "WHERE " +
+                        "`is_deleted` = 0 AND `subscriber_id` = ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, subscriberId);
             ResultSet resultSet = statement.executeQuery();
-            Date lastDate = new Date();
+            LocalDateTime lastDate = null;
             if (resultSet.next()) {
-                lastDate = new Date(resultSet.getTimestamp("invoice_date").getTime());
+                lastDate = resultSet.getTimestamp("invoice_date").toLocalDateTime();
             }
             resultSet.close();
             return lastDate;
@@ -138,7 +140,7 @@ public class BillDaoImpl implements BillDao {
         Bill bill = new Bill();
         bill.setId(resultSet.getLong("bill.id"));
         bill.setSubscriberId(resultSet.getLong("bill.subscriber_id"));
-        bill.setInvoiceDate(new java.util.Date(resultSet.getTimestamp("bill.invoice_date").getTime()));
+        bill.setInvoiceDate(resultSet.getTimestamp("bill.invoice_date").toLocalDateTime());
         bill.setSum(resultSet.getInt("bill.sum"));
         bill.setPaid(resultSet.getBoolean("bill.is_paid"));
         return bill;

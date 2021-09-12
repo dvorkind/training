@@ -63,6 +63,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
             subscriberServiceImpl.setSubscriberDao(getSubscriberDao());
             subscriberServiceImpl.setSubscriberActionDao(getSubscriberActionDao());
             subscriberServiceImpl.setServiceDao(getServiceDao());
+            subscriberServiceImpl.setTariffDao(getTariffDao());
             subscriberServiceImpl.setBillDao(getBillDao());
             subscriberService = subscriberServiceImpl;
         }

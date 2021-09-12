@@ -85,8 +85,9 @@ h2.no-margin-bottom {
 .submit-form {
     width: 270px;
     margin: 0 auto;
-    background-color: white;
     padding: 30px;
+    background: white;
+    border-radius: 10px;
 }
 
 .reg-form {
@@ -111,6 +112,11 @@ h2.no-margin-bottom {
 
 .reg-form .input-group {
     margin-top: 5px;
+}
+
+.reg-form .input-group.center-input {
+    text-align: center;
+    margin-top: 10px;
 }
 
 .input-group label {
@@ -151,9 +157,15 @@ h2.no-margin-bottom {
     width: 100px;
 }
 
+.input-group.center-input input.small-input {
+    width: 60px;
+}
+
+
 .pre-wrap {
     white-space: pre-wrap;
 }
+
 .validation-indicator {
     position: absolute;
     color: lawngreen;
@@ -166,6 +178,10 @@ h2.no-margin-bottom {
     font-size: 13px;
     margin: 10px 0;
     color: red;
+}
+
+.form-message.center-message {
+    text-align: center;
 }
 
 .flex {
@@ -188,6 +204,7 @@ select.btn option {
     background: white;
     color: black;
 }
+
 header select.btn option {
     background: #282c2f;
     color: white;
@@ -198,6 +215,11 @@ header select.btn option {
     width: 100%;
     padding: 10px;
 }
+
+.btn[type="submit"].width-auto {
+    width: auto;
+}
+
 .btn-small[type="submit"] {
     display: inline-block;
     width: auto;
@@ -227,7 +249,12 @@ td .btn-small.btn-in-cell {
     margin: 5px 0;
 }
 
-.btn-transparent{
+td .btn-small.btn-in-cell[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-transparent {
     background: transparent;
     padding: 5px 0;
     color: black;
@@ -279,6 +306,7 @@ nav li {
     border: 1px solid #eee;
     table-layout: fixed;
 }
+
 .data-table th {
     font-weight: bold;
     padding: 5px;
@@ -286,15 +314,30 @@ nav li {
     border: 1px solid #dddddd;
     color: white;
 }
-.data-table td{
+
+.data-table td {
     padding: 5px 10px;
     border: 1px solid #eee;
     text-align: left;
 }
-.data-table tbody tr:nth-child(odd){
+
+.data-table td.text-right {
+    text-align: right;
+}
+
+.data-table td.red {
+    color: red;
+}
+
+.data-table td.green {
+    color: green;
+}
+
+.data-table tbody tr:nth-child(odd) {
     background: #fff;
 }
-.data-table tbody tr:nth-child(even){
+
+.data-table tbody tr:nth-child(even) {
     background: #F7F7F7;
 }
 
@@ -306,6 +349,33 @@ nav li {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+}
+
+.summary {
+    margin: 0 auto 20px auto;
+    width: 300px;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+}
+
+.summary table {
+    margin: auto;
+}
+
+.summary table td:first-child {
+    padding-right: 10px;
+    font-weight: bold;
+}
+
+.user-actions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.table-total {
+    font-weight: bold;
 }
 
 footer {

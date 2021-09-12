@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `bill`
 (
     `id`            INT        NOT NULL AUTO_INCREMENT,
     `subscriber_id` INT(10)    NOT NULL,
-    `invoice_date`  DATE       NOT NULL,
+    `invoice_date`  TIMESTAMP  NOT NULL,
     `sum`           INT(10)    NOT NULL,
     `is_paid`       TINYINT(1) NOT NULL,
     `is_deleted`    TINYINT(1) NOT NULL,
@@ -103,7 +103,7 @@ CREATE TABLE IF NOT EXISTS `subscriber_action`
     `id`            INT        NOT NULL AUTO_INCREMENT,
     `subscriber_id` INT(10)    NOT NULL,
     `action`        TINYINT(1) NOT NULL,
-    `date`          TIMESTAMP   NOT NULL,
+    `date`          TIMESTAMP  NOT NULL,
     `sum`           INT(10)    NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`subscriber_id`)
@@ -170,3 +170,15 @@ VALUES ('2', 'Иван', 'Иванов', '+375000000000', 0, 1, 0, 0, 0),
        ('9', 'Сидор', 'Сидоров', '+375000000007', 0, 1, 0, 0, 0),
        ('10', 'Василий', 'Васильев', '+375000000008', 0, 1, 0, 0, 0),
        ('11', 'Марина', 'Маринина', '+375000000009', 0, 1, 0, 0, 0);
+
+INSERT INTO `subscriber_action` (`subscriber_id`, `action`, `date`, `sum`)
+VALUES (1, 0, '2021-09-01 00:00:00', 0),
+       (2, 0, '2021-09-01 00:00:00', 0),
+       (3, 0, '2021-09-01 00:00:00', 0),
+       (4, 0, '2021-09-01 00:00:00', 0),
+       (5, 0, '2021-09-01 00:00:00', 0),
+       (6, 0, '2021-09-01 00:00:00', 0),
+       (7, 0, '2021-09-01 00:00:00', 0),
+       (8, 0, '2021-09-01 00:00:00', 0),
+       (9, 0, '2021-09-01 00:00:00', 0),
+       (10, 0, '2021-09-01 00:00:00', 0);

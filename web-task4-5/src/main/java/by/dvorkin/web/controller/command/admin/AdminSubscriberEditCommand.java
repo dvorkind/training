@@ -10,8 +10,6 @@ import by.dvorkin.web.model.service.AccountService;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.SubscriberService;
 import by.dvorkin.web.model.service.TariffService;
-import by.dvorkin.web.model.service.exceptions.FactoryException;
-import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,30 +30,24 @@ public class AdminSubscriberEditCommand implements Command {
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
             SubscriberService subscriberService = serviceFactory.getSubscriberService();
             Subscriber subscriber = subscriberService.getById(Long.parseLong(req.getParameter("id")));
-
             if (req.getParameter("block") != null) {
                 subscriber.setBlocked(!subscriber.isBlocked());
                 subscriberService.update(subscriber);
                 Helper.log("UserID #" + subscriber.getId() + " was blocked by Administrator");
                 return new Forward("/admin/subscribers_all.html");
             }
-
             AccountService accountService = serviceFactory.getAccountService();
             Account account = accountService.getById(subscriber.getAccountId());
-
             if (req.getParameter("resetPassword") != null) {
                 accountService.resetPassword(account);
                 Helper.log("User " + account.getLogin() + " password reset by Administrator");
                 return new Forward("/admin/subscribers_all.html");
             }
-
             TariffService tariffService = serviceFactory.getTariffService();
             List<Tariff> tariffs = tariffService.getAll();
-
             req.setAttribute("subscriber", subscriber);
             req.setAttribute("account", account);
             req.setAttribute("tariffs", tariffs);
-
             if (req.getParameter("confirmation") != null) {
                 if (isLoginValid(req, account) && !account.getLogin().equals(req.getParameter("login"))) {
                     if (accountService.getByLogin(req.getParameter("login")) != null) {
@@ -64,7 +56,6 @@ public class AdminSubscriberEditCommand implements Command {
                         return null;
                     }
                 }
-
                 if (isPersonalInfoValid(req, subscriber) && !subscriber.getPhoneNumber()
                         .equals(req.getParameter("phoneNumber"))) {
                     if (subscriberService.getByPhoneNumber((String) req.getAttribute("phoneNumber")) != null) {
@@ -73,22 +64,18 @@ public class AdminSubscriberEditCommand implements Command {
                         return null;
                     }
                 }
-
                 account.setLogin(req.getParameter("login"));
                 accountService.update(account);
-
                 subscriber.setFirstname(req.getParameter("firstname"));
                 subscriber.setLastname(req.getParameter("lastname"));
                 subscriber.setPhoneNumber(req.getParameter("phoneNumber"));
                 subscriber.setTariff(Long.parseLong(req.getParameter("newTariff")));
                 subscriberService.update(subscriber);
-
                 Helper.log("UserID #" + subscriber.getId() + " was updated by Administrator");
                 return new Forward("/admin/subscribers_all.html");
             }
-        } catch (ServiceException | FactoryException e) {
+        } catch (Exception e) {
             throw new ServletException(e);
-        } catch (Exception ignored) {
         }
         return null;
     }

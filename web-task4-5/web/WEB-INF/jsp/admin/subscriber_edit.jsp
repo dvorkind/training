@@ -113,7 +113,7 @@
         </form>
         <form action="subscriber_edit.html" method="POST">
             <input type="hidden" name="id" value="${subscriber.id}">
-            <input type="hidden" name="block" value="${subscriber.id}">
+            <input type="hidden" name="block">
             <c:choose>
                 <c:when test="${subscriber.blocked}">
                     <input type="submit" value="<fmt:message key="admin.subscriberEditUnblock"/>  &#10004" class="btn">
@@ -125,7 +125,7 @@
         </form>
         <form action="subscriber_edit.html" method="POST">
             <input type="hidden" name="id" value="${subscriber.id}">
-            <input type="hidden" name="resetPassword" value="${subscriber.id}">
+            <input type="hidden" name="resetPassword">
             <input type="submit" value="<fmt:message key="admin.subscriberEditResetPassword"/>  🔑" class="btn">
         </form>
         <form action="subscriber_bills.html" method="POST">

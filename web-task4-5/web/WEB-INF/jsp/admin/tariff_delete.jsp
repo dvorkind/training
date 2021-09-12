@@ -29,7 +29,7 @@
             <p class="msg"><fmt:message key="admin.tariffDeleteMessageFour"/></p>
             <input type="hidden" name="id" value="${id}">
             <input type="hidden" name="confirmation">
-            <input type="submit" value="<fmt:message key="admin.tariffDeleteButton" />" class="btn">
+            <input type="submit" value="<fmt:message key="admin.tariffDeleteButton" />" class="btn center-btn">
             <a href="tariff_list.html" class="form-link"><fmt:message key="admin.tariffDeleteCancel"/></a>
         </form>
     </div>

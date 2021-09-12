@@ -6,8 +6,7 @@ import by.dvorkin.web.controller.command.Forward;
 import by.dvorkin.web.model.entity.Bill;
 import by.dvorkin.web.model.service.BillService;
 import by.dvorkin.web.model.service.ServiceFactory;
-import by.dvorkin.web.model.service.exceptions.FactoryException;
-import by.dvorkin.web.model.service.exceptions.ServiceException;
+import by.dvorkin.web.model.service.SubscriberService;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,29 +20,33 @@ public class AdminSubscriberBillsCommand implements Command {
         if (req.getParameter("subscriberId") == null) {
             return new Forward("/admin/subscribers_all.html");
         }
-
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
             Long subscriberId = Long.parseLong(req.getParameter("subscriberId"));
             req.setAttribute("subscriberId", subscriberId);
-
             BillService billService = serviceFactory.getBillService();
-
+            if (req.getParameter("billId") != null) {
+                billService.delete(Long.parseLong(req.getParameter("billId")));
+            }
+            if (req.getParameter("new") != null) {
+                SubscriberService subscriberService = serviceFactory.getSubscriberService();
+                if (subscriberService.invoiceBill(subscriberId)) {
+                    Helper.log("User # " + subscriberId + " was billed by Administrator");
+                } else {
+                    req.setAttribute("error", "admin.billsError");
+                }
+            }
             List<Bill> allBills = billService.getAll(subscriberId);
             req.setAttribute("allBills", allBills);
-
             String sortBy = req.getParameter("sort");
             if (sortBy != null) {
                 Helper.sortBills(sortBy, allBills);
                 req.setAttribute("sort", sortBy);
             } else {
-                Helper.sortBills("statusUp", allBills);
-                req.setAttribute("sort", "statusUp");
+                Helper.sortBills("dateUp", allBills);
+                req.setAttribute("sort", "dateUp");
             }
-
-            return null;
-        } catch (ServiceException | FactoryException e) {
+        } catch (Exception e) {
             throw new ServletException(e);
-        } catch (Exception ignored) {
         }
         return null;
     }

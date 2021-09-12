@@ -4,7 +4,7 @@ import by.dvorkin.web.model.entity.Bill;
 import by.dvorkin.web.model.entity.Subscriber;
 import by.dvorkin.web.model.service.exceptions.ServiceException;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface BillService {
@@ -14,7 +14,7 @@ public interface BillService {
 
     Bill getById(Long id) throws ServiceException;
 
-    Date getLastBill(Long subscriberId) throws ServiceException;
+    LocalDateTime getLastBill(Long subscriberId) throws ServiceException;
 
     List<Bill> getAll(Long subscriberId) throws ServiceException;
 

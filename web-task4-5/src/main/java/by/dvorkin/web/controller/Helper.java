@@ -3,6 +3,7 @@ package by.dvorkin.web.controller;
 import by.dvorkin.web.model.entity.Bill;
 import by.dvorkin.web.model.entity.Service;
 import by.dvorkin.web.model.entity.Subscriber;
+import by.dvorkin.web.model.entity.SubscriberAction;
 import by.dvorkin.web.model.entity.Tariff;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -63,6 +64,30 @@ public class Helper {
                 break;
             case "statusDown":
                 bills.sort(Comparator.comparing(Bill::isPaid).reversed());
+                break;
+        }
+    }
+
+    public static void sortActions(String sortBy, List<SubscriberAction> actionList) {
+        switch (sortBy) {
+            case "nameUp":
+                actionList.sort(Comparator.comparing(subscriberAction -> subscriberAction.getAction().getName()));
+                break;
+            case "nameDown":
+                actionList.sort(Comparator.comparing((SubscriberAction subscriberAction) -> subscriberAction.getAction()
+                        .getName()).reversed());
+                break;
+            case "dateUp":
+                actionList.sort(Comparator.comparing(SubscriberAction::getDate));
+                break;
+            case "dateDown":
+                actionList.sort(Comparator.comparing(SubscriberAction::getDate).reversed());
+                break;
+            case "sumUp":
+                actionList.sort(Comparator.comparing(SubscriberAction::getSum));
+                break;
+            case "sumDown":
+                actionList.sort(Comparator.comparing(SubscriberAction::getSum).reversed());
                 break;
         }
     }

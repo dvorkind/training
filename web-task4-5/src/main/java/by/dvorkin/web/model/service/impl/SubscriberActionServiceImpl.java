@@ -8,8 +8,7 @@ import by.dvorkin.web.model.service.Transaction;
 import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.exceptions.SubscriberActionNotFoundException;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class SubscriberActionServiceImpl implements SubscriberActionService {
@@ -40,10 +39,11 @@ public class SubscriberActionServiceImpl implements SubscriberActionService {
     }
 
     @Override
-    public List<SubscriberAction> getActionsBetweenDates(Long subscriberId, Date dateBefore, Date dateAfter) throws ServiceException {
+    public List<SubscriberAction> getActionsBetweenDates(Long subscriberId, LocalDateTime dateBefore,
+                                                         LocalDateTime dateAfter) throws ServiceException {
         try {
             List<SubscriberAction> actions;
-            if (dateAfter.after(dateBefore)) {
+            if (dateAfter.isAfter(dateBefore)) {
                 actions = subscriberActionDao.readBetweenDates(subscriberId, dateBefore, dateAfter);
             } else {
                 actions = subscriberActionDao.readBetweenDates(subscriberId, dateAfter, dateBefore);
@@ -58,7 +58,7 @@ public class SubscriberActionServiceImpl implements SubscriberActionService {
     }
 
     @Override
-    public Date getLastChangeTariff(Long subscriberId) throws ServiceException {
+    public LocalDateTime getLastChangeTariff(Long subscriberId) throws ServiceException {
         try {
             return subscriberActionDao.readLastChangeTariff(subscriberId);
         } catch (DaoException e) {

@@ -1,10 +1,10 @@
 package by.dvorkin.web.model.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Bill extends Entity {
     private Long subscriberId;
-    private Date invoiceDate;
+    private LocalDateTime invoiceDate;
     private int sum;
     private boolean paid;
 
@@ -19,11 +19,11 @@ public class Bill extends Entity {
         this.subscriberId = subscriberId;
     }
 
-    public Date getInvoiceDate() {
+    public LocalDateTime getInvoiceDate() {
         return invoiceDate;
     }
 
-    public void setInvoiceDate(Date invoiceDate) {
+    public void setInvoiceDate(LocalDateTime invoiceDate) {
         this.invoiceDate = invoiceDate;
     }
 

@@ -11,10 +11,9 @@
 <fmt:message var="title" key="resetPassword.title"/>
 <u:html title="${title}">
     <div class="main">
-        <form action="reset_password.html" method="post" class="reg-form submit-form">
+        <form action="reset_password.html" method="post" class="submit-form">
             <h2>${title}</h2>
-            <p class="msg"><fmt:message key="resetPassword.sentenceOne"/></p>
-            <p class="msg"><fmt:message key="resetPassword.sentenceTwo"/></p>
+            <p class="msg"><fmt:message key="resetPassword.sentence"/></p>
             <div class="form-inputs">
                 <div class="input-group">
                     <label for="login"><fmt:message key="resetPassword.login"/></label>

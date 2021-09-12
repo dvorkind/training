@@ -4,14 +4,14 @@ import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.tagext.TagSupport;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class DateFormatTag extends TagSupport {
-    private Date dateTime;
+    private LocalDateTime dateTime;
     private String locale;
 
-    public void setDateTime(Date dateTime) {
+    public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -21,14 +21,14 @@ public class DateFormatTag extends TagSupport {
 
     @Override
     public int doStartTag() throws JspException {
-        SimpleDateFormat formattedDate = new SimpleDateFormat();
+        DateTimeFormatter formatter;
         if ("en".equals(locale)) {
-            formattedDate.applyPattern("dd/MM/yyyy");
+            formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         } else {
-            formattedDate.applyPattern("dd.MM.yyyy");
+            formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         }
         try {
-            pageContext.getOut().write(formattedDate.format(dateTime));
+            pageContext.getOut().write(dateTime.format(formatter));
         } catch (IOException e) {
             throw new JspException(e);
         }
