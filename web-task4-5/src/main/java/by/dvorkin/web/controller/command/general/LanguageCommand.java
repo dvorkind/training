@@ -3,7 +3,6 @@ package by.dvorkin.web.controller.command.general;
 import by.dvorkin.web.controller.command.Command;
 import by.dvorkin.web.controller.command.Forward;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.regex.Matcher;
@@ -13,7 +12,7 @@ public class LanguageCommand implements Command {
     private static final String PAGE_PATH_REGEX = "(/jsp/)([A-Za-z0-9_\\-/]+)\\.jsp$";
 
     @Override
-    public Forward execute(HttpServletRequest req, HttpServletResponse resp) {
+    public Forward execute(HttpServletRequest req) {
         HttpSession session = req.getSession();
         String locale = req.getParameter("locale");
         session.setAttribute("locale", locale);

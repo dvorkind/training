@@ -16,10 +16,6 @@ public enum Action {
         this.name = name;
     }
 
-    public Long getId() {
-        return (long) ordinal();
-    }
-
     public String getName() {
         return name;
     }

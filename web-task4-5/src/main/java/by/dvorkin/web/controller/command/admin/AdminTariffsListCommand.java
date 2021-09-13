@@ -9,13 +9,12 @@ import by.dvorkin.web.model.service.TariffService;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
 
 public class AdminTariffsListCommand implements Command {
     @Override
-    public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+    public Forward execute(HttpServletRequest req) throws ServletException {
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
             TariffService tariffService = serviceFactory.getTariffService();
             List<Tariff> tariffs = tariffService.getAll();

@@ -11,7 +11,6 @@ import by.dvorkin.web.model.service.exceptions.SubscriberActionNotFoundException
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.time.LocalDate;
@@ -20,7 +19,7 @@ import java.util.List;
 
 public class SubscriberStatementCommand implements Command {
     @Override
-    public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+    public Forward execute(HttpServletRequest req) throws ServletException {
         HttpSession session = req.getSession();
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
             SubscriberActionService subscriberActionService = serviceFactory.getSubscriberActionService();
@@ -34,7 +33,6 @@ public class SubscriberStatementCommand implements Command {
                 Subscriber subscriber = (Subscriber) session.getAttribute("sessionSubscriber");
                 List<SubscriberAction> actionList = subscriberActionService.getActionsBetweenDates(subscriber.getId()
                         , dateBefore, dateAfter);
-
                 String sortBy = req.getParameter("sort");
                 if (sortBy != null) {
                     Helper.sortActions(sortBy, actionList);
@@ -43,13 +41,11 @@ public class SubscriberStatementCommand implements Command {
                     Helper.sortActions("dateUp", actionList);
                     req.setAttribute("sort", "dateUp");
                 }
-
                 int total = actionList.stream().mapToInt(SubscriberAction::getSum).sum();
                 req.setAttribute("total", total);
                 req.setAttribute("actions", actionList);
                 return null;
             }
-
             LocalDateTime nowDate = LocalDateTime.now();
             req.setAttribute("before", nowDate.withDayOfMonth(1).toLocalDate());
             req.setAttribute("after", nowDate.toLocalDate());

@@ -359,6 +359,10 @@ nav li {
     border-radius: 10px;
 }
 
+.summary.large{
+    width: 400px;
+}
+
 .summary table {
     margin: auto;
 }
@@ -380,11 +384,4 @@ nav li {
 
 footer {
     flex: 0 0 auto;
-}
-
-.footer-link {
-    display: inline-block;
-    color: #608bd2;
-    font-size: 16px;
-    text-decoration: none;
 }

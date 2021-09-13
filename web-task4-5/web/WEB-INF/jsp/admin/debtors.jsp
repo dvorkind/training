@@ -20,7 +20,7 @@
                 </h2>
             </c:when>
             <c:otherwise>
-                <h2 class="text-center no-margin-bottom">${titlePage}</h2>
+                <h2 class="text-center">${titlePage}</h2>
                 <div class="sort-wrapper">
                     <span><fmt:message key="admin.debtorsSortTitle"/></span>
                     <form action="debtors.html" method="POST" class="select-form no-margin">
@@ -86,14 +86,24 @@
                                     <form action="debtors.html" method="POST">
                                         <input type="hidden" name="id" value="${subscriber.id}">
                                         <input type="submit" value="<fmt:message key="admin.debtorsBlock"/> ⛔"
-                                               class="btn btn-small">
+                                               class="btn btn-small btn-in-cell">
+                                    </form>
+                                    <form action="subscriber_bills.html" method="POST">
+                                        <input type="hidden" name="subscriberId" value="${subscriber.id}">
+                                        <input type="submit" value="<fmt:message key="admin.subscriberAllBills"/> 💸"
+                                               class="btn btn-small btn-in-cell">
                                     </form>
                                 </c:if>
                                 <c:if test="${subscriber.blocked}">
                                     <form action="subscriber_edit.html" method="POST">
                                         <input type="hidden" name="id" value="${subscriber.id}">
                                         <input type="submit" value="<fmt:message key="admin.debtorsManage"/> 📝"
-                                               class="btn btn-small">
+                                               class="btn btn-small btn-in-cell">
+                                    </form>
+                                    <form action="subscriber_bills.html" method="POST">
+                                        <input type="hidden" name="subscriberId" value="${subscriber.id}">
+                                        <input type="submit" value="<fmt:message key="admin.debtorsBills"/> 💸"
+                                               class="btn btn-small btn-in-cell">
                                     </form>
                                 </c:if>
                             </td>

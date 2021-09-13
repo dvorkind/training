@@ -10,12 +10,11 @@ import by.dvorkin.web.model.service.exceptions.TariffLastException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 public class AdminTariffDeleteCommand implements Command {
     @Override
-    public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+    public Forward execute(HttpServletRequest req) throws ServletException {
         if (req.getParameter("id") == null) {
             return new Forward("/admin/tariff_list.html");
         }

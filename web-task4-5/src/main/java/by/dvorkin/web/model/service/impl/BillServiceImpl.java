@@ -39,21 +39,6 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public void create(Bill bill) throws ServiceException {
-        try {
-            transaction.start();
-            bill.setId(billDao.create(bill));
-            transaction.commit();
-        } catch (DaoException e) {
-            try {
-                transaction.rollback();
-            } catch (ServiceException ignored) {
-            }
-            throw new ServiceException(e.getMessage());
-        }
-    }
-
-    @Override
     public void delete(Long id) throws ServiceException {
         try {
             transaction.start();
@@ -69,50 +54,18 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public Bill getById(Long id) throws ServiceException {
+    public List<Bill> getAllSubscribersBill(Long subscriberId) throws ServiceException {
         try {
-            return billDao.read(id);
+            return billDao.readAllSubscribersBill(subscriberId);
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage());
         }
     }
 
     @Override
-    public LocalDateTime getLastBill(Long subscriberId) throws ServiceException {
+    public List<Bill> getAllUnpaid() throws ServiceException {
         try {
-            LocalDateTime localDateTime = billDao.readLastBill(subscriberId);
-            if (localDateTime == null) {
-                return subscriberActionDao.readSubscriberRegistrationDate(subscriberId);
-            } else {
-                return localDateTime;
-            }
-        } catch (DaoException e) {
-            throw new ServiceException(e.getMessage());
-        }
-    }
-
-    @Override
-    public List<Bill> getAll(Long subscriberId) throws ServiceException {
-        try {
-            return billDao.readAll(subscriberId);
-        } catch (DaoException e) {
-            throw new ServiceException(e.getMessage());
-        }
-    }
-
-    @Override
-    public List<Bill> getAllPaid(Long subscriberId) throws ServiceException {
-        try {
-            return billDao.readAllPaid(subscriberId);
-        } catch (DaoException e) {
-            throw new ServiceException(e.getMessage());
-        }
-    }
-
-    @Override
-    public List<Bill> getAllUnpaid(Long subscriberId) throws ServiceException {
-        try {
-            return billDao.readAllUnpaid(subscriberId);
+            return billDao.readAllUnpaid();
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage());
         }
@@ -127,7 +80,8 @@ public class BillServiceImpl implements BillService {
                 bill.setPaid(true);
                 billDao.update(bill);
                 subscriber.setBalance(subscriber.getBalance() - bill.getSum());
-                if (billDao.readAllUnpaid(subscriber.getId()).size() == 0 && subscriber.getBalance() >= 0) {
+                if (billDao.readAllUnpaidSubscribersBill(subscriber.getId())
+                        .size() == 0 && subscriber.getBalance() >= 0) {
                     subscriber.setBlocked(false);
                 }
                 subscriberDao.update(subscriber);

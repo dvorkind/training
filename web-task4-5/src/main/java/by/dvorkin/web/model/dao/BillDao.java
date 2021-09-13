@@ -8,9 +8,11 @@ import java.util.List;
 public interface BillDao extends Dao<Bill> {
     LocalDateTime readLastBill(Long subscriberId) throws DaoException;
 
-    List<Bill> readAll(Long subscriberId) throws DaoException;
+    List<Bill> readAllSubscribersBill(Long subscriberId) throws DaoException;
 
-    List<Bill> readAllPaid(Long subscriberId) throws DaoException;
+    List<Bill> readAllUnpaidSubscribersBill(Long subscriberId) throws DaoException;
 
-    List<Bill> readAllUnpaid(Long subscriberId) throws DaoException;
+    List<Bill> readAllUnpaid() throws DaoException;
+
+
 }

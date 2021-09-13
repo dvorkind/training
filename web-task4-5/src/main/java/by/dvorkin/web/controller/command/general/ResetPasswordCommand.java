@@ -9,18 +9,15 @@ import by.dvorkin.web.model.service.AccountService;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.SubscriberService;
 import by.dvorkin.web.model.service.exceptions.AccountNotExistException;
-import by.dvorkin.web.model.service.exceptions.FactoryException;
-import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.exceptions.SubscriberNotExistException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 public class ResetPasswordCommand implements Command {
     @Override
-    public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+    public Forward execute(HttpServletRequest req) throws ServletException {
         HttpSession session = req.getSession();
         Account sessionAccount = (Account) session.getAttribute("sessionAccount");
         if (sessionAccount != null) {
@@ -44,9 +41,8 @@ public class ResetPasswordCommand implements Command {
                 req.setAttribute("loginError", "resetPassword.error");
                 req.setAttribute("phoneNumberError", "resetPassword.error");
                 return null;
-            } catch (ServiceException | FactoryException e) {
+            } catch (Exception e) {
                 throw new ServletException(e);
-            } catch (Exception ignored) {
             }
         }
         return null;

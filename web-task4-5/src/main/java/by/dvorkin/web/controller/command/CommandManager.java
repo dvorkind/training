@@ -30,7 +30,7 @@ public class CommandManager extends HttpServlet {
             Command command = CommandFactory.getCommand(url);
             Forward forward = null;
             if (command != null) {
-                forward = command.execute(req, resp);
+                forward = command.execute(req);
             }
             if (forward != null && forward.isRedirect()) {
                 resp.sendRedirect(context + forward.getUrl());

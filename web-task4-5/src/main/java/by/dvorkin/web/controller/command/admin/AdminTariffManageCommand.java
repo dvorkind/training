@@ -10,7 +10,6 @@ import by.dvorkin.web.model.service.exceptions.TariffNameNotUniqueException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 public class AdminTariffManageCommand implements Command {
@@ -18,7 +17,7 @@ public class AdminTariffManageCommand implements Command {
     private static final String SUBSCRIPTION_REGEX = "^[A-Za-zА-Яа-яЁё0-9\\s'~!@#$%^&*()-_=+'/|.]{5,200}$";
 
     @Override
-    public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+    public Forward execute(HttpServletRequest req) throws ServletException {
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
             TariffService tariffService = serviceFactory.getTariffService();
             Tariff tariff;

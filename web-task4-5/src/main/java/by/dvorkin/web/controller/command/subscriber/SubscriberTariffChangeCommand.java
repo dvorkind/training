@@ -13,14 +13,13 @@ import by.dvorkin.web.model.service.exceptions.SubscriberNotEnoughMoneyException
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
 
 public class SubscriberTariffChangeCommand implements Command {
     @Override
-    public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+    public Forward execute(HttpServletRequest req) throws ServletException {
         HttpSession session = req.getSession();
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
             TariffService tariffService = serviceFactory.getTariffService();

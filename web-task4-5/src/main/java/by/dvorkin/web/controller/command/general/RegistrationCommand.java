@@ -9,13 +9,10 @@ import by.dvorkin.web.model.entity.Subscriber;
 import by.dvorkin.web.model.service.AccountService;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.exceptions.AccountLoginNotUniqueException;
-import by.dvorkin.web.model.service.exceptions.FactoryException;
-import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.exceptions.SubscriberPhoneNotUniqueException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 public class RegistrationCommand implements Command {
@@ -25,7 +22,7 @@ public class RegistrationCommand implements Command {
     private static final String PASSWORD_REGEX = "^[A-Za-z0-9~!@#$%^&*()-_=+'/|.]{5,20}$";
 
     @Override
-    public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+    public Forward execute(HttpServletRequest req) throws ServletException {
         HttpSession session = req.getSession();
         Account sessionAccount = (Account) session.getAttribute("sessionAccount");
         if (sessionAccount != null) {
@@ -48,9 +45,8 @@ public class RegistrationCommand implements Command {
                 req.removeAttribute("phoneNumberIsValid");
                 req.setAttribute("phoneNumberError", "registration.errorExistSubscriberError");
                 return null;
-            } catch (ServiceException | FactoryException e) {
+            } catch (Exception e) {
                 throw new ServletException(e);
-            } catch (Exception ignored) {
             }
         }
         return null;

@@ -15,6 +15,9 @@
             <c:choose>
                 <c:when test="${not empty success}">
                     <h2><fmt:message key="${success}"/></h2>
+                    <c:if test="${not empty successTwo}">
+                        <h2>${successTwo}</h2>
+                    </c:if>
                 </c:when>
                 <c:otherwise>
                     <c:redirect url="login.html"/>

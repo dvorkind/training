@@ -9,13 +9,12 @@ import by.dvorkin.web.model.service.ServiceService;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
 
 public class AdminServicesListCommand implements Command {
     @Override
-    public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+    public Forward execute(HttpServletRequest req) throws ServletException {
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
             ServiceService serviceService = serviceFactory.getServiceService();
             List<Service> services = serviceService.getAll();

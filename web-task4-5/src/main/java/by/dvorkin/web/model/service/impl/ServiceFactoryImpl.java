@@ -96,7 +96,6 @@ public class ServiceFactoryImpl implements ServiceFactory {
     public SubscriberActionService getSubscriberActionService() throws FactoryException {
         if (subscriberActionService == null) {
             SubscriberActionServiceImpl subscriberActionServiceImpl = new SubscriberActionServiceImpl();
-            subscriberActionServiceImpl.setTransaction(getTransaction());
             subscriberActionServiceImpl.setSubscriberActionDao(getSubscriberActionDao());
             subscriberActionService = subscriberActionServiceImpl;
         }

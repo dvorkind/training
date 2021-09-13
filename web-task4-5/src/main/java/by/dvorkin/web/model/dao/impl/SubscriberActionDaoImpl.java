@@ -93,18 +93,16 @@ public class SubscriberActionDaoImpl implements SubscriberActionDao {
     }
 
     @Override
-    public SubscriberAction read(Long id) throws DaoException {
+    public SubscriberAction read(Long id) {
         return null;
     }
 
     @Override
-    public void update(SubscriberAction subscriberAction) throws DaoException {
-
+    public void update(SubscriberAction subscriberAction) {
     }
 
     @Override
-    public void delete(Long id) throws DaoException {
-
+    public void delete(Long id) {
     }
 
     private SubscriberAction createAction(ResultSet resultSet) throws SQLException {

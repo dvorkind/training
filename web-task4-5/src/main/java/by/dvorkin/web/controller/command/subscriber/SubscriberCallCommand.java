@@ -9,18 +9,15 @@ import by.dvorkin.web.model.entity.Tariff;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.SubscriberService;
 import by.dvorkin.web.model.service.TariffService;
-import by.dvorkin.web.model.service.exceptions.FactoryException;
-import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.exceptions.SubscriberNotEnoughMoneyException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 public class SubscriberCallCommand implements Command {
     @Override
-    public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+    public Forward execute(HttpServletRequest req) throws ServletException {
         HttpSession session = req.getSession();
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
             SubscriberService subscriberService = serviceFactory.getSubscriberService();
@@ -35,13 +32,11 @@ public class SubscriberCallCommand implements Command {
                 session.setAttribute("success", "subscriber.callSuccess");
                 return new Forward("/success.html");
             }
-            return null;
         } catch (SubscriberNotEnoughMoneyException e) {
             session.setAttribute("fail", "subscriber.callError");
             return new Forward("/fail.html");
-        } catch (ServiceException | FactoryException e) {
+        } catch (Exception e) {
             throw new ServletException(e);
-        } catch (Exception ignored) {
         }
         return null;
     }

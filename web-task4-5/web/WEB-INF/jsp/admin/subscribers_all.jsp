@@ -20,7 +20,7 @@
                 </h2>
             </c:when>
             <c:otherwise>
-                <h2 class="text-center no-margin-bottom">${titlePage}</h2>
+                <h2 class="text-center">${titlePage}</h2>
                 <div class="sort-wrapper">
                     <span><fmt:message key="admin.subscribersAllSortTitle"/></span>
                     <form action="subscribers_all.html" method="POST" class="select-form no-margin">
@@ -85,7 +85,12 @@
                                 <form action="subscriber_edit.html" method="POST">
                                     <input type="hidden" name="id" value="${subscriber.id}">
                                     <input type="submit" value="<fmt:message key="admin.subscribersAllManage"/> 📝"
-                                           class="btn btn-small">
+                                           class="btn btn-small btn-in-cell">
+                                </form>
+                                <form action="subscriber_bills.html" method="POST">
+                                    <input type="hidden" name="subscriberId" value="${subscriber.id}">
+                                    <input type="submit" value="<fmt:message key="admin.subscriberAllBills"/> 💸"
+                                           class="btn btn-small btn-in-cell">
                                 </form>
                             </td>
                         </tr>

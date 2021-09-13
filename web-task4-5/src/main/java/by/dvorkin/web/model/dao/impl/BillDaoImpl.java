@@ -24,8 +24,8 @@ public class BillDaoImpl implements BillDao {
 
     @Override
     public Long create(Bill bill) throws DaoException {
-        String sql = "INSERT INTO `bill` (`subscriber_id`, `invoice_date`, `sum`, `is_paid`, `is_deleted`) VALUES (?," +
-                " ?, ?, ?, ?)";
+        String sql = "INSERT INTO `bill` (`subscriber_id`, `invoice_date`, `sum`, `is_paid`, `is_deleted`) VALUES (?,"
+                + " ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setLong(1, bill.getSubscriberId());
             statement.setTimestamp(2, Timestamp.valueOf(bill.getInvoiceDate()));
@@ -104,24 +104,34 @@ public class BillDaoImpl implements BillDao {
     }
 
     @Override
-    public List<Bill> readAll(Long subscriberId) throws DaoException {
+    public List<Bill> readAllSubscribersBill(Long subscriberId) throws DaoException {
         String sql = "SELECT * FROM `bill` WHERE `is_deleted` = 0 AND `subscriber_id` = ?";
-        return getBillList(sql, subscriberId);
+        return getSubscribersBillList(sql, subscriberId);
     }
 
     @Override
-    public List<Bill> readAllPaid(Long subscriberId) throws DaoException {
-        String sql = "SELECT * FROM `bill` WHERE `is_deleted` = 0 AND `is_paid`= 1  AND `subscriber_id` = ?";
-        return getBillList(sql, subscriberId);
-    }
-
-    @Override
-    public List<Bill> readAllUnpaid(Long subscriberId) throws DaoException {
+    public List<Bill> readAllUnpaidSubscribersBill(Long subscriberId) throws DaoException {
         String sql = "SELECT * FROM `bill` WHERE `is_deleted` = 0 AND `is_paid`= 0  AND `subscriber_id` = ?";
-        return getBillList(sql, subscriberId);
+        return getSubscribersBillList(sql, subscriberId);
     }
 
-    private List<Bill> getBillList(String sql, Long id) throws DaoException {
+    @Override
+    public List<Bill> readAllUnpaid() throws DaoException {
+        String sql = "SELECT * FROM `bill` WHERE `is_deleted` = 0 AND `is_paid` = 0 ";
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(sql);
+            List<Bill> bills = new ArrayList<>();
+            while (resultSet.next()) {
+                bills.add(createBill(resultSet));
+            }
+            resultSet.close();
+            return bills;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    private List<Bill> getSubscribersBillList(String sql, Long id) throws DaoException {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();

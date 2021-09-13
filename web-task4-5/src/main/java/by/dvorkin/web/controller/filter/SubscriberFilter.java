@@ -6,8 +6,6 @@ import by.dvorkin.web.model.entity.Role;
 import by.dvorkin.web.model.entity.Subscriber;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.SubscriberService;
-import by.dvorkin.web.model.service.exceptions.FactoryException;
-import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -62,10 +60,9 @@ public class SubscriberFilter extends HttpFilter {
                             resp.sendRedirect(context + "/subscriber/blocked.html");
                             return;
                         }
-                    }                    
-                } catch (ServiceException | FactoryException e) {
+                    }
+                } catch (Exception e) {
                     throw new ServletException(e);
-                } catch (Exception ignored) {
                 }
             }
         }

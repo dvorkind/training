@@ -7,17 +7,14 @@ import by.dvorkin.web.model.entity.Account;
 import by.dvorkin.web.model.service.AccountService;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.exceptions.AccountNotExistException;
-import by.dvorkin.web.model.service.exceptions.FactoryException;
-import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 public class LoginCommand implements Command {
     @Override
-    public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+    public Forward execute(HttpServletRequest req) throws ServletException {
         HttpSession session = req.getSession();
         Account sessionAccount = (Account) session.getAttribute("sessionAccount");
         Forward forward = getForward(sessionAccount);
@@ -38,9 +35,8 @@ public class LoginCommand implements Command {
                 req.setAttribute("login", login);
                 req.setAttribute("error", "login.messageIncorrectPassword");
                 return null;
-            } catch (ServiceException | FactoryException e) {
+            } catch (Exception e) {
                 throw new ServletException(e);
-            } catch (Exception ignored) {
             }
         }
         return null;

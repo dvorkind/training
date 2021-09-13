@@ -35,5 +35,7 @@ public interface SubscriberService {
 
     void activate(Long id) throws ServiceException;
 
-    Boolean invoiceBill(Long id) throws ServiceException;
+    Boolean issueBill(Long id) throws ServiceException;
+
+    int issueBillToAll() throws ServiceException;
 }

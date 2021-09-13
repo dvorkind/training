@@ -135,7 +135,8 @@ public class SubscriberServiceImpl implements SubscriberService {
             if (sum > 0) {
                 transaction.start();
                 subscriber.setBalance(subscriber.getBalance() + sum);
-                if (billDao.readAllUnpaid(subscriber.getId()).size() == 0 && subscriber.getBalance() >= 0) {
+                if (billDao.readAllUnpaidSubscribersBill(subscriber.getId())
+                        .size() == 0 && subscriber.getBalance() >= 0) {
                     subscriber.setBlocked(false);
                 }
                 subscriberDao.update(subscriber);
@@ -277,24 +278,10 @@ public class SubscriberServiceImpl implements SubscriberService {
     }
 
     @Override
-    public Boolean invoiceBill(Long id) throws ServiceException {
+    public Boolean issueBill(Long id) throws ServiceException {
         try {
             transaction.start();
-            LocalDateTime lastDate = billDao.readLastBill(id);
-            if (lastDate == null){
-                lastDate = subscriberActionDao.readSubscriberRegistrationDate(id);
-            }
-            LocalDateTime nowDate = LocalDateTime.now();
-            int daysAfterLastBill = (int) ChronoUnit.DAYS.between(lastDate, nowDate);
-            if (daysAfterLastBill > 0) {
-                List<Service> servicesList = serviceDao.readSubscribersService(id);
-                Subscriber subscriber = subscriberDao.read(id);
-                int sumServicesFee = servicesList.stream().mapToInt(Service::getPrice).sum();
-                int sumTariff = tariffDao.read(subscriber.getTariff()).getSubscriptionFee();
-                int dailyFee = (sumServicesFee + sumTariff) / 30;
-                int billSum = dailyFee * daysAfterLastBill;
-                billDao.create(createBill(id, billSum));
-            } else {
+            if (!issue(id)) {
                 transaction.rollback();
                 return false;
             }
@@ -312,6 +299,55 @@ public class SubscriberServiceImpl implements SubscriberService {
             } catch (ServiceException ignored) {
             }
             throw e;
+        }
+    }
+
+    @Override
+    public int issueBillToAll() throws ServiceException {
+        try {
+            transaction.start();
+            List<Subscriber> subscribers = subscriberDao.readAll();
+            int successIssue = 0;
+            for (Subscriber subscriber : subscribers) {
+                if (issue(subscriber.getId())) {
+                    successIssue++;
+                }
+            }
+            transaction.commit();
+            return successIssue;
+        } catch (DaoException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw new ServiceException(e.getMessage());
+        } catch (ServiceException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw e;
+        }
+    }
+
+    private boolean issue(Long id) throws DaoException {
+        LocalDateTime lastDate = billDao.readLastBill(id);
+        if (lastDate == null) {
+            lastDate = subscriberActionDao.readSubscriberRegistrationDate(id);
+        }
+        LocalDateTime nowDate = LocalDateTime.now();
+        int daysAfterLastBill = (int) ChronoUnit.DAYS.between(lastDate, nowDate);
+        if (daysAfterLastBill > 0) {
+            List<Service> servicesList = serviceDao.readSubscribersService(id);
+            Subscriber subscriber = subscriberDao.read(id);
+            int sumServicesFee = servicesList.stream().mapToInt(Service::getPrice).sum();
+            int sumTariff = tariffDao.read(subscriber.getTariff()).getSubscriptionFee();
+            int dailyFee = (sumServicesFee + sumTariff) / 30;
+            int billSum = dailyFee * daysAfterLastBill;
+            billDao.create(createBill(id, billSum));
+            return true;
+        } else {
+            return false;
         }
     }
 

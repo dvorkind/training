@@ -4,7 +4,6 @@ import by.dvorkin.web.model.dao.DaoException;
 import by.dvorkin.web.model.dao.SubscriberActionDao;
 import by.dvorkin.web.model.entity.SubscriberAction;
 import by.dvorkin.web.model.service.SubscriberActionService;
-import by.dvorkin.web.model.service.Transaction;
 import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.exceptions.SubscriberActionNotFoundException;
 
@@ -13,29 +12,9 @@ import java.util.List;
 
 public class SubscriberActionServiceImpl implements SubscriberActionService {
     private SubscriberActionDao subscriberActionDao;
-    private Transaction transaction;
-
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
-    }
 
     public void setSubscriberActionDao(SubscriberActionDao subscriberActionDao) {
         this.subscriberActionDao = subscriberActionDao;
-    }
-
-    @Override
-    public void create(SubscriberAction subscriberAction) throws ServiceException {
-        try {
-            transaction.start();
-            subscriberAction.setId(subscriberActionDao.create(subscriberAction));
-            transaction.commit();
-        } catch (DaoException e) {
-            try {
-                transaction.rollback();
-            } catch (ServiceException ignored) {
-            }
-            throw new ServiceException(e.getMessage());
-        }
     }
 
     @Override
@@ -52,15 +31,6 @@ public class SubscriberActionServiceImpl implements SubscriberActionService {
                 throw new SubscriberActionNotFoundException(String.valueOf(subscriberId));
             }
             return actions;
-        } catch (DaoException e) {
-            throw new ServiceException(e.getMessage());
-        }
-    }
-
-    @Override
-    public LocalDateTime getLastChangeTariff(Long subscriberId) throws ServiceException {
-        try {
-            return subscriberActionDao.readLastChangeTariff(subscriberId);
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage());
         }

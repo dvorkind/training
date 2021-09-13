@@ -7,20 +7,17 @@ import by.dvorkin.web.model.entity.Bill;
 import by.dvorkin.web.model.entity.Subscriber;
 import by.dvorkin.web.model.service.BillService;
 import by.dvorkin.web.model.service.ServiceFactory;
-import by.dvorkin.web.model.service.exceptions.FactoryException;
-import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.exceptions.SubscriberNotEnoughMoneyException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
 
 public class SubscriberBillsCommand implements Command {
     @Override
-    public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+    public Forward execute(HttpServletRequest req) throws ServletException {
         HttpSession session = req.getSession();
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
             BillService billService = serviceFactory.getBillService();
@@ -32,7 +29,7 @@ public class SubscriberBillsCommand implements Command {
                 session.setAttribute("success", "subscriber.billsPaySuccess");
                 return new Forward("/success.html");
             }
-            List<Bill> allBills = billService.getAll(subscriber.getId());
+            List<Bill> allBills = billService.getAllSubscribersBill(subscriber.getId());
             req.setAttribute("allBills", allBills);
             String sortBy = req.getParameter("sort");
             if (sortBy != null) {
@@ -45,9 +42,8 @@ public class SubscriberBillsCommand implements Command {
         } catch (SubscriberNotEnoughMoneyException e) {
             session.setAttribute("fail", "subscriber.billsError");
             return new Forward("/fail.html");
-        } catch (ServiceException | FactoryException e) {
+        } catch (Exception e) {
             throw new ServletException(e);
-        } catch (Exception ignored) {
         }
         return null;
     }

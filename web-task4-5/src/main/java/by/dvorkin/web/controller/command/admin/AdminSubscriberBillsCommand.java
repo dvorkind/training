@@ -10,13 +10,12 @@ import by.dvorkin.web.model.service.SubscriberService;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
 
 public class AdminSubscriberBillsCommand implements Command {
     @Override
-    public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+    public Forward execute(HttpServletRequest req) throws ServletException {
         if (req.getParameter("subscriberId") == null) {
             return new Forward("/admin/subscribers_all.html");
         }
@@ -29,13 +28,13 @@ public class AdminSubscriberBillsCommand implements Command {
             }
             if (req.getParameter("new") != null) {
                 SubscriberService subscriberService = serviceFactory.getSubscriberService();
-                if (subscriberService.invoiceBill(subscriberId)) {
+                if (subscriberService.issueBill(subscriberId)) {
                     Helper.log("User # " + subscriberId + " was billed by Administrator");
                 } else {
                     req.setAttribute("error", "admin.billsError");
                 }
             }
-            List<Bill> allBills = billService.getAll(subscriberId);
+            List<Bill> allBills = billService.getAllSubscribersBill(subscriberId);
             req.setAttribute("allBills", allBills);
             String sortBy = req.getParameter("sort");
             if (sortBy != null) {

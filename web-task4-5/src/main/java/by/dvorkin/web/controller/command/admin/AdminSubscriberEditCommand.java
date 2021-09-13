@@ -13,7 +13,6 @@ import by.dvorkin.web.model.service.TariffService;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class AdminSubscriberEditCommand implements Command {
     private static final String LOGIN_REGEX = "^[A-Za-z0-9._-]{5,20}$";
 
     @Override
-    public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+    public Forward execute(HttpServletRequest req) throws ServletException {
         if (req.getParameter("id") == null) {
             return new Forward("/admin/admin.html");
         }
