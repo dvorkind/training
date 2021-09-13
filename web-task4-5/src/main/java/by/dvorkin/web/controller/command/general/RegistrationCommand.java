@@ -65,7 +65,7 @@ public class RegistrationCommand implements Command {
         subscriber.setBalance(0);
         subscriber.setTariff(1L);
         subscriber.setBlocked(false);
-        subscriber.setRegistered(false);
+        subscriber.setRegistered(true); // change to false so that only the administrator can activate new subscribers
         subscriber.setFirstname(req.getParameter("firstname"));
         subscriber.setLastname(req.getParameter("lastname"));
         subscriber.setPhoneNumber(req.getParameter("phoneNumber"));
