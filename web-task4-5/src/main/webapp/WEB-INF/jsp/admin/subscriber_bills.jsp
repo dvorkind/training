@@ -87,8 +87,8 @@
                         <tr>
                             <td><ctg:date-format dateTime="${bill.invoiceDate}" locale="${locale}"/></td>
                             <td>
-                                <ctg:money-format balance="${bill.sum}" locale="${locale}"/>&nbsp<fmt:message
-                                    key="admin.billsMoney"/>
+                                <ctg:money-format balance="${bill.sum}" locale="${locale}"/>
+                                &nbsp;<fmt:message key="admin.billsMoney"/>
                             </td>
                             <td>
                                 <c:choose>

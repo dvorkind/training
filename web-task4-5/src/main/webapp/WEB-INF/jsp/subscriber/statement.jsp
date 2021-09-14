@@ -84,21 +84,23 @@
                             <c:if test="${action.sum >= 0}">
                                 <td class="green">
                                     <ctg:money-format balance="${action.sum}" locale="${locale}"/>
-                                    &nbsp<fmt:message key="subscriber.statementMoney"/>
+                                    &nbsp;<fmt:message key="subscriber.statementMoney"/>
                                 </td>
                             </c:if>
                             <c:if test="${action.sum < 0}">
                                 <td class="red">
                                     <ctg:money-format balance="${action.sum}" locale="${locale}"/>
-                                    &nbsp<fmt:message key="subscriber.statementMoney"/>
+                                    &nbsp;<fmt:message key="subscriber.statementMoney"/>
                                 </td>
                             </c:if>
                         </tr>
                     </c:forEach>
                     <tr class="table-total">
                         <td colspan="2" class="text-right"><fmt:message key="subscriber.statementTotal"/></td>
-                        <td><ctg:money-format balance="${total}" locale="${locale}"/>
-                            &nbsp<fmt:message key="subscriber.statementMoney"/></td>
+                        <td>
+                            <ctg:money-format balance="${total}" locale="${locale}"/>
+                            &nbsp;<fmt:message key="subscriber.statementMoney"/>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

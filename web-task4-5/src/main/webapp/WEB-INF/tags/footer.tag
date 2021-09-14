@@ -6,13 +6,12 @@
 <fmt:setLocale value="${locale}"/>
 <fmt:setBundle basename="messages"/>
 <footer>
-    <span><fmt:message key="footer.copyright"/></span>
+    <span><fmt:message key="footer.copyright"/>&nbsp;<code><fmt:message key="footer.epam"/></code></span>
     <c:if test="${sessionAccount.role == 'SUBSCRIBER'}">
         <span>
-            <fmt:message key="footer.balance"/>&nbsp
-            <ctg:money-format balance="${sessionSubscriber.balance}" locale="${locale}"/>
-            &nbsp
-            <fmt:message key="footer.money"/>
+            <fmt:message key="footer.balance"/>
+            &nbsp;<ctg:money-format balance="${sessionSubscriber.balance}" locale="${locale}"/>
+            &nbsp;<fmt:message key="footer.money"/>
         </span>
     </c:if>
 </footer>

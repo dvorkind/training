@@ -8,7 +8,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
 
-<c:set var="locale" value="${not empty locale ? locale : 'ru'}" scope="session"/>
+<c:set var="locale" value="${not empty param.locale ? param.locale : not empty locale ? locale : pageContext.request.locale}" scope="session" />
 
 <fmt:setLocale value="${locale}"/>
 <fmt:setBundle basename="messages"/>

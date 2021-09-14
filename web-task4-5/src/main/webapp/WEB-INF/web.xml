@@ -63,20 +63,23 @@
         <description>JDBC-URL</description>
         <param-name>jdbc-url</param-name>
         <param-value>
-            jdbc:mysql://localhost:3306/phone_station?useUnicode=true&amp;characterEncoding=UTF-8
+            jdbc:mysql://dvorkin.by:3306/u1060680_phone?useUnicode=true&amp;characterEncoding=UTF-8
+<!--            jdbc:mysql://localhost:3306/phone_station?useUnicode=true&amp;characterEncoding=UTF-8-->
         </param-value>
     </context-param>
 
     <context-param>
         <description>DB user</description>
         <param-name>jdbc-username</param-name>
-        <param-value>root</param-value>
+        <param-value>u1060680_root</param-value>
+<!--        <param-value>root</param-value>-->
     </context-param>
 
     <context-param>
         <description>DB user password</description>
         <param-name>jdbc-password</param-name>
-        <param-value/>
+        <param-value>WS"!C)d''e)6f)L</param-value>
+<!--        <param-value/>-->
     </context-param>
 
     <error-page>

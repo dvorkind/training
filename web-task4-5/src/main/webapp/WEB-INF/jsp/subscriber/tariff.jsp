@@ -71,15 +71,15 @@
                             <td class="pre-wrap">${tariff.description}</td>
                             <td>
                                 <ctg:money-format balance="${tariff.subscriptionFee}" locale="${locale}"/>
-                                &nbsp<fmt:message key="subscriber.changeTariffMoney"/>
+                                &nbsp;<fmt:message key="subscriber.changeTariffMoney"/>
                             </td>
                             <td>
                                 <ctg:money-format balance="${tariff.callCost}" locale="${locale}"/>
-                                &nbsp<fmt:message key="subscriber.changeTariffMoney"/>
+                                &nbsp;<fmt:message key="subscriber.changeTariffMoney"/>
                             </td>
                             <td>
                                 <ctg:money-format balance="${tariff.smsCost}" locale="${locale}"/>
-                                &nbsp<fmt:message key="subscriber.changeTariffMoney"/>
+                                &nbsp;<fmt:message key="subscriber.changeTariffMoney"/>
                             </td>
                             <td class="button-cell">
                                 <form action="tariff.html" method="POST">

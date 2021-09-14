@@ -14,6 +14,7 @@ import by.dvorkin.web.controller.command.admin.AdminTariffsListCommand;
 import by.dvorkin.web.controller.command.admin.AdminSubscribersListCommand;
 import by.dvorkin.web.controller.command.general.ChangePasswordCommand;
 import by.dvorkin.web.controller.command.general.FailCommand;
+import by.dvorkin.web.controller.command.general.IndexPageCommand;
 import by.dvorkin.web.controller.command.general.LanguageCommand;
 import by.dvorkin.web.controller.command.general.LoginCommand;
 import by.dvorkin.web.controller.command.general.LogoutCommand;
@@ -40,6 +41,7 @@ public class CommandFactory {
 
     static {
         commands.put("/", MainPageCommand.class);
+        commands.put("/index", IndexPageCommand.class);
         commands.put("/login", LoginCommand.class);
         commands.put("/registration", RegistrationCommand.class);
         commands.put("/reset_password", ResetPasswordCommand.class);

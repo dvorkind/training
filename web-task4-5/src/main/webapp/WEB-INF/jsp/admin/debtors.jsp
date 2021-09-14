@@ -70,8 +70,8 @@
                             <td>${subscriber.lastname}</td>
                             <td>${subscriber.phoneNumber}</td>
                             <td>
-                                <ctg:money-format balance="${subscriber.balance}" locale="${locale}"/>&nbsp
-                                <fmt:message key="admin.debtorsMoney"/>
+                                <ctg:money-format balance="${subscriber.balance}" locale="${locale}"/>
+                                &nbsp;<fmt:message key="admin.debtorsMoney"/>
                             </td>
                             <c:choose>
                                 <c:when test="${subscriber.blocked}">

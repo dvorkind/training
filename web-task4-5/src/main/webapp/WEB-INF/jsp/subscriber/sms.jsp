@@ -17,7 +17,7 @@
             <p class="msg"><fmt:message key="subscriber.smsSentenceOne"/></p>
             <p class="msg"><fmt:message key="subscriber.smsTariffCost"/>
                 &nbsp;<ctg:money-format balance="${tariff.smsCost}" locale="${locale}"/>
-                &nbsp<fmt:message key="subscriber.smsTariffMoney"/></p>
+                &nbsp;<fmt:message key="subscriber.smsTariffMoney"/></p>
             <input type="hidden" name="confirmation">
             <input type="submit" value="<fmt:message key="subscriber.smsButton" />" class="btn center-btn">
             <a href="subscriber.html" class="form-link"><fmt:message key="subscriber.smsCancel"/></a>

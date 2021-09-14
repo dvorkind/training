@@ -22,10 +22,10 @@ public class MoneyFormatTag extends TagSupport {
     public int doStartTag() throws JspException {
         String formattedPrice;
         switch (locale) {
-            case "ru":
+            case "ru_RU":
                 formattedPrice = String.format(Locale.FRANCE, "%.2f", balance / 100.0);
                 break;
-            case "en":
+            case "en_EN":
                 formattedPrice = String.format(Locale.US, "%.2f", balance / 100.0);
                 break;
             default:

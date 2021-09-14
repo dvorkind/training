@@ -17,7 +17,7 @@
             <p class="msg"><fmt:message key="subscriber.callSentenceOne"/></p>
             <p class="msg"><fmt:message key="subscriber.callTariffCost"/>
                 &nbsp;<ctg:money-format balance="${tariff.callCost}" locale="${locale}"/>
-                &nbsp<fmt:message key="subscriber.callTariffMoney"/></p>
+                &nbsp;<fmt:message key="subscriber.callTariffMoney"/></p>
             <div class="input-group center-input">
                 <input type="number" min="1" max="60" id="callLength" name="callLength"
                        class="small-input" value="5">

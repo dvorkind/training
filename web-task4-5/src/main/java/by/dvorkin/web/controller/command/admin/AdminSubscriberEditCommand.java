@@ -38,7 +38,7 @@ public class AdminSubscriberEditCommand implements Command {
             AccountService accountService = serviceFactory.getAccountService();
             Account account = accountService.getById(subscriber.getAccountId());
             if (req.getParameter("resetPassword") != null) {
-                accountService.resetPassword(account);
+                accountService.resetPassword(account.getLogin(), subscriber.getPhoneNumber());
                 Helper.log("User " + account.getLogin() + " password reset by Administrator");
                 return new Forward("/admin/subscribers_all.html");
             }

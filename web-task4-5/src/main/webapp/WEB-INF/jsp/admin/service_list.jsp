@@ -61,8 +61,8 @@
                             <td>${service.name}</td>
                             <td class="pre-wrap">${service.description}</td>
                             <td>
-                                <ctg:money-format balance="${service.price}" locale="${locale}"/>&nbsp<fmt:message
-                                    key="admin.serviceListMoney"/>
+                                <ctg:money-format balance="${service.price}" locale="${locale}"/>
+                                &nbsp;<fmt:message key="admin.serviceListMoney"/>
                             </td>
                             <td class="button-cell">
                                 <form action="service_manage.html" method="POST">

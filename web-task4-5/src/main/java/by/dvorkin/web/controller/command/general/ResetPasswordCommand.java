@@ -4,10 +4,8 @@ import by.dvorkin.web.controller.Helper;
 import by.dvorkin.web.controller.command.Command;
 import by.dvorkin.web.controller.command.Forward;
 import by.dvorkin.web.model.entity.Account;
-import by.dvorkin.web.model.entity.Subscriber;
 import by.dvorkin.web.model.service.AccountService;
 import by.dvorkin.web.model.service.ServiceFactory;
-import by.dvorkin.web.model.service.SubscriberService;
 import by.dvorkin.web.model.service.exceptions.AccountNotExistException;
 import by.dvorkin.web.model.service.exceptions.SubscriberNotExistException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
@@ -26,15 +24,12 @@ public class ResetPasswordCommand implements Command {
         if (isInputValid(req)) {
             try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
                 AccountService accountService = serviceFactory.getAccountService();
-                Account account = accountService.getByLogin(req.getParameter("login"));
-                SubscriberService subscriberService = serviceFactory.getSubscriberService();
-                Subscriber subscriber = subscriberService.getByPhoneNumber(req.getParameter("phoneNumber"));
-                if (subscriber.getAccountId().equals(account.getId())) {
-                    session.setAttribute("sessionAccount", accountService.resetPassword(account));
-                    Helper.log("User " + account.getLogin() + " reset password. IP [" + req.getRemoteAddr() + "]");
-                    session.setAttribute("success", "resetPassword.success");
-                    return new Forward("/success.html");
-                }
+                String login = req.getParameter("login");
+                session.setAttribute("sessionAccount", accountService.resetPassword(login, req.getParameter(
+                        "phoneNumber")));
+                Helper.log("User " + login + " reset password. IP [" + req.getRemoteAddr() + "]");
+                session.setAttribute("success", "resetPassword.success");
+                return new Forward("/success.html");
             } catch (AccountNotExistException | SubscriberNotExistException e) {
                 req.removeAttribute("loginIsValid");
                 req.removeAttribute("phoneNumberIsValid");

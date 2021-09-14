@@ -57,8 +57,8 @@
                             <td>${service.name}</td>
                             <td class="pre-wrap">${service.description}</td>
                             <td>
-                                <ctg:money-format balance="${service.price}" locale="${locale}"/>&nbsp<fmt:message
-                                    key="subscriber.servicesMoney"/>
+                                <ctg:money-format balance="${service.price}" locale="${locale}"/>
+                                &nbsp;<fmt:message key="subscriber.servicesMoney"/>
                             </td>
                             <td>
                                 <c:choose>

@@ -372,6 +372,20 @@ nav li {
     font-weight: bold;
 }
 
+.index {
+    margin: 0 auto 20px auto;
+    width: 800px;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+}
+
+.index table {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
 .user-actions {
     display: flex;
     justify-content: space-around;

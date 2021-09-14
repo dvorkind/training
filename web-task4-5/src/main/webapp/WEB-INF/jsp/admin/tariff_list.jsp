@@ -67,15 +67,15 @@
                     <td class="pre-wrap">${tariff.description}</td>
                     <td>
                         <ctg:money-format balance="${tariff.subscriptionFee}" locale="${locale}"/>
-                        &nbsp<fmt:message key="admin.tariffListMoney"/>
+                        &nbsp;<fmt:message key="admin.tariffListMoney"/>
                     </td>
                     <td>
                         <ctg:money-format balance="${tariff.callCost}" locale="${locale}"/>
-                        &nbsp<fmt:message key="admin.tariffListMoney"/>
+                        &nbsp;<fmt:message key="admin.tariffListMoney"/>
                     </td>
                     <td>
                         <ctg:money-format balance="${tariff.smsCost}" locale="${locale}"/>
-                        &nbsp<fmt:message key="admin.tariffListMoney"/>
+                        &nbsp;<fmt:message key="admin.tariffListMoney"/>
                     </td>
                     <td class="button-cell">
                         <form action="tariff_manage.html" method="POST">

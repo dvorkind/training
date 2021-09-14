@@ -22,7 +22,7 @@ public class DateFormatTag extends TagSupport {
     @Override
     public int doStartTag() throws JspException {
         DateTimeFormatter formatter;
-        if ("en".equals(locale)) {
+        if ("en_EN".equals(locale)) {
             formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         } else {
             formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");

@@ -37,7 +37,10 @@
                 </tr>
                 <tr>
                     <td><fmt:message key="subscriber.mainBalance"/></td>
-                    <td><ctg:money-format balance="${sessionSubscriber.balance}" locale="${locale}"/>&nbsp<fmt:message key="subscriber.mainMoney"/></td>
+                    <td>
+                        <ctg:money-format balance="${sessionSubscriber.balance}" locale="${locale}"/>
+                        &nbsp;<fmt:message key="subscriber.mainMoney"/>
+                    </td>
                 </tr>
                 <tr>
                     <td><fmt:message key="subscriber.mainStatus"/></td>
@@ -82,7 +85,7 @@
                         <td class="pre-wrap">${service.description}</td>
                         <td>
                             <ctg:money-format balance="${service.price}" locale="${locale}"/>
-                            &nbsp<fmt:message key="subscriber.mainServiceMoney"/>
+                            &nbsp;<fmt:message key="subscriber.mainServiceMoney"/>
                         </td>
                     </tr>
                 </c:forEach>

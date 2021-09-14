@@ -33,7 +33,10 @@
                 </tr>
                 <tr>
                     <td><fmt:message key="admin.mainDebtorsSum"/></td>
-                    <td><ctg:money-format balance="${debtorsSum}" locale="${locale}"/>&nbsp<fmt:message key="admin.mainMoney"/></td>
+                    <td>
+                        <ctg:money-format balance="${debtorsSum}" locale="${locale}"/>
+                        &nbsp;<fmt:message key="admin.mainMoney"/>
+                    </td>
                 </tr>
                 <tr>
                     <td><fmt:message key="admin.mainServices"/></td>
@@ -49,7 +52,10 @@
                 </tr>
                 <tr>
                     <td><fmt:message key="admin.mainBillsSum"/></td>
-                    <td><ctg:money-format balance="${unpaidBillsSum}" locale="${locale}"/>&nbsp<fmt:message key="admin.mainMoney"/></td>
+                    <td>
+                        <ctg:money-format balance="${unpaidBillsSum}" locale="${locale}"/>
+                        &nbsp;<fmt:message key="admin.mainMoney"/>
+                    </td>
                 </tr>
             </table>
             <div class="user-actions">

@@ -14,6 +14,7 @@ import by.dvorkin.web.model.service.exceptions.AccountLoginNotUniqueException;
 import by.dvorkin.web.model.service.exceptions.AccountNotExistException;
 import by.dvorkin.web.model.service.exceptions.AccountPasswordIncorrectException;
 import by.dvorkin.web.model.service.exceptions.ServiceException;
+import by.dvorkin.web.model.service.exceptions.SubscriberNotExistException;
 import by.dvorkin.web.model.service.exceptions.SubscriberPhoneNotUniqueException;
 
 import java.time.LocalDateTime;
@@ -161,12 +162,21 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account resetPassword(Account account) throws ServiceException {
+    public Account resetPassword(String login, String phoneNumber) throws ServiceException {
         try {
             transaction.start();
-            account.setPassword(accountDao.passwordToSHA("12345"));
-            accountDao.update(account);
-            transaction.commit();
+            Account account = getByLogin(login);
+            Subscriber subscriber = subscriberDao.readByPhoneNumber(phoneNumber);
+            if (subscriber == null) {
+                throw new SubscriberNotExistException(phoneNumber);
+            }
+            if (subscriber.getAccountId().equals(account.getId())) {
+                account.setPassword(accountDao.passwordToSHA("12345"));
+                accountDao.update(account);
+                transaction.commit();
+            } else {
+                throw new AccountNotExistException(login);
+            }
             return account;
         } catch (DaoException e) {
             try {
