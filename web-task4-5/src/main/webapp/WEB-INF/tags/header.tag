@@ -29,7 +29,7 @@
             <input type="hidden" name="pagePath" value="${pageContext.request.requestURI}">
             <input type="hidden" name="queryString" value="${pageContext.request.queryString}">
             <select name="locale" onchange="submit()" class="btn">
-                <option value="en_RU" ${locale == 'en_EN' ? 'selected' : ''}>
+                <option value="en_EN" ${locale == 'en_EN' ? 'selected' : ''}>
                     <fmt:message key="header.english"/>
                 </option>
                 <option value="ru_RU" ${locale == 'ru_RU' ? 'selected' : ''}>
