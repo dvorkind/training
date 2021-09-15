@@ -21,7 +21,6 @@
             </c:when>
             <c:otherwise>
                 <h2 class="text-center">${titlePage}</h2>
-                <p class="msg"><fmt:message key="subscriber.servicesMessage"/></p>
                 <div class="sort-wrapper">
                     <span><fmt:message key="subscriber.servicesSortTitle"/></span>
                     <form action="services.html" method="POST" class="select-form no-margin">

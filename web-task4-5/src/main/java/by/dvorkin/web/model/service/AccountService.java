@@ -9,13 +9,11 @@ public interface AccountService {
 
     Account getById(Long id) throws ServiceException;
 
-    Account getByLogin(String login) throws ServiceException;
-
     void create(Account account, Subscriber subscriber) throws ServiceException;
-
-    void update(Account account) throws ServiceException;
 
     void changePassword(String oldPassword, String newPassword, Long id) throws ServiceException;
 
     Account resetPassword(String login, String phoneNumber) throws ServiceException;
+
+    void changeSubscribersPersonalData(Account account, Subscriber subscriber, String login, String phoneNumber) throws ServiceException;
 }

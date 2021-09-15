@@ -17,8 +17,6 @@
         </h2>
         <div class="index">
             <h3 class="text-center"><fmt:message key="index.sentenceSubscriber"/></h3>
-        </div>
-        <div class="index">
             <p><fmt:message key="index.sentenceSubscriberOne"/></p>
             <p><fmt:message key="index.sentenceSubscriberTwo"/></p>
             <p><fmt:message key="index.sentenceSubscriberThree"/></p>
@@ -85,8 +83,6 @@
         </div>
         <div class="index">
             <h3 class="text-center"><fmt:message key="index.sentenceAdmin"/></h3>
-        </div>
-        <div class="index">
             <p><fmt:message key="index.sentenceAdminOne"/></p>
             <p><fmt:message key="index.sentenceAdminTwo"/></p>
             <p><fmt:message key="index.sentenceAdminThree"/></p>

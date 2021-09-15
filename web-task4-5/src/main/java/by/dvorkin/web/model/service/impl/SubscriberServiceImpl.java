@@ -13,10 +13,10 @@ import by.dvorkin.web.model.entity.Subscriber;
 import by.dvorkin.web.model.entity.SubscriberAction;
 import by.dvorkin.web.model.service.SubscriberService;
 import by.dvorkin.web.model.service.Transaction;
+import by.dvorkin.web.model.service.exceptions.BillTooEarlyException;
 import by.dvorkin.web.model.service.exceptions.ServiceException;
 import by.dvorkin.web.model.service.exceptions.SubscriberCanNotChangeTariffException;
 import by.dvorkin.web.model.service.exceptions.SubscriberNotEnoughMoneyException;
-import by.dvorkin.web.model.service.exceptions.SubscriberNotExistException;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -24,7 +24,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class SubscriberServiceImpl implements SubscriberService {
-    private static final int TARIFF_CHANGE_COST = 100;
     private SubscriberDao subscriberDao;
     private SubscriberActionDao subscriberActionDao;
     private ServiceDao serviceDao;
@@ -170,25 +169,11 @@ public class SubscriberServiceImpl implements SubscriberService {
     }
 
     @Override
-    public Subscriber getByPhoneNumber(String phoneNumber) throws ServiceException {
-        try {
-            Subscriber subscriber = subscriberDao.readByPhoneNumber(phoneNumber);
-            if (subscriber != null) {
-                return subscriber;
-            } else {
-                throw new SubscriberNotExistException(phoneNumber);
-            }
-        } catch (DaoException e) {
-            throw new ServiceException(e.getMessage());
-        }
-    }
-
-    @Override
     public void switchOnService(Subscriber subscriber, Long serviceId) throws ServiceException {
         try {
             transaction.start();
-            Service service = serviceDao.read(serviceId);
-            subtractBalance(subscriber, service.getPrice(), Action.ADD_SERVICE);
+            SubscriberAction subscriberAction = createSubscriberAction(subscriber.getId(), Action.ADD_SERVICE, 0);
+            subscriberActionDao.create(subscriberAction);
             serviceDao.switchOn(subscriber.getId(), serviceId);
             transaction.commit();
         } catch (DaoException e) {
@@ -232,7 +217,6 @@ public class SubscriberServiceImpl implements SubscriberService {
     @Override
     public void changeTariff(Subscriber subscriber, Long tariffId) throws ServiceException {
         try {
-            transaction.start();
             LocalDateTime dateNow = LocalDateTime.now();
             LocalDateTime dateLast = subscriberActionDao.readLastChangeTariff(subscriber.getId());
             if (dateLast == null) {
@@ -241,12 +225,24 @@ public class SubscriberServiceImpl implements SubscriberService {
             Duration duration1 = Duration.between(dateLast, dateNow);
             Duration duration2 = Duration.ofHours(24);
             if (duration1.compareTo(duration2) > 0) {
-                subscriber.setTariff(tariffId);
-                subtractBalance(subscriber, TARIFF_CHANGE_COST, Action.CHANGE_TARIFF);
+                changeTariffByAdmin(subscriber, tariffId);
             } else {
                 throw new SubscriberCanNotChangeTariffException(String.format("%1$td.%1$tm.%1$tY %1$tH:%1$tM:%1$tS",
                         dateLast.plusDays(1)));
             }
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void changeTariffByAdmin(Subscriber subscriber, Long tariffId) throws ServiceException {
+        try {
+            transaction.start();
+            subscriber.setTariff(tariffId);
+            SubscriberAction subscriberAction = createSubscriberAction(subscriber.getId(), Action.CHANGE_TARIFF, 0);
+            subscriberActionDao.create(subscriberAction);
+            subscriberDao.update(subscriber);
             transaction.commit();
         } catch (DaoException e) {
             try {
@@ -278,15 +274,14 @@ public class SubscriberServiceImpl implements SubscriberService {
     }
 
     @Override
-    public Boolean issueBill(Long id) throws ServiceException {
+    public void issueBill(Long id) throws ServiceException {
         try {
             transaction.start();
-            if (!issue(id)) {
-                transaction.rollback();
-                return false;
+            if (issue(id)) {
+                transaction.commit();
+            } else {
+                throw new BillTooEarlyException(String.valueOf(id));
             }
-            transaction.commit();
-            return true;
         } catch (DaoException e) {
             try {
                 transaction.rollback();

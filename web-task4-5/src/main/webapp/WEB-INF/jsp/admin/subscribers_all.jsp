@@ -83,7 +83,7 @@
                             </c:choose>
                             <td class="button-cell">
                                 <form action="subscriber_edit.html" method="POST">
-                                    <input type="hidden" name="id" value="${subscriber.id}">
+                                    <input type="hidden" name="subscriberId" value="${subscriber.id}">
                                     <input type="submit" value="<fmt:message key="admin.subscribersAllManage"/> 📝"
                                            class="btn btn-small btn-in-cell">
                                 </form>

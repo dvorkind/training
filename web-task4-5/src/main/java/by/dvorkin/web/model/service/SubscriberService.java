@@ -23,19 +23,19 @@ public interface SubscriberService {
 
     Subscriber getById(Long id) throws ServiceException;
 
-    Subscriber getByPhoneNumber(String phoneNumber) throws ServiceException;
-
     void switchOnService(Subscriber subscriber, Long serviceId) throws ServiceException;
 
     void switchOffService(Long subscriberId, Long serviceId) throws ServiceException;
 
     void changeTariff(Subscriber subscriber, Long tariffId) throws ServiceException;
 
+    void changeTariffByAdmin(Subscriber subscriber, Long tariffId) throws ServiceException;
+
     void setBlock(Long id) throws ServiceException;
 
     void activate(Long id) throws ServiceException;
 
-    Boolean issueBill(Long id) throws ServiceException;
+    void issueBill(Long id) throws ServiceException;
 
     int issueBillToAll() throws ServiceException;
 }

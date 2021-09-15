@@ -78,6 +78,10 @@ h2.no-margin-bottom {
     margin-bottom: 0;
 }
 
+h3.text-center {
+    margin-bottom: 20px;
+}
+
 .msg {
     text-align: center;
 }
@@ -245,7 +249,7 @@ header select.btn option {
 
 td .btn-small.btn-in-cell {
     display: block;
-    width: 120px;
+    width: 100%;
     margin: 5px 0;
 }
 
@@ -380,6 +384,41 @@ nav li {
     border-radius: 10px;
 }
 
+.edit-container {
+    display: flex;
+    align-items: stretch;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.edit-container .reg-form {
+    margin: 0;
+    padding: 0;
+}
+
+.edit-container .form-inputs {
+    margin: 0;
+}
+
+.edit-buttons-container {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    align-self: center;
+}
+
+.edit-buttons-container form {
+    margin-bottom: 30px;
+}
+
+.edit-buttons-container form input[type=submit] {
+    padding: 10px 55px;
+}
+
+.full-width {
+    width: 100%;
+}
+
 .index table {
     margin-bottom: 20px;
     margin-top: 20px;
@@ -398,4 +437,8 @@ nav li {
 
 footer {
     flex: 0 0 auto;
+}
+
+.epam-blue {
+    color: #00abcd;
 }

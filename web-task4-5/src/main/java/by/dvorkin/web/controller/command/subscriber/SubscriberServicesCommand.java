@@ -8,7 +8,6 @@ import by.dvorkin.web.model.entity.Subscriber;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.ServiceService;
 import by.dvorkin.web.model.service.SubscriberService;
-import by.dvorkin.web.model.service.exceptions.SubscriberNotEnoughMoneyException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,14 +29,12 @@ public class SubscriberServicesCommand implements Command {
                     subscriberService.switchOnService(subscriber, serviceId);
                     Helper.log("User #" + subscriber.getId() + " added service #" + serviceId);
                     session.setAttribute("success", "subscriber.servicesOnSuccess");
-                    return new Forward("/success.html");
-                }
-                if (req.getParameter("off") != null) {
+                } else {
                     subscriberService.switchOffService(subscriber.getId(), serviceId);
                     Helper.log("User #" + subscriber.getId() + " deleted service #" + serviceId);
                     session.setAttribute("success", "subscriber.servicesOffSuccess");
-                    return new Forward("/success.html");
                 }
+                return new Forward("/success.html");
             }
             List<Service> allServices = serviceService.getAll();
             req.setAttribute("allServices", allServices);
@@ -50,9 +47,6 @@ public class SubscriberServicesCommand implements Command {
             } else {
                 Helper.sortServices("nameUp", allServices);
             }
-        } catch (SubscriberNotEnoughMoneyException e) {
-            session.setAttribute("fail", "subscriber.servicesError");
-            return new Forward("/fail.html");
         } catch (Exception e) {
             throw new ServletException(e);
         }

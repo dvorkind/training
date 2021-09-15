@@ -64,8 +64,7 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
-    @Override
-    public Account getByLogin(String login) throws ServiceException {
+    private Account getByLogin(String login) throws ServiceException {
         try {
             Account account = accountDao.readByLogin(login);
             if (account != null) {
@@ -97,27 +96,6 @@ public class AccountServiceImpl implements AccountService {
             } else {
                 throw new AccountLoginNotUniqueException(account.getLogin());
             }
-            transaction.commit();
-        } catch (DaoException e) {
-            try {
-                transaction.rollback();
-            } catch (ServiceException ignored) {
-            }
-            throw new ServiceException(e.getMessage());
-        } catch (ServiceException e) {
-            try {
-                transaction.rollback();
-            } catch (ServiceException ignored) {
-            }
-            throw e;
-        }
-    }
-
-    @Override
-    public void update(Account account) throws ServiceException {
-        try {
-            transaction.start();
-            accountDao.update(account);
             transaction.commit();
         } catch (DaoException e) {
             try {
@@ -175,7 +153,7 @@ public class AccountServiceImpl implements AccountService {
                 accountDao.update(account);
                 transaction.commit();
             } else {
-                throw new AccountNotExistException(login);
+                 throw new AccountNotExistException(login);
             }
             return account;
         } catch (DaoException e) {
@@ -193,12 +171,47 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
-    private SubscriberAction createSubscriberAction(Long subscriberId) {
-        SubscriberAction subscriberAction = new SubscriberAction();
-        subscriberAction.setAction(Action.REGISTRATION);
-        subscriberAction.setSubscriberId(subscriberId);
-        subscriberAction.setDate(LocalDateTime.now());
-        subscriberAction.setSum(0);
-        return subscriberAction;
+    @Override
+    public void changeSubscribersPersonalData(Account account, Subscriber subscriber, String login,
+                                              String phoneNumber) throws ServiceException {
+        try {
+            transaction.start();
+            if (!account.getLogin().equals(login)) {
+                if (accountDao.readByLogin(login) != null) {
+                    throw new AccountLoginNotUniqueException(login);
+                }
+            }
+            if (!subscriber.getPhoneNumber().equals(phoneNumber)) {
+                if (subscriberDao.readByPhoneNumber(phoneNumber) != null) {
+                    throw new SubscriberPhoneNotUniqueException(phoneNumber);
+                }
+            }
+            account.setLogin(login);
+            accountDao.update(account);
+            subscriber.setPhoneNumber(phoneNumber);
+            subscriberDao.update(subscriber);
+            transaction.commit();
+        } catch (DaoException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw new ServiceException(e.getMessage());
+        } catch (ServiceException e) {
+            try {
+                transaction.rollback();
+            } catch (ServiceException ignored) {
+            }
+            throw e;
+        }
     }
-}
+
+        private SubscriberAction createSubscriberAction (Long subscriberId){
+            SubscriberAction subscriberAction = new SubscriberAction();
+            subscriberAction.setAction(Action.REGISTRATION);
+            subscriberAction.setSubscriberId(subscriberId);
+            subscriberAction.setDate(LocalDateTime.now());
+            subscriberAction.setSum(0);
+            return subscriberAction;
+        }
+    }

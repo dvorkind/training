@@ -96,7 +96,7 @@
                                 </c:if>
                                 <c:if test="${subscriber.blocked}">
                                     <form action="subscriber_edit.html" method="POST">
-                                        <input type="hidden" name="id" value="${subscriber.id}">
+                                        <input type="hidden" name="subscriberId" value="${subscriber.id}">
                                         <input type="submit" value="<fmt:message key="admin.debtorsManage"/> 📝"
                                                class="btn btn-small btn-in-cell">
                                     </form>

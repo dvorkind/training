@@ -4,15 +4,20 @@ import by.dvorkin.web.controller.Helper;
 import by.dvorkin.web.controller.command.Command;
 import by.dvorkin.web.controller.command.Forward;
 import by.dvorkin.web.model.entity.Account;
+import by.dvorkin.web.model.entity.Service;
 import by.dvorkin.web.model.entity.Subscriber;
 import by.dvorkin.web.model.entity.Tariff;
 import by.dvorkin.web.model.service.AccountService;
 import by.dvorkin.web.model.service.ServiceFactory;
+import by.dvorkin.web.model.service.ServiceService;
 import by.dvorkin.web.model.service.SubscriberService;
 import by.dvorkin.web.model.service.TariffService;
+import by.dvorkin.web.model.service.exceptions.AccountLoginNotUniqueException;
+import by.dvorkin.web.model.service.exceptions.SubscriberPhoneNotUniqueException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
 
@@ -23,56 +28,96 @@ public class AdminSubscriberEditCommand implements Command {
 
     @Override
     public Forward execute(HttpServletRequest req) throws ServletException {
-        if (req.getParameter("id") == null) {
+        if (req.getParameter("subscriberId") == null) {
             return new Forward("/admin/admin.html");
         }
         try (ServiceFactory serviceFactory = new ServiceFactoryImpl()) {
+            HttpSession session = req.getSession();
             SubscriberService subscriberService = serviceFactory.getSubscriberService();
-            Subscriber subscriber = subscriberService.getById(Long.parseLong(req.getParameter("id")));
+            Subscriber subscriber = subscriberService.getById(Long.parseLong(req.getParameter("subscriberId")));
+
+            //Blocking subscriber
             if (req.getParameter("block") != null) {
+                boolean blocked = subscriber.isBlocked();
                 subscriber.setBlocked(!subscriber.isBlocked());
                 subscriberService.update(subscriber);
-                Helper.log("UserID #" + subscriber.getId() + " was blocked by Administrator");
-                return new Forward("/admin/subscribers_all.html");
+                if (blocked) {
+                    Helper.log("UserID #" + subscriber.getId() + " was unblocked by Administrator");
+                    session.setAttribute("success", "admin.subscriberEditUnblockSuccess");
+                } else {
+                    Helper.log("UserID #" + subscriber.getId() + " was blocked by Administrator");
+                    session.setAttribute("success", "admin.subscriberEditBlockSuccess");
+                }
+                return new Forward("/success.html");
             }
+
             AccountService accountService = serviceFactory.getAccountService();
             Account account = accountService.getById(subscriber.getAccountId());
+
+            //Subscriber's password reset
             if (req.getParameter("resetPassword") != null) {
                 accountService.resetPassword(account.getLogin(), subscriber.getPhoneNumber());
                 Helper.log("User " + account.getLogin() + " password reset by Administrator");
-                return new Forward("/admin/subscribers_all.html");
+                session.setAttribute("success", "admin.subscriberEditResetPasswordSuccess");
+                return new Forward("/success.html");
             }
+
             TariffService tariffService = serviceFactory.getTariffService();
+            ServiceService serviceService = serviceFactory.getServiceService();
             List<Tariff> tariffs = tariffService.getAll();
+            List<Service> allServices = serviceService.getAll();
+            List<Service> subscribersServices = serviceService.getSubscribersService(subscriber.getId());
+            req.setAttribute("allServices", allServices);
+            req.setAttribute("subscribersServices", subscribersServices);
             req.setAttribute("subscriber", subscriber);
             req.setAttribute("account", account);
             req.setAttribute("tariffs", tariffs);
+
+            //Subscriber's personal data edit
             if (req.getParameter("confirmation") != null) {
-                if (isLoginValid(req, account) && !account.getLogin().equals(req.getParameter("login"))) {
-                    if (accountService.getByLogin(req.getParameter("login")) != null) {
-                        req.removeAttribute("loginIsValid");
-                        req.setAttribute("loginError", "admin.subscriberEditErrorExistAccountError");
-                        return null;
-                    }
+                if (isLoginValid(req, account) && isPersonalInfoValid(req, subscriber)) {
+                    String login = req.getParameter("login");
+                    String phoneNumber = req.getParameter("phoneNumber");
+                    subscriber.setFirstname(req.getParameter("firstname"));
+                    subscriber.setLastname(req.getParameter("lastname"));
+                    accountService.changeSubscribersPersonalData(account, subscriber, login, phoneNumber);
+                    Helper.log("UserID #" + subscriber.getId() + " was updated by Administrator");
+                    session.setAttribute("success", "admin.subscriberEditSuccess");
+                    return new Forward("/success.html");
                 }
-                if (isPersonalInfoValid(req, subscriber) && !subscriber.getPhoneNumber()
-                        .equals(req.getParameter("phoneNumber"))) {
-                    if (subscriberService.getByPhoneNumber((String) req.getAttribute("phoneNumber")) != null) {
-                        req.removeAttribute("phoneNumberIsValid");
-                        req.setAttribute("phoneNumberError", "admin.subscriberEditErrorExistSubscriberError");
-                        return null;
-                    }
-                }
-                account.setLogin(req.getParameter("login"));
-                accountService.update(account);
-                subscriber.setFirstname(req.getParameter("firstname"));
-                subscriber.setLastname(req.getParameter("lastname"));
-                subscriber.setPhoneNumber(req.getParameter("phoneNumber"));
-                subscriber.setTariff(Long.parseLong(req.getParameter("newTariff")));
-                subscriberService.update(subscriber);
-                Helper.log("UserID #" + subscriber.getId() + " was updated by Administrator");
-                return new Forward("/admin/subscribers_all.html");
             }
+
+            //Edit subscriber's services
+            if (req.getParameter("serviceId") != null) {
+                long serviceId = Long.parseLong(req.getParameter("serviceId"));
+                if (req.getParameter("on") != null) {
+                    subscriberService.switchOnService(subscriber, serviceId);
+                    Helper.log("User #" + subscriber.getId() + " added service #" + serviceId + " by Administrator");
+                    session.setAttribute("success", "admin.subscriberEditServiceOnSuccess");
+                } else {
+                    subscriberService.switchOffService(subscriber.getId(), serviceId);
+                    Helper.log("User #" + subscriber.getId() + " deleted service #" + serviceId + " by Administrator");
+                    session.setAttribute("success", "admin.subscriberEditServiceOffSuccess");
+                }
+                return new Forward("/success.html");
+            }
+
+            //Change subscriber's tariff
+            if (req.getParameter("newTariff") != null) {
+                Long newTariff = Long.parseLong(req.getParameter("newTariff"));
+                subscriberService.changeTariffByAdmin(subscriber, newTariff);
+                Helper.log("User #" + subscriber.getId() + " changed tariff to #" + newTariff + " by Administrator");
+                session.setAttribute("success", "admin.subscriberEditTariffChangeSuccess");
+                return new Forward("/success.html");
+            }
+        } catch (AccountLoginNotUniqueException e) {
+            req.removeAttribute("loginIsValid");
+            req.setAttribute("loginError", "admin.subscriberEditErrorExistAccountError");
+            return null;
+        } catch (SubscriberPhoneNotUniqueException e) {
+            req.removeAttribute("phoneNumberIsValid");
+            req.setAttribute("phoneNumberError", "admin.subscriberEditErrorExistSubscriberError");
+            return null;
         } catch (Exception e) {
             throw new ServletException(e);
         }

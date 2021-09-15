@@ -84,7 +84,6 @@
                             <td class="button-cell">
                                 <form action="tariff.html" method="POST">
                                     <input type="hidden" name="newTariff" value="${tariff.id}">
-                                    <input type="hidden" name="confirmation">
                                     <c:if test="${tariff.id != id}">
                                         <input type="submit" value="<fmt:message key="subscriber.changeTariffChoose"/>"
                                                class="btn btn-small btn-in-cell">
@@ -93,7 +92,6 @@
                                         <input type="submit" value="<fmt:message key="subscriber.changeTariffChoose"/>"
                                                class="btn btn-small btn-in-cell" disabled>
                                     </c:if>
-
                                 </form>
                             </td>
                         </tr>

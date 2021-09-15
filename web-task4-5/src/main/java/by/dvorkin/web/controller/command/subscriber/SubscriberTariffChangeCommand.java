@@ -9,7 +9,6 @@ import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.SubscriberService;
 import by.dvorkin.web.model.service.TariffService;
 import by.dvorkin.web.model.service.exceptions.SubscriberCanNotChangeTariffException;
-import by.dvorkin.web.model.service.exceptions.SubscriberNotEnoughMoneyException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +34,7 @@ public class SubscriberTariffChangeCommand implements Command {
             } else {
                 Helper.sortTariffs("nameUp", tariffs);
             }
-            if (req.getParameter("confirmation") != null) {
+            if (req.getParameter("newTariff") != null) {
                 Long newTariff = Long.parseLong(req.getParameter("newTariff"));
                 subscriberService.changeTariff(subscriber, newTariff);
                 Helper.log("User #" + subscriber.getId() + " changed his tariff to #" + newTariff);
@@ -45,9 +44,6 @@ public class SubscriberTariffChangeCommand implements Command {
         } catch (SubscriberCanNotChangeTariffException e) {
             session.setAttribute("fail", "subscriber.changeTariffDateError");
             session.setAttribute("failTwo", e.getMessage());
-            return new Forward("/fail.html");
-        } catch (SubscriberNotEnoughMoneyException e) {
-            session.setAttribute("fail", "subscriber.changeTariffError");
             return new Forward("/fail.html");
         } catch (Exception e) {
             throw new ServletException(e);

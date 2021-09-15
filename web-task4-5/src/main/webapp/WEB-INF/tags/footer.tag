@@ -6,7 +6,7 @@
 <fmt:setLocale value="${locale}"/>
 <fmt:setBundle basename="messages"/>
 <footer>
-    <span><fmt:message key="footer.copyright"/>&nbsp;<code><fmt:message key="footer.epam"/></code></span>
+    <span><fmt:message key="footer.copyright"/>&nbsp;<span class="epam-blue">&lt;</span><fmt:message key="footer.epam"/><span class="epam-blue">&gt;</span></span>
     <c:if test="${sessionAccount.role == 'SUBSCRIBER'}">
         <span>
             <fmt:message key="footer.balance"/>

@@ -15,9 +15,10 @@
     <div class="main">
         <c:choose>
             <c:when test="${empty allBills}">
-                <h2 class="text-center">
+                <h2 class="text-center no-margin-bottom">
                     <fmt:message key="admin.billsEmpty"/>
                 </h2>
+                <h3 class="text-center">(${subscriberFirstName}&nbsp;${subscriberLastName})</h3>
                 <p class="msg"><fmt:message key="admin.billsMessageOne"/></p>
                 <p class="msg"><fmt:message key="admin.billsMessageTwo"/></p>
                 <p class="form-message center-message">
@@ -33,7 +34,8 @@
                 </form>
             </c:when>
             <c:otherwise>
-                <h2 class="text-center">${titlePage}</h2>
+                <h2 class="text-center no-margin-bottom">${titlePage}</h2>
+                <h3 class="text-center">(${subscriberFirstName}&nbsp;${subscriberLastName})</h3>
                 <p class="msg"><fmt:message key="admin.billsMessageOne"/></p>
                 <p class="msg"><fmt:message key="admin.billsMessageTwo"/></p>
                 <p class="form-message center-message">
