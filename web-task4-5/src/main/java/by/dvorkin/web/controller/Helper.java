@@ -30,9 +30,6 @@ public class Helper {
 
     public static void sortServices(String sortBy, List<Service> services) {
         switch (sortBy) {
-            case "nameUp":
-                services.sort(Comparator.comparing(Service::getName));
-                break;
             case "nameDown":
                 services.sort(Comparator.comparing(Service::getName).reversed());
                 break;
@@ -42,14 +39,13 @@ public class Helper {
             case "priceDown":
                 services.sort(Comparator.comparing(Service::getPrice).reversed());
                 break;
+            default:
+                services.sort(Comparator.comparing(Service::getName));
         }
     }
 
     public static void sortBills(String sortBy, List<Bill> bills) {
         switch (sortBy) {
-            case "dateUp":
-                bills.sort(Comparator.comparing(Bill::getInvoiceDate));
-                break;
             case "dateDown":
                 bills.sort(Comparator.comparing(Bill::getInvoiceDate).reversed());
                 break;
@@ -65,14 +61,13 @@ public class Helper {
             case "statusDown":
                 bills.sort(Comparator.comparing(Bill::isPaid).reversed());
                 break;
+            default:
+                bills.sort(Comparator.comparing(Bill::getInvoiceDate));
         }
     }
 
     public static void sortActions(String sortBy, List<SubscriberAction> actionList) {
         switch (sortBy) {
-            case "nameUp":
-                actionList.sort(Comparator.comparing(subscriberAction -> subscriberAction.getAction().getName()));
-                break;
             case "nameDown":
                 actionList.sort(Comparator.comparing((SubscriberAction subscriberAction) -> subscriberAction.getAction()
                         .getName()).reversed());
@@ -89,14 +84,13 @@ public class Helper {
             case "sumDown":
                 actionList.sort(Comparator.comparing(SubscriberAction::getSum).reversed());
                 break;
+            default:
+                actionList.sort(Comparator.comparing(subscriberAction -> subscriberAction.getAction().getName()));
         }
     }
 
     public static void sortSubscribers(String sortBy, List<Subscriber> subscribers) {
         switch (sortBy) {
-            case "firstNameUp":
-                subscribers.sort(Comparator.comparing(Subscriber::getFirstname));
-                break;
             case "firstNameDown":
                 subscribers.sort(Comparator.comparing(Subscriber::getFirstname).reversed());
                 break;
@@ -118,14 +112,13 @@ public class Helper {
             case "stateDown":
                 subscribers.sort(Comparator.comparing(Subscriber::isBlocked).reversed());
                 break;
+            default:
+                subscribers.sort(Comparator.comparing(Subscriber::getFirstname));
         }
     }
 
     public static void sortTariffs(String sortBy, List<Tariff> tariffs) {
         switch (sortBy) {
-            case "nameUp":
-                tariffs.sort(Comparator.comparing(Tariff::getName));
-                break;
             case "nameDown":
                 tariffs.sort(Comparator.comparing(Tariff::getName).reversed());
                 break;
@@ -147,6 +140,8 @@ public class Helper {
             case "smsCostDown":
                 tariffs.sort(Comparator.comparing(Tariff::getSmsCost).reversed());
                 break;
+            default:
+                tariffs.sort(Comparator.comparing(Tariff::getName));
         }
     }
 }

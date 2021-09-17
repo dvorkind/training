@@ -4,6 +4,7 @@ import by.dvorkin.web.controller.Helper;
 import by.dvorkin.web.controller.command.Command;
 import by.dvorkin.web.controller.command.Forward;
 import by.dvorkin.web.model.entity.Account;
+import by.dvorkin.web.model.entity.Role;
 import by.dvorkin.web.model.service.AccountService;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.exceptions.AccountNotExistException;
@@ -44,11 +45,10 @@ public class LoginCommand implements Command {
 
     private Forward getForward(Account sessionAccount) {
         if (sessionAccount != null) {
-            switch (sessionAccount.getRole()) {
-                case ADMINISTRATOR:
-                    return new Forward("/admin/admin.html");
-                case SUBSCRIBER:
-                    return new Forward("/subscriber/subscriber.html");
+            if (sessionAccount.getRole() == Role.ADMINISTRATOR) {
+                return new Forward("/admin/admin.html");
+            } else {
+                return new Forward("/subscriber/subscriber.html");
             }
         }
         return null;
