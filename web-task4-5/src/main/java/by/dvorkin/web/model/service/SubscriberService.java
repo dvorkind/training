@@ -3,7 +3,9 @@ package by.dvorkin.web.model.service;
 import by.dvorkin.web.model.entity.Action;
 import by.dvorkin.web.model.entity.Subscriber;
 import by.dvorkin.web.model.service.exceptions.BillTooEarlyException;
+import by.dvorkin.web.model.service.exceptions.ServiceAlreadyUsedException;
 import by.dvorkin.web.model.service.exceptions.ServiceException;
+import by.dvorkin.web.model.service.exceptions.ServiceNotExistException;
 import by.dvorkin.web.model.service.exceptions.SubscriberCanNotChangeTariffException;
 import by.dvorkin.web.model.service.exceptions.SubscriberNotEnoughMoneyException;
 
@@ -85,6 +87,8 @@ public interface SubscriberService {
      *
      * @param subscriberId subscriber id
      * @param serviceId    service id
+     * @throws ServiceAlreadyUsedException if the service to be added has already been added
+     * @throws ServiceNotExistException if the added service does not exist
      * @throws ServiceException in case of exception
      */
     void switchOnService(Long subscriberId, Long serviceId) throws ServiceException;

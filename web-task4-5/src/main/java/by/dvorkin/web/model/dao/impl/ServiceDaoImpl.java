@@ -13,17 +13,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceDaoImpl implements ServiceDao {
+    private static final String SWITCH_OFF = "DELETE FROM `subscriber_service` WHERE `service_id` = ? AND " +
+            "`subscriber_id` = ?";
+    private static final String SWITCH_ON = "INSERT INTO `subscriber_service` (`subscriber_id`, `service_id`) " +
+            "VALUES (?, ?)";
+    private static final String READ_BY_NAME = "SELECT * FROM `service` WHERE `is_deleted` = 0 AND BINARY `name` = ?";
+    private static final String READ_SUBSCRIBERS_SERVICE =
+            "SELECT * FROM `service` INNER JOIN `subscriber_service` ON service.id = service_id  WHERE " +
+                    "`subscriber_id` = ?";
+    private static final String READ_ALL = "SELECT * FROM `service` WHERE `is_deleted` = 0";
+    private static final String READ = "SELECT * FROM `service` WHERE `id` = ? AND `is_deleted` = 0";
+    private static final String CREATE = "INSERT INTO `service` (`name`, `description`, `price`, `is_deleted`) " +
+            "VALUES (?, ?, ?, ?)";
+    private static final String UPDATE = "UPDATE `service` SET `name` = ?, `description` = ?, `price` = ? WHERE `id` "
+            + "= ?";
+    private static final String DELETE = "UPDATE `service` SET `is_deleted` = ? WHERE `id` = ?";
+    private static final String DELETE_SUBSCRIBER_SERVICE = "DELETE FROM `subscriber_service` WHERE `service_id` = ?";
     private Connection connection;
 
-    //TODO: создать константы запросов
     public void setConnection(Connection connection) {
         this.connection = connection;
     }
 
     @Override
     public Long create(Service service) throws DaoException {
-        String sql = "INSERT INTO `service` (`name`, `description`, `price`, `is_deleted`) " + "VALUES (?, ?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, service.getName());
             statement.setString(2, service.getDescription());
             statement.setInt(3, service.getPrice());
@@ -31,7 +45,7 @@ public class ServiceDaoImpl implements ServiceDao {
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
-            Long result =resultSet.getLong(1);
+            Long result = resultSet.getLong(1);
             resultSet.close();
             return result;
         } catch (SQLException e) {
@@ -41,8 +55,7 @@ public class ServiceDaoImpl implements ServiceDao {
 
     @Override
     public void update(Service service) throws DaoException {
-        String sql = "UPDATE `service` SET `name` = ?, `description` = ?, `price` = ? WHERE `id` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             statement.setString(1, service.getName());
             statement.setString(2, service.getDescription());
             statement.setInt(3, service.getPrice());
@@ -55,8 +68,7 @@ public class ServiceDaoImpl implements ServiceDao {
 
     @Override
     public void delete(Long id) throws DaoException {
-        String sql = "UPDATE `service` SET `is_deleted` = ? WHERE `id` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(DELETE)) {
             statement.setLong(1, 1);
             statement.setLong(2, id);
             statement.executeUpdate();
@@ -64,8 +76,7 @@ public class ServiceDaoImpl implements ServiceDao {
             throw new DaoException(e);
         }
 
-        sql = "DELETE FROM `subscriber_service` WHERE `service_id` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(DELETE_SUBSCRIBER_SERVICE)) {
             statement.setLong(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -75,8 +86,7 @@ public class ServiceDaoImpl implements ServiceDao {
 
     @Override
     public Service read(Long id) throws DaoException {
-        String sql = "SELECT * FROM `service` WHERE `id` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(READ)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             Service service = null;
@@ -92,9 +102,8 @@ public class ServiceDaoImpl implements ServiceDao {
 
     @Override
     public List<Service> readAll() throws DaoException {
-        String sql = "SELECT * FROM `service` WHERE `is_deleted` = 0";
         try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(sql);
+            ResultSet resultSet = statement.executeQuery(READ_ALL);
             List<Service> services = new ArrayList<>();
             while (resultSet.next()) {
                 services.add(createService(resultSet));
@@ -108,8 +117,7 @@ public class ServiceDaoImpl implements ServiceDao {
 
     @Override
     public List<Service> readSubscribersService(Long subscriberId) throws DaoException {
-        String sql = "SELECT * FROM `service` INNER JOIN `subscriber_service` ON service.id = service_id  WHERE `subscriber_id` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(READ_SUBSCRIBERS_SERVICE)) {
             statement.setLong(1, subscriberId);
             ResultSet resultSet = statement.executeQuery();
             List<Service> services = new ArrayList<>();
@@ -125,8 +133,7 @@ public class ServiceDaoImpl implements ServiceDao {
 
     @Override
     public Service readByName(String serviceName) throws DaoException {
-        String sql = "SELECT * FROM `service` WHERE `is_deleted` = 0 AND BINARY `name` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(READ_BY_NAME)) {
             statement.setString(1, serviceName);
             ResultSet resultSet = statement.executeQuery();
             Service service = null;
@@ -142,8 +149,7 @@ public class ServiceDaoImpl implements ServiceDao {
 
     @Override
     public void switchOn(Long subscriberId, Long serviceId) throws DaoException {
-        String sql = "INSERT INTO `subscriber_service` (`subscriber_id`, `service_id`) " + "VALUES (?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(SWITCH_ON)) {
             statement.setLong(1, subscriberId);
             statement.setLong(2, serviceId);
             statement.executeUpdate();
@@ -154,8 +160,7 @@ public class ServiceDaoImpl implements ServiceDao {
 
     @Override
     public void switchOff(Long subscriberId, Long serviceId) throws DaoException {
-        String sql = "DELETE FROM `subscriber_service` WHERE `service_id` = ? AND `subscriber_id` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(SWITCH_OFF)) {
             statement.setLong(1, serviceId);
             statement.setLong(2, subscriberId);
             statement.executeUpdate();

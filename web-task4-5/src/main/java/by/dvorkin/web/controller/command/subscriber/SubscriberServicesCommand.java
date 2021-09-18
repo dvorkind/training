@@ -8,6 +8,8 @@ import by.dvorkin.web.model.entity.Subscriber;
 import by.dvorkin.web.model.service.ServiceFactory;
 import by.dvorkin.web.model.service.ServiceService;
 import by.dvorkin.web.model.service.SubscriberService;
+import by.dvorkin.web.model.service.exceptions.ServiceAlreadyUsedException;
+import by.dvorkin.web.model.service.exceptions.ServiceNotExistException;
 import by.dvorkin.web.model.service.impl.ServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,6 +49,12 @@ public class SubscriberServicesCommand implements Command {
             } else {
                 Helper.sortServices("nameUp", allServices);
             }
+        } catch (ServiceAlreadyUsedException e) {
+            session.setAttribute("fail", "subscriber.servicesAlreadyUsedError");
+            return new Forward("/fail.html");
+        } catch (ServiceNotExistException e) {
+            session.setAttribute("fail", "subscriber.servicesNotExistError");
+            return new Forward("/fail.html");
         } catch (Exception e) {
             throw new ServletException(e);
         }

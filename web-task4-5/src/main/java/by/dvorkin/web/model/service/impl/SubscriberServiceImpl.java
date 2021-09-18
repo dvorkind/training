@@ -14,7 +14,9 @@ import by.dvorkin.web.model.entity.SubscriberAction;
 import by.dvorkin.web.model.service.SubscriberService;
 import by.dvorkin.web.model.service.Transaction;
 import by.dvorkin.web.model.service.exceptions.BillTooEarlyException;
+import by.dvorkin.web.model.service.exceptions.ServiceAlreadyUsedException;
 import by.dvorkin.web.model.service.exceptions.ServiceException;
+import by.dvorkin.web.model.service.exceptions.ServiceNotExistException;
 import by.dvorkin.web.model.service.exceptions.SubscriberCanNotChangeTariffException;
 import by.dvorkin.web.model.service.exceptions.SubscriberNotEnoughMoneyException;
 
@@ -172,9 +174,19 @@ public class SubscriberServiceImpl implements SubscriberService {
     public void switchOnService(Long subscriberId, Long serviceId) throws ServiceException {
         try {
             transaction.start();
+            Service service = serviceDao.read(serviceId);
+            if (service != null) {
+                List<Service> subscriberServices = serviceDao.readSubscribersService(subscriberId);
+                if (!subscriberServices.contains(service)) {
+                    serviceDao.switchOn(subscriberId, serviceId);
+                } else {
+                    throw new ServiceAlreadyUsedException(String.valueOf(serviceId));
+                }
+            } else {
+                throw new ServiceNotExistException(String.valueOf(serviceId));
+            }
             SubscriberAction subscriberAction = createSubscriberAction(subscriberId, Action.ADD_SERVICE, 0);
             subscriberActionDao.create(subscriberAction);
-            serviceDao.switchOn(subscriberId, serviceId);
             transaction.commit();
         } catch (DaoException e) {
             try {
