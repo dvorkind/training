@@ -13,19 +13,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SubscriberDaoImpl implements SubscriberDao {
+    private static final String CREATE = "INSERT INTO `subscriber` (`account_id`, `firstname`, `lastname`, " +
+            "`phone_number`, `balance`, `tariff`, `is_blocked`, `is_registered`, `is_deleted`) VALUES (?, ?, ?, " +
+            "?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE = "UPDATE `subscriber` SET `firstname` = ?, `lastname` = ?, `phone_number` = " +
+            "?, `balance` = ?, `tariff` = ?, `is_blocked` = ?, `is_registered` = ? WHERE `id` = ?";
+    private static final String DELETE = "UPDATE `subscriber` SET `is_deleted` = ? WHERE `id` = ?";
+    private static final String READ = "SELECT * FROM `subscriber` WHERE `id` = ?";
+    private static final String READ_BY_ACCOUNT_ID = "SELECT * FROM `subscriber` WHERE `account_id` = ?";
+    private static final String READ_ALL = "SELECT * FROM `subscriber` WHERE `is_deleted` = 0";
+    private static final String READ_NEW_SUBSCRIBERS = "SELECT * FROM `subscriber` WHERE  `is_registered` = 0 AND " +
+            "`is_deleted` = 0";
+    private static final String READ_DEBTORS = "SELECT * FROM `subscriber` WHERE  `balance` < 0 AND `is_deleted` = 0";
+    private static final String READ_BY_PHONE_NUMBER = "SELECT * FROM `subscriber` WHERE `phone_number` = ?";
     private Connection connection;
 
-    //TODO: создать константы запросов
     public void setConnection(Connection connection) {
         this.connection = connection;
     }
 
     @Override
     public Long create(Subscriber subscriber) throws DaoException {
-        String sql =
-                "INSERT INTO `subscriber` (`account_id`, `firstname`, `lastname`, `phone_number`, `balance`, " +
-                        "`tariff`, `is_blocked`, `is_registered`, `is_deleted`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS)) {
             statement.setLong(1, subscriber.getAccountId());
             statement.setString(2, subscriber.getFirstname());
             statement.setString(3, subscriber.getLastname());
@@ -48,9 +57,7 @@ public class SubscriberDaoImpl implements SubscriberDao {
 
     @Override
     public void update(Subscriber subscriber) throws DaoException {
-        String sql = "UPDATE `subscriber` SET `firstname` = ?, `lastname` = ?, `phone_number` = ?, `balance` = ?, " +
-                "`tariff` = ?, `is_blocked` = ?, `is_registered` = ? WHERE `id` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             statement.setString(1, subscriber.getFirstname());
             statement.setString(2, subscriber.getLastname());
             statement.setString(3, subscriber.getPhoneNumber());
@@ -67,8 +74,7 @@ public class SubscriberDaoImpl implements SubscriberDao {
 
     @Override
     public void delete(Long id) throws DaoException {
-        String sql = "UPDATE `subscriber` SET `is_deleted` = ? WHERE `id` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(DELETE)) {
             statement.setLong(1, 1);
             statement.setLong(2, id);
             statement.executeUpdate();
@@ -79,39 +85,32 @@ public class SubscriberDaoImpl implements SubscriberDao {
 
     @Override
     public Subscriber read(Long id) throws DaoException {
-        String sql = "SELECT * FROM `subscriber` WHERE `id` = ?";
-        return getSubscriber(id, sql);
+        return getSubscriber(id, READ);
     }
-
 
     @Override
     public Subscriber readByAccountId(Long id) throws DaoException {
-        String sql = "SELECT * FROM `subscriber` WHERE `account_id` = ?";
-        return getSubscriber(id, sql);
+        return getSubscriber(id, READ_BY_ACCOUNT_ID);
     }
 
     @Override
     public List<Subscriber> readAll() throws DaoException {
-        String sql = "SELECT * FROM `subscriber` WHERE `is_deleted` = 0";
-        return getSubscriberList(sql);
+        return getSubscriberList(READ_ALL);
     }
 
     @Override
     public List<Subscriber> readNewSubscribers() throws DaoException {
-        String sql = "SELECT * FROM `subscriber` WHERE  `is_registered` = 0 AND `is_deleted` = 0";
-        return getSubscriberList(sql);
+        return getSubscriberList(READ_NEW_SUBSCRIBERS);
     }
 
     @Override
     public List<Subscriber> readDebtors() throws DaoException {
-        String sql = "SELECT * FROM `subscriber` WHERE  `balance` < 0 AND `is_deleted` = 0";
-        return getSubscriberList(sql);
+        return getSubscriberList(READ_DEBTORS);
     }
 
     @Override
     public Subscriber readByPhoneNumber(String phoneNumber) throws DaoException {
-        String sql = "SELECT * FROM `subscriber` WHERE `phone_number` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(READ_BY_PHONE_NUMBER)) {
             statement.setString(1, phoneNumber);
             ResultSet resultSet = statement.executeQuery();
             Subscriber subscriber = null;

@@ -16,17 +16,23 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class AccountDaoImpl implements AccountDao {
+    private static final String READ_BY_LOGIN_AND_PASSWORD =
+            "SELECT * FROM `account` WHERE BINARY `login` = ? AND `password` = ? AND `is_deleted` = 0";
+    private static final String READ_BY_LOGIN = "SELECT * FROM `account` WHERE BINARY `login` = ?";
+    private static final String CREATE =
+            "INSERT INTO `account` (`login`, `password`, `role`, `is_deleted`) VALUES (?, ?, ?, ?)";
+    private static final String UPDATE = "UPDATE `account` SET `login` = ?, `password` = ?, `role` = ? WHERE `id` = ?";
+    private static final String DELETE = "UPDATE `account` SET `is_deleted` = ? WHERE `id` = ?";
+    private static final String READ = "SELECT * FROM `account` WHERE `id` = ?";
     private Connection connection;
 
-    //TODO: создать константы запросов
     public void setConnection(Connection connection) {
         this.connection = connection;
     }
 
     @Override
     public Account readByLogin(String login) throws DaoException {
-        String sql = "SELECT * FROM `account` WHERE BINARY `login` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(READ_BY_LOGIN)) {
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
             Account account = null;
@@ -42,8 +48,7 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public Account readByLoginAndPassword(String login, String password) throws DaoException {
-        String sql = "SELECT * FROM `account` WHERE BINARY `login` = ? AND `password` = ? AND `is_deleted` = 0";
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(READ_BY_LOGIN_AND_PASSWORD)) {
             statement.setString(1, login);
             statement.setString(2, passwordToSHA(password));
             ResultSet resultSet = statement.executeQuery();
@@ -60,13 +65,11 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public Long create(Account account) throws DaoException {
-        String sql = "INSERT INTO `account` (`login`, `password`, `role`, `is_deleted`) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, account.getLogin());
             statement.setString(2, passwordToSHA(account.getPassword()));
-            statement.setInt(3, account.getRole()
-                    .ordinal());
-            statement.setInt(4,0);
+            statement.setInt(3, account.getRole().ordinal());
+            statement.setInt(4, 0);
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
@@ -81,12 +84,10 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public void update(Account account) throws DaoException {
-        String sql = "UPDATE `account` SET `login` = ?, `password` = ?, `role` = ? WHERE `id` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             statement.setString(1, account.getLogin());
             statement.setString(2, account.getPassword());
-            statement.setInt(3, account.getRole()
-                    .ordinal());
+            statement.setInt(3, account.getRole().ordinal());
             statement.setLong(4, account.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -96,8 +97,7 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public void delete(Long id) throws DaoException {
-        String sql = "UPDATE `account` SET `is_deleted` = ? WHERE `id` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(DELETE)) {
             statement.setLong(1, 1);
             statement.setLong(2, id);
             statement.executeUpdate();
@@ -108,8 +108,7 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public Account read(Long id) throws DaoException {
-        String sql = "SELECT * FROM `account` WHERE `id` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(READ)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             Account account = null;

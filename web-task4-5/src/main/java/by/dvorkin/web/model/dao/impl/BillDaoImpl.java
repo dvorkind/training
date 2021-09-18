@@ -15,18 +15,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BillDaoImpl implements BillDao {
+    private static final String CREATE = "INSERT INTO `bill` (`subscriber_id`, `invoice_date`, `sum`, `is_paid`, " +
+            "`is_deleted`) VALUES (?, ?, ?, ?, ?)";
+    private static final String READ = "SELECT * FROM `bill` WHERE  `is_deleted` = 0 AND `id` = ?";
+    private static final String UPDATE = "UPDATE `bill` SET `is_paid` = ? WHERE `id` = ?";
+    private static final String DELETE = "UPDATE `bill` SET `is_deleted` = ? WHERE `id` = ?";
+    private static final String READ_LAST_BILL = "SELECT * FROM `bill` WHERE `invoice_date` IN (SELECT max" +
+            "(invoice_date) FROM `bill` WHERE `is_deleted` = 0 AND `subscriber_id` = ?)";
+    private static final String READ_ALL_SUBSCRIBERS_BILL = "SELECT * FROM `bill` WHERE `is_deleted` = 0 AND " +
+            "`subscriber_id` = ?";
+    private static final String READ_ALL_UNPAID_SUBSCRIBERS_BILL =
+            "SELECT * FROM `bill` WHERE `is_deleted` = 0 AND `is_paid`= 0  AND `subscriber_id` = ?";
+    private static final String READ_ALL_UNPAID = "SELECT * FROM `bill` WHERE `is_deleted` = 0 AND `is_paid` = 0 ";
     private Connection connection;
 
-    //TODO: создать константы запросов
     public void setConnection(Connection connection) {
         this.connection = connection;
     }
 
     @Override
     public Long create(Bill bill) throws DaoException {
-        String sql = "INSERT INTO `bill` (`subscriber_id`, `invoice_date`, `sum`, `is_paid`, `is_deleted`) VALUES (?,"
-                + " ?, ?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS)) {
             statement.setLong(1, bill.getSubscriberId());
             statement.setTimestamp(2, Timestamp.valueOf(bill.getInvoiceDate()));
             statement.setInt(3, bill.getSum());
@@ -45,8 +54,7 @@ public class BillDaoImpl implements BillDao {
 
     @Override
     public Bill read(Long id) throws DaoException {
-        String sql = "SELECT * FROM `bill` WHERE  `is_deleted` = 0 AND `id` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(READ)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             Bill bill = null;
@@ -62,8 +70,7 @@ public class BillDaoImpl implements BillDao {
 
     @Override
     public void update(Bill bill) throws DaoException {
-        String sql = "UPDATE `bill` SET `is_paid` = ? WHERE `id` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             statement.setBoolean(1, bill.isPaid());
             statement.setLong(2, bill.getId());
             statement.executeUpdate();
@@ -74,8 +81,7 @@ public class BillDaoImpl implements BillDao {
 
     @Override
     public void delete(Long id) throws DaoException {
-        String sql = "UPDATE `bill` SET `is_deleted` = ? WHERE `id` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(DELETE)) {
             statement.setInt(1, 1);
             statement.setLong(2, id);
             statement.executeUpdate();
@@ -86,10 +92,7 @@ public class BillDaoImpl implements BillDao {
 
     @Override
     public LocalDateTime readLastBill(Long subscriberId) throws DaoException {
-        String sql =
-                "SELECT * FROM `bill` WHERE `invoice_date` IN (SELECT max(invoice_date) FROM `bill` " + "WHERE " +
-                        "`is_deleted` = 0 AND `subscriber_id` = ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(READ_LAST_BILL)) {
             statement.setLong(1, subscriberId);
             ResultSet resultSet = statement.executeQuery();
             LocalDateTime lastDate = null;
@@ -105,21 +108,18 @@ public class BillDaoImpl implements BillDao {
 
     @Override
     public List<Bill> readAllSubscribersBill(Long subscriberId) throws DaoException {
-        String sql = "SELECT * FROM `bill` WHERE `is_deleted` = 0 AND `subscriber_id` = ?";
-        return getSubscribersBillList(sql, subscriberId);
+        return getSubscribersBillList(READ_ALL_SUBSCRIBERS_BILL, subscriberId);
     }
 
     @Override
     public List<Bill> readAllUnpaidSubscribersBill(Long subscriberId) throws DaoException {
-        String sql = "SELECT * FROM `bill` WHERE `is_deleted` = 0 AND `is_paid`= 0  AND `subscriber_id` = ?";
-        return getSubscribersBillList(sql, subscriberId);
+        return getSubscribersBillList(READ_ALL_UNPAID_SUBSCRIBERS_BILL, subscriberId);
     }
 
     @Override
     public List<Bill> readAllUnpaid() throws DaoException {
-        String sql = "SELECT * FROM `bill` WHERE `is_deleted` = 0 AND `is_paid` = 0 ";
         try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(sql);
+            ResultSet resultSet = statement.executeQuery(READ_ALL_UNPAID);
             List<Bill> bills = new ArrayList<>();
             while (resultSet.next()) {
                 bills.add(createBill(resultSet));

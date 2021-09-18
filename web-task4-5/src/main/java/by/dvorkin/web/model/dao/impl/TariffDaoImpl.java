@@ -13,18 +13,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TariffDaoImpl implements TariffDao {
+    private static final String CREATE = "INSERT INTO `tariff` (`name`, `description`, `subscription_fee`, " +
+            "`call_cost`, `sms_cost`, `is_deleted`) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE = "UPDATE `tariff` SET `name` = ?, `description` = ?, `subscription_fee` = ?, "
+            + "`call_cost` = ?, `sms_cost` = ? WHERE `id` = ?";
+    private static final String DELETE = "UPDATE `tariff` SET `is_deleted` = ? WHERE `id` = ?";
+    private static final String READ = "SELECT * FROM `tariff` WHERE `id` = ?";
+    private static final String READ_ALL = "SELECT * FROM `tariff` WHERE `is_deleted` = 0";
+    private static final String READ_BY_NAME = "SELECT * FROM `tariff` WHERE `is_deleted` = 0 AND BINARY `name` = ?";
+    private static final String IS_LAST_TARIFF = "SELECT COUNT(*) AS tariffs FROM `tariff` WHERE `is_deleted` = 0";
+    private static final String READ_COUNT_USING_TARIFF =
+            "SELECT COUNT(*) AS subscribers FROM `subscriber` WHERE `tariff` = ?";
+    private static final String SWITCH_TARIFFS = "UPDATE subscriber SET tariff = ? WHERE tariff = ?";
     private Connection connection;
 
-    //TODO: создать константы запросов
     public void setConnection(Connection connection) {
         this.connection = connection;
     }
 
     @Override
     public Long create(Tariff tariff) throws DaoException {
-        String sql = "INSERT INTO `tariff` (`name`, `description`, `subscription_fee`, `call_cost`, `sms_cost`, `is_deleted`) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, tariff.getName());
             statement.setString(2, tariff.getDescription());
             statement.setInt(3, tariff.getSubscriptionFee());
@@ -44,9 +53,7 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public void update(Tariff tariff) throws DaoException {
-        String sql = "UPDATE `tariff` SET `name` = ?, `description` = ?, `subscription_fee` = ?, `call_cost` = ?, " +
-                "`sms_cost` = ? WHERE `id` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             statement.setString(1, tariff.getName());
             statement.setString(2, tariff.getDescription());
             statement.setInt(3, tariff.getSubscriptionFee());
@@ -61,8 +68,7 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public void delete(Long id) throws DaoException {
-        String sql = "UPDATE `tariff` SET `is_deleted` = ? WHERE `id` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(DELETE)) {
             statement.setLong(1, 1);
             statement.setLong(2, id);
             statement.executeUpdate();
@@ -73,8 +79,7 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public Tariff read(Long id) throws DaoException {
-        String sql = "SELECT * FROM `tariff` WHERE `id` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(READ)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             Tariff tariff = null;
@@ -90,9 +95,8 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public List<Tariff> readAll() throws DaoException {
-        String sql = "SELECT * FROM `tariff` WHERE `is_deleted` = 0";
         try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(sql);
+            ResultSet resultSet = statement.executeQuery(READ_ALL);
             List<Tariff> tariffs = new ArrayList<>();
             while (resultSet.next()) {
                 tariffs.add(createTariff(resultSet));
@@ -106,8 +110,7 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public Tariff readByName(String tariffName) throws DaoException {
-        String sql = "SELECT * FROM `tariff` WHERE `is_deleted` = 0 AND BINARY `name` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(READ_BY_NAME)) {
             statement.setString(1, tariffName);
             ResultSet resultSet = statement.executeQuery();
             Tariff tariff = null;
@@ -123,9 +126,8 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public boolean isLastTariff() throws DaoException {
-        String sql = "SELECT COUNT(*) AS tariffs FROM `tariff` WHERE `is_deleted` = 0";
         try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(sql);
+            ResultSet resultSet = statement.executeQuery(IS_LAST_TARIFF);
             if (resultSet.next()) {
                 int result = resultSet.getInt("tariffs");
                 resultSet.close();
@@ -140,8 +142,7 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public int readCountUsingTariff(Long id) throws DaoException {
-        String sql = "SELECT COUNT(*) AS subscribers FROM `subscriber` WHERE `tariff` = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(READ_COUNT_USING_TARIFF)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -157,8 +158,7 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public void switchTariffs(Long sourceId, Long destinationId) throws DaoException {
-        String sql = "UPDATE subscriber SET tariff = ? WHERE tariff = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(SWITCH_TARIFFS)) {
             statement.setLong(1, destinationId);
             statement.setLong(2, sourceId);
             statement.executeUpdate();

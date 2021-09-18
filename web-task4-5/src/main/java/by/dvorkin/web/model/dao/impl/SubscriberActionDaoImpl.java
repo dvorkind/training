@@ -17,17 +17,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SubscriberActionDaoImpl implements SubscriberActionDao {
+    private static final String CREATE = "INSERT INTO `subscriber_action` (`subscriber_id`, `action`, `date`, `sum`) "
+            + "VALUES (?, ?, ?, ?)";
+    private static final String READ_LAST_CHANGE_TARIFF = "SELECT * FROM `subscriber_action` WHERE `date` IN (SELECT "
+            + "max(date) FROM `subscriber_action` WHERE `subscriber_id` = ? AND `action` = 1)";
+    private static final String READ_REGISTRATION_DATE =
+            "SELECT * FROM `subscriber_action` WHERE `subscriber_id` = ? AND `action` = 0";
+    private static final String READ_BETWEEN_DATES =
+            "SELECT * FROM `subscriber_action` WHERE `subscriber_id` = ? AND `date` BETWEEN ? AND ?";
     private Connection connection;
 
-    //TODO: создать константы запросов
     public void setConnection(Connection connection) {
         this.connection = connection;
     }
 
     @Override
     public Long create(SubscriberAction subscriberAction) throws DaoException {
-        String sql = "INSERT INTO `subscriber_action` (`subscriber_id`, `action`, `date`, `sum`) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement statement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS)) {
             statement.setLong(1, subscriberAction.getSubscriberId());
             statement.setInt(2, subscriberAction.getAction().ordinal());
             statement.setTimestamp(3, Timestamp.valueOf(subscriberAction.getDate()));
@@ -45,16 +51,12 @@ public class SubscriberActionDaoImpl implements SubscriberActionDao {
 
     @Override
     public LocalDateTime readLastChangeTariff(Long subscriberId) throws DaoException {
-        String sql =
-                "SELECT * FROM `subscriber_action` WHERE `date` IN (SELECT max(date) FROM `subscriber_action` " +
-                        "WHERE `subscriber_id` = ? AND `action` = 1)";
-        return getLastDate(subscriberId, sql);
+        return getLastDate(subscriberId, READ_LAST_CHANGE_TARIFF);
     }
 
     @Override
     public LocalDateTime readRegistrationDate(Long subscriberId) throws DaoException {
-        String sql = "SELECT * FROM `subscriber_action` WHERE `subscriber_id` = ? AND `action` = 0";
-        return getLastDate(subscriberId, sql);
+        return getLastDate(subscriberId, READ_REGISTRATION_DATE);
     }
 
     private LocalDateTime getLastDate(Long subscriberId, String sql) throws DaoException {
@@ -75,8 +77,7 @@ public class SubscriberActionDaoImpl implements SubscriberActionDao {
     @Override
     public List<SubscriberAction> readBetweenDates(Long subscriberId, LocalDateTime dateBefore,
                                                    LocalDateTime dateAfter) throws DaoException {
-        String sql = "SELECT * FROM `subscriber_action` WHERE `subscriber_id` = ? AND `date` BETWEEN ? AND ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(READ_BETWEEN_DATES)) {
             statement.setLong(1, subscriberId);
             statement.setTimestamp(2, Timestamp.valueOf(dateBefore.with(LocalTime.MIN)));
             statement.setTimestamp(3, Timestamp.valueOf(dateAfter.with(LocalTime.MAX)));
