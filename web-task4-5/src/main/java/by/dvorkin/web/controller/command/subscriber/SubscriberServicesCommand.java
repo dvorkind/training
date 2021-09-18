@@ -26,7 +26,7 @@ public class SubscriberServicesCommand implements Command {
             if (req.getParameter("id") != null) {
                 long serviceId = Long.parseLong(req.getParameter("id"));
                 if (req.getParameter("on") != null) {
-                    subscriberService.switchOnService(subscriber, serviceId);
+                    subscriberService.switchOnService(subscriber.getId(), serviceId);
                     Helper.log("User #" + subscriber.getId() + " added service #" + serviceId);
                     session.setAttribute("success", "subscriber.servicesOnSuccess");
                 } else {

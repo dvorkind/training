@@ -91,7 +91,7 @@ public class AdminSubscriberEditCommand implements Command {
             if (req.getParameter("serviceId") != null) {
                 long serviceId = Long.parseLong(req.getParameter("serviceId"));
                 if (req.getParameter("on") != null) {
-                    subscriberService.switchOnService(subscriber, serviceId);
+                    subscriberService.switchOnService(subscriber.getId(), serviceId);
                     Helper.log("User #" + subscriber.getId() + " added service #" + serviceId + " by Administrator");
                     session.setAttribute("success", "admin.subscriberEditServiceOnSuccess");
                 } else {

@@ -30,10 +30,7 @@ public class AdminTariffDeleteCommand implements Command {
                 req.setAttribute("tariffs", tariffService.getAll());
             }
             if (req.getParameter("confirmation") != null) {
-                long newTariffId = 0L;
-                if (req.getParameter("newTariff") != null) {
-                    newTariffId = Long.parseLong(req.getParameter("newTariff"));
-                }
+                long newTariffId = Long.parseLong(req.getParameter("newTariff"));
                 tariffService.safetyDelete(tariff.getId(), newTariffId);
                 Helper.log("TariffID #" + req.getParameter("id") + " was deleted by Administrator");
                 session.setAttribute("success", "admin.tariffDeleteSuccess");

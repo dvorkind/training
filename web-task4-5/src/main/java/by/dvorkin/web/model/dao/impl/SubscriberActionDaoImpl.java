@@ -52,7 +52,7 @@ public class SubscriberActionDaoImpl implements SubscriberActionDao {
     }
 
     @Override
-    public LocalDateTime readSubscriberRegistrationDate(Long subscriberId) throws DaoException {
+    public LocalDateTime readRegistrationDate(Long subscriberId) throws DaoException {
         String sql = "SELECT * FROM `subscriber_action` WHERE `subscriber_id` = ? AND `action` = 0";
         return getLastDate(subscriberId, sql);
     }

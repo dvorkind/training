@@ -169,12 +169,12 @@ public class SubscriberServiceImpl implements SubscriberService {
     }
 
     @Override
-    public void switchOnService(Subscriber subscriber, Long serviceId) throws ServiceException {
+    public void switchOnService(Long subscriberId, Long serviceId) throws ServiceException {
         try {
             transaction.start();
-            SubscriberAction subscriberAction = createSubscriberAction(subscriber.getId(), Action.ADD_SERVICE, 0);
+            SubscriberAction subscriberAction = createSubscriberAction(subscriberId, Action.ADD_SERVICE, 0);
             subscriberActionDao.create(subscriberAction);
-            serviceDao.switchOn(subscriber.getId(), serviceId);
+            serviceDao.switchOn(subscriberId, serviceId);
             transaction.commit();
         } catch (DaoException e) {
             try {
@@ -220,7 +220,7 @@ public class SubscriberServiceImpl implements SubscriberService {
             LocalDateTime dateNow = LocalDateTime.now();
             LocalDateTime dateLast = subscriberActionDao.readLastChangeTariff(subscriber.getId());
             if (dateLast == null) {
-                dateLast = subscriberActionDao.readSubscriberRegistrationDate(subscriber.getId());
+                dateLast = subscriberActionDao.readRegistrationDate(subscriber.getId());
             }
             Duration duration1 = Duration.between(dateLast, dateNow);
             Duration duration2 = Duration.ofHours(24);
@@ -328,7 +328,7 @@ public class SubscriberServiceImpl implements SubscriberService {
     private boolean issue(Long id) throws DaoException {
         LocalDateTime lastDate = billDao.readLastBill(id);
         if (lastDate == null) {
-            lastDate = subscriberActionDao.readSubscriberRegistrationDate(id);
+            lastDate = subscriberActionDao.readRegistrationDate(id);
         }
         LocalDateTime nowDate = LocalDateTime.now();
         int daysAfterLastBill = (int) ChronoUnit.DAYS.between(lastDate, nowDate);

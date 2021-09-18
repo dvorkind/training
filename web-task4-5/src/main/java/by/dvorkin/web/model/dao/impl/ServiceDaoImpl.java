@@ -141,11 +141,11 @@ public class ServiceDaoImpl implements ServiceDao {
     }
 
     @Override
-    public void switchOn(Long subscriber_id, Long service_id) throws DaoException {
+    public void switchOn(Long subscriberId, Long serviceId) throws DaoException {
         String sql = "INSERT INTO `subscriber_service` (`subscriber_id`, `service_id`) " + "VALUES (?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setLong(1, subscriber_id);
-            statement.setLong(2, service_id);
+            statement.setLong(1, subscriberId);
+            statement.setLong(2, serviceId);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -153,11 +153,11 @@ public class ServiceDaoImpl implements ServiceDao {
     }
 
     @Override
-    public void switchOff(Long subscriber_id, Long service_id) throws DaoException {
+    public void switchOff(Long subscriberId, Long serviceId) throws DaoException {
         String sql = "DELETE FROM `subscriber_service` WHERE `service_id` = ? AND `subscriber_id` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setLong(1, service_id);
-            statement.setLong(2, subscriber_id);
+            statement.setLong(1, serviceId);
+            statement.setLong(2, subscriberId);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
