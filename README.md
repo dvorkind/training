@@ -1,6 +1,6 @@
 # Tasks 4-5 are ready for review
 
-**The deployed application is [available here](http://phonestation-env.eba-v2nnmzmc.us-east-2.elasticbeanstalk.com/) (or [in the mirror](https://phone-station.herokuapp.com/))**
+**The deployed application is [available here](https://phone-station.herokuapp.com/)**
 
 # Training `<epam>` - Java Web Development
 
